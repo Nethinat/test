@@ -1,0 +1,331 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fตามหาหนังปีศาจต้องสาป"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองทูนาเรีย III'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายเควส : ช่วยเหลือชายที่บาดเจ็บจากพิษของปีศาจตาฟ้า'
+  - '&7- ตามหาหนังปีศาจต้องสาปเพื่อทำยาแก้พิษ'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
+  - '&f' 
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+
+start_notify:
+  title: "⻨七⻩"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '⻠七⻡'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เดินทางไปยังเมืองที่หายไป
+        objective_detail: เดินทางไปยังเมืองที่หายไป ที่พิกัด -506,74,-331
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-506,74,-331
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: lost_city
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: ตามเสียงที่ขอความช่วยเหลือ
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &c??? : &fช่วยด้วย! ใครก็ได้ช่วยด้วย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเสียงอะไรน่ะ? มีคนต้องการความช่วยเหลือ!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fรีบไปดูเถอะ! อาจจะมีคนกำลังตกอยู่ในอันตราย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &c??? : &fช่วยด้วย! ใครก็ได้ช่วยด้วย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเสียงนั้นดังมาอีกแล้ว! เราต้องรีบไปช่วยพวกเขา!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: คุยกับชายที่บาทเจ็บตรงหน้า
+        objective_detail: คุยกับชายที่บาทเจ็บตรงหน้า ที่พิกัด -503,77,-345
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-503,77,-345
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: คุยกับ ชายที่บาดเจ็บ
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &aชายที่บาดเจ็บ: &fช่วยด้วย! ข้าถูกพิษของปีศาจตาฟ้า!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fท่านเป็นอะไรมากไหม? ข้าจะช่วยท่านเอง!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชายที่บาดเจ็บ: &fข้าต้องการ &fหนังของปีศาจต้องสาป &fจำนวน 300 อัน เพื่อทำยาแก้พิษ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชายที่บาดเจ็บ: &fเจ้าสามารถหามันได้ที่พิกัด -783,83,261'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้! ข้าจะรีบไปหามาให้ท่านเดี๋ยวนี้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชายที่บาดเจ็บ: &fขอบใจมาก รีบไปเถอะ ข้าจะพยายามอดทน'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: ไปตามหาหนังปีศาจต้องสาป
+        objective_detail: ไปตามหาหนังปีศาจต้องสาปที่พิกัด -783,83,261
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-783,83,261
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: mob_3
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: กำจัดมอนสเตอร์ &f &f ปิศาจต้องสาป จำนวน 300 ตัว
+        objective_detail: กำจัดมอนสเตอร์ &f&f ปิศาจต้องสาป จำนวน 300 ตัว
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["mmo_mob3","mmo_mob3_sp"]
+            goal: 300
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: นํา &fหนังของปิศาจต้องสาป  จํานวน 300 ชิ้น ไปส่งที่ ชายที่บาดเจ็บ
+        objective_detail: นํา &fหนังของปิศาจต้องสาป  จํานวน 300 ชิ้น ไปส่งที่ ชายที่บาดเจ็บ
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: false
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10283  # ปรับ custom_model_data ตามต้องการ
+              check: SameBase
+              goal: 300
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: นํา &fหนังของปิศาจต้องสาป ไปส่งให้กับชายบาดเจ็บ
+        objective_detail: นํา &fหนังของปิศาจต้องสาป ไปส่งให้กับชายบาดเจ็บ ที่พิกัด -503,77,-345
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-503,77,-345
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: นำ &fหนังของปิศาจต้องสาป &f300 อัน ไปให้ ชายบาดเจ็บ ที่พิกัด -503,77,-345
+        objective_detail: นำ &fหนังของปิศาจต้องสาป &f300 อัน ไปให้ ชายบาดเจ็บ ที่พิกัด -503,77,-345
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 63  # ปรับ NPC ID ตามต้องการ
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10283 # ต้องตรงกับ obj9
+              check: SameBase
+              goal: 300
+          take: true
+          error_message: '&c[!] &7: นำ &fหนังของปิศาจต้องสาป &f300 อัน ไปให้ ชายบาดเจ็บ ที่พิกัด -503,77,-345'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing # ปรับ custom point ตามต้องการ
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: คุยกับจริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fนี่ครับ หนังของปีศาจต้องสาปที่ท่านต้องการ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fขอบใจมาก ข้าชื่อจริ้ง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fข้าจะเล่าให้ฟัง... เมื่อไม่นานมานี้ กองทัพปีศาจตาฟ้าได้บุกเข้ามาทำลายที่นี่'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fพวกมันทำลายทุกอย่าง... *ไอ* *ไอ*'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fอาการข้า... มันแย่ลง... *ไอหนัก*'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fท่านเป็นอะไรมากหรือเปล่า?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fข้าต้องการ... ดอก Wither Rose... มันจะช่วยบรรเทาอาการของข้าได้...'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: นำ &fดอก Wither Rose &f2อัน ไปให้ จริ้ง ที่พิกัด -503,77,-345
+        objective_detail: นำ &fดอก Wither Rose &f2อัน ไปให้ จริ้ง ที่พิกัด -503,77,-345
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 63  # ปรับ NPC ID ตามต้องการ
+        items_needed:
+          items:
+            - item:
+                type: wither_rose
+#                custom_model_data: 10283 # ต้องตรงกับ obj9
+              check: SameBase
+              goal: 2
+          take: true
+          error_message: '&c[!] &7: นำ &fดอก Wither Rose &f2อัน ไปให้ จริ้ง ที่พิกัด -503,77,-345'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing # ปรับ custom point ตามต้องการ
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: คุยกับจริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fนี่ครับ ดอก Wither Rose ที่ท่านต้องการ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fขอบคุณมาก... *ไอ*'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fเดี๋ยวไว้ยังไง เราค่อยมาคุยต่อนะ ฉันขอพักผ่อนก่อน...'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 200
+      as_player: false

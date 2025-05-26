@@ -1,0 +1,301 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fการออกเดินทางครั้งใหม่"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองโอเรแก๊น VII'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : ทําตามคําขอร้องขอเอสคานอร์'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax3 &fแต้มเควส"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับ เอสคานอร์ ถามเรื่องงานที่จะจ้าง
+        objective_detail: คุยกับ เอสคานอร์ ถามเรื่องงานที่จะจ้าง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเอสคานอร์ ว่าไงเห็นว่ามีงานให้ผมทํา
+          &a
+          &aเอสคานอร์ &f: &fฉันกำลังมองหาคนที่สามารถช่วยฉันส่งสินค้าจากเมืองอื่นได้ คุณรู้จักใครที่สามารถทำเช่นนั้นได้
+          &a
+          &a%player_name% &f: &fจริงๆ แล้ว ฉันสามารถช่วยคุณได้ คุณต้องการจัดส่งสินค้าประเภทใดและไปที่ไหน
+          &a
+          &aเอสคานอร์ &f: &fฉันต้องการส่งอุปกรณ์&และอาหารบางอย่างไปยังสำนักงานย่อยที่ หมูบ้านกิงค์
+          &a
+          &aเอสคานอร์ &f: &fเข้าใจแล้ว ฉันมีเพื่อนที่ให้บริการจัดส่งและสามารถจัดการให้คุณได้ คุณต้องการจัดส่งสินค้าเมื่อใด
+          &a
+          &aเอสคานอร์ &f: &fตามหลักการแล้ว ภายในสามวันถัดไป
+          &a
+          &a%player_name% &f: &fไม่มีปัญหา ฉันจะจัดส่งให้เลย
+          &a
+          &aเอสคานอร์ &f: คงจะดีมาก ขอบคุณมากสำหรับความช่วยเหลือของคุณ
+          &a
+          &aเอสคานอร์ &f: &fขอขอบคุณสําหรับความช่วยเหลือของคุณมากๆ
+          &a
+          &a%player_name% &f: ไม่เป็นไรครับพรี่
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mi give MATERIAL QUEST_1 %player_name% 1
+        goto: OBJECT obj4
+      
+      obj4:
+        # display
+        name_short: กลับไปถามดิแอนเน่ ว่าไปหมู่บ้านกิงค์ยังไง
+        objective_detail: กลับไปถามดิแอนเน่ ว่าไปหมู่บ้านกิงค์ยังไง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2702,36,2784 #TODO fix right position 2702 36 2784
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 19
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเฮ้ ดิแอนเน่ คุณรู้มั้ยว่าจะไป หมู่บ้านกิงค์ ได้อย่างไร?
+          &a
+          &aดิแอนเน่ &f: &f่อ่อวว เจ้าจะไปทําอะไรที่นั้นรึ
+          &a
+          &a%player_name% &f: &fฉันจะไปส่งของแทนคุณ เอสคานอร์ น่ะ
+          &a
+          &aดิแอนเน่ &f: &fโอเครเลยถ้าจําไม่ผิด ให้เดินริมทะเลแล้วก็ตามทางไปได้เลย
+          &a
+          &aดิแอนเน่ &f: &fถ้าไม่แน่ใจก็ถามยามแถวนั้นก็ได้
+          &a
+          &a%player_name% &f: &fขอบคุณมากๆ ดิแอนเน่
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj7
+
+      obj7:
+        # display
+        name_short: เดินตามทางเพื่อไป หมู่บ้านกิงค์ 
+        objective_detail: เดินตามทางเพื่อไป หมู่บ้านกิงค์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2563,47,2878 #TODO fix right position 2563 47 2878
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 26
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fขอโทษครับท่าน คุณช่วยบอกทางไป หมู่บ้านกิงค์ หน่อยได้ไหม?
+          &a
+          &aซีค &f: &f่เจ้าจะไปทําอะไรที่นั้นรึ ?
+          &a
+          &a%player_name% &f: &fฉันจะไปส่งของที่เมือนนั่นน่ะ
+          &a
+          &aซีค &f: &fเดินขึ้นไปทางขวาก็เจอแล้วล่ะ
+          &a
+          &aซีค &f: &fแนะนําให้ไปส่งที่รูบี้ เธอคนนั้นเป็นเจ้าของหมูบ้าน!
+          &a
+          &a%player_name% &f: &fขอบคุณมาก!
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj10
+
+      obj10:
+        # display
+        name_short: เดินตามทางเพื่อไป หมู่บ้านกิงค์ 
+        objective_detail: เดินตามทางเพื่อไป หมู่บ้านกิงค์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2386,81,2860 #TODO fix right position 2386 81 2860
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์
+        objective_detail: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 27
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10709
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fท่านรูบี้ลองเช็คของดูนะครับ
+          &a
+          &a%player_name% &f: &fคุณเอสคานอร์ ส่งผมมาครับ
+          &a
+          &aรูบี้ &f: &fว้าวตอนแรกฉันนึกว่าจะมาส่งช้ากว่านี้นะ
+          &a
+          &a%player_name% &f: &fเห็นคุณเอสคานอร์ บอกว่ามันส่งช้า
+          &a
+          &a%player_name% &f: &fผมเลยอาสามาส่งแทนครับผม
+          &a
+          &a%player_name% &f: &fเอาเป็นผมขอทําความรู้จักไว้นะครับ
+          &a
+          &a%player_name% &f: &fถ้ามีอะไรให้ช่วยก็บอกได้นะครับ
+          &a
+          &aรูบี้ &f: &fนายนี้เก่งจริงๆ
+          &a
+          &aรูบี้ &f: &fฉันมีงานให้นายอยู่แล้ว เอาเป็นว่าวันนี้นายไปพักก่อนก็ได้นะ
+          &a
+          &aรูบี้ &f: &fเจ้าเดินทางมาไกลมากล่ะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false

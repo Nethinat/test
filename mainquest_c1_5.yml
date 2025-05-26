@@ -1,0 +1,253 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fการพัฒนาที่ยิ่งใหญ่"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองโอเรแก๊น V'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : ขอร้องเอสคานอร์เพื่อพัฒนาตนเอง'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax3 &fแต้มเควส"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับ เอสคานอร์
+        objective_detail: คุยกับ เอสคานอร์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &c[!] &f: &fคําเตือนกรุณาเตรียมช่องเก็บของด้วยนะครับ
+          &a
+          &aเอสคานอร์ &f: &fสวัสดี %player_name%  มีอะไรให้ฉันช่วยไหม
+          &a
+          &a%player_name% &f: &fใช่ครับ ฉันกำลังพยายามสร้างชุดเกราะใหม่ แต่ฉันต้องการวัสดุบางอย่าง
+          &a
+          &aเอสคานอร์ &f: &fฉันเข้าใจแล้ว คุณต้องการวัตถุดิบอะไร
+          &a
+          &a%player_name% &f: &fฉันต้องการ ม้วนกระดาษแปลกๆ คุณรู้ไหมว่าฉันจะหาพวกมันได้จากที่ใด
+          &a
+          &aเอสคานอร์ &f: &fตามหลักการแล้ว มันสามรถดรอปได้จากมอนทุกตัว
+          &a
+          &aเอสคานอร์ &f: &fใช่ คุณสามารถฟาร์มมอนเพื่อนํามาแลก คุณต้องการให้ฉันจัดหาเควสสำหรับฟาร์มมอนสเตอร์ให้คุณไหม?
+          &a
+          &a%player_name% &f: ได้โปรด
+          &a
+          &aเอสคานอร์ &f: &fเยี่ยมมาก ภารกิจของคุณ ฉันจะให้คุณเลือกว่าอยากได้ข้อตกลงแบบไหน
+          &a
+          &a%player_name% &f: โอเครครับ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT pick
+    
+    # --- pick ---
+      pick:
+        name_long: >
+          &aตัดสินใจ ข้อตกลงในการส่งของ
+        objective_detail: |
+          &7ตัดสินใจ ข้อตกลงในการส่งของ
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: YELLOW_CANDLE
+              name: >
+                &aฉันจะฟาม ม้วนกระดาษแปลกๆ มาส่ง
+            goto: OBJECT pick1
+          - slot: 14
+            item:
+              type: RED_CANDLE
+              name: >
+                &aฉันจะฟาม สปอร์ของเห็ดป่า มาส่ง
+            goto: OBJECT pick2
+        
+      pick1:
+        name_short: นำ &fม้วนกระดาษแปลกๆ 8 อัน &7ไปส่งเอสคานอร์
+        objective_detail: นำ &fม้วนกระดาษแปลกๆ &7ไปส่งเอสคานอร์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 20
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10155
+              check: SameBase
+              goal: 8
+          take: true
+          error_message: '&c[!] &7: นำ &fม้วนกระดาษแปลกๆ &7ไปส่งเอสคานอร์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj3
+      
+      pick2:
+        name_short: นำ &fสปอร์ของเห็ดป่า 30 อัน &7ไปส่งเอสคานอร์
+        objective_detail: นำ &fสปอร์ของเห็ดป่า 30 อัน &7ไปส่งเอสคานอร์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 20
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10137
+              check: SameBase
+              goal: 30
+          take: true
+          error_message: '&c[!] &7: นำ &fสปอร์ของเห็ดป่า &7ไปส่งเอสคานอร์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mi give MATERIAL PLAN1_1 %player_name% 1
+          mi give MATERIAL PLAN1_2 %player_name% 2
+        goto: OBJECT obj4
+      
+      obj4:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aเอสคานอร์ &f: &fรับของไปเลย
+          &a
+          &a%player_name% &f: &fขอบคุณมากสําหรับของพวกนี้นะ
+          &a
+          &aเอสคานอร์ &f: &fไม่เป็นไร เจ้าทําตามข้อตกลงของข้าแล้ว
+          &a
+          &a%player_name% &f: &fว่าแต่ของพวกนี้ใช้ยังไงรึ
+          &a
+          &aเอสคานอร์ &f: &fเจ้าลองไป หา 
+          &a
+          &aเอสคานอร์ &f: &fลองไปคุยกับพวกเขาได้เลย
+          &a
+          &a%player_name% &f: &fขอบคุณมากๆ เอสคานอร์
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false

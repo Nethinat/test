@@ -1,0 +1,366 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fวิธีกำจัดวัชพืช" #fix here
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองกิงค์ VII' #fix here
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : ภารกิจของผู้เลี้ยงไก่เพื่อการควบคุมวัชพืชอย่างมีประสิทธิภาพ' #fix here
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส" #fix here
+  - "&f &f &ax50 &fค่าประสบการณ์" #fix here
+  - "&f &f &ax1 &fxxx" #fix here
+  - "&f &f &ax1 &fxxx" #fix here
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับรูบี้ ที่หมูบ้านกิงค์
+        objective_detail: คุยกับรูบี้ ที่หมูบ้านกิงค์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2386,81,2860 #TODO fix right position
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27 #เปลี่ยนตามทุกตัว
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aรูบี้ &f: &fพอดีว่าอาหารกับยาของเมืองเราใกล้จะหมด
+          &a
+          &aรูบี้ &f: &fฉันอยากให้นายไปรับ อาหารและยา
+          &a
+          &aรูบี้ &f: &fจากคุณเอสคานอร์ให้ฉันหน่อย
+          &a
+          &aรูบี้ &f: &fแล้วเดี๋ยวฉันจะมีงานอีกงานให้นายทํา
+          &a
+          &a%player_name% &f: &fได้เลย
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        # display
+        name_short: ติดต่อคุณเอสคานอร์
+        objective_detail: ติดต่อคุณเอสคานอร์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2597,55,2961 #TODO fix right position 2597 55 2961
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: เนื้อเรื่อง (คุยกับเอสคานอร์) #เปลี่ยนตามชื่อ NPC
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20 #เปลี่ยนตามทุกตัว
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเอสคานอร์ ฉันมารับของ
+          &a
+          &aเอสคานอร์ &f: &fของ รูบี้?
+          &a
+          &a%player_name% &f: &fใช่ครับผม
+          &a
+          &aเอสคานอร์ &f: &fเดี๋ยวฉันหยิบให้นะ แปปนึง
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: หยิบของจากกระเป๋า
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform ที่มึงจะใช้ ไม่ต้องใส่ /
+          mi give MATERIAL QUEST_1 %player_name% 10
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง (คุยกับเอสคานอร์)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a
+          &aเอสคานอร์ &f: &fอ่ะ นี้เอาไปเลย หนุ่มน้อย
+          &a
+          &a%player_name% &f: &fขอบคุณมากนะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่ รูบี้ หมูบ้านกิงค์
+        objective_detail: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่ รูบี้ หมูบ้านกิงค์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 27
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10709
+              check: SameBase
+              goal: 10
+          take: true
+          error_message: '&c[!] &7: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่รูบี้แห่งหมูบ้านกิงค์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27 #เปลี่ยนตามทุกตัว
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aรูบี้ &f: &fเก่งมาก %player_name%
+          &a
+          &aรูบี้ &f: &fหน้าที่ถัดไปที่ฉันจะให้นายทํา
+          &a
+          &aรูบี้ &f: &fก็คือไปช่วยกําจัดวัชพืช
+          &a
+          &aรูบี้ &f: &fคนที่ต้องการให้เราช่วยคือคุณกัส ฟริง
+          &a
+          &a%player_name% &f: &fได้เลย เดี๋ยวฉันจะไปติดต่อคุณกัสให้นะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj10
+
+      obj10:
+        # display
+        name_short: ติดต่อ กัส ฟริง เพื่อฟังข้อมูลเพิ่มเติม
+        objective_detail: ติดต่อ กัส ฟริง เพื่อฟังข้อมูลเพิ่มเติม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2093,102,2907 #TODO fix right position 2093 102 2907
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: เนื้อเรื่อง (คุยกับ กัส ฟริง)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 38
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aกัส ฟริง &f: &fนายอีกแล้วสินะ พ่อคนเก่ง
+          &a
+          &a%player_name% &f: &fใช่แล้วล่ะ รูบี้ส่งฉันมาเอง
+          &a
+          &a%player_name% &f: &fมาๆ เรามาเข้าเรื่อง กันเลยดีกว่า
+          &a
+          &a%player_name% &f: &fฉันขอข้อมูลเพิ่มเติมหน่อยสิ
+          &a
+          &aกัส ฟริง &f: &fก็นะ คืออยู่ดีๆ มันก็มีพวก วัชพืช ออกมาจาก ฟามหลังบ้านฉันน่ะสิ
+          &a
+          &aกัส ฟริง &f: &fเดี๋ยวฉันให้พิกัดนายเพื่อไปเช็คแถวๆ นั้นล่ะกัน
+          &a
+          &aกัส ฟริง &f: &fแล้วก็ฝากกําจัดพวก วัชพืช สัก 40 ตัวด้วย
+          &a
+          &a%player_name% &f: &fได้เลยคุณกัส 
+          &a
+          &c[!] &f: คุณได้รับ พิกัดของฟาม คุณ กัส
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj12
+
+      obj12:
+        # display
+        name_short: ตามทางไปเช็คที่ฟาม
+        objective_detail: ตามทางไปเช็คที่ฟาม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2086,103,2956 #TODO fix right position 2086 103 2956
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: กำจัด &fมอนเตอร์ภายในฟาม &a{objective_progression}/&a{objective_goal}
+        objective_detail: กำจัด &fมอนเตอร์ภายในฟาม &a{objective_progression}/&a{objective_goal}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["mmo_dunmob2_1","mmo_dunmob2_2"]
+            goal: 40
+        goto: OBJECT obj14
+
+      obj14:
+        # display
+        name_short: กลับไปแจ้ง คุณกัส
+        objective_detail: กลับไปแจ้ง คุณกัส
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2093,102,2907 #TODO fix right position 2093 102 2907
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: เนื้อเรื่อง (คุยกับ กัส ฟริง)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 38
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fผมจัดการให้แล้วนะครับ
+          &a
+          &aกัส ฟริง &f: &fว้าว ชั่งน่าทึงจริงๆ
+          &a
+          &aกัส ฟริง &f: &fฝากนายไปขอบคุณ คุณรูบี้ด้วยนะ
+          &a
+          &aกัส ฟริง &f: &fที่ส่งนายมาช่วยฉัน
+          &a
+          &a%player_name% &f: &fได้เลยครับ คุณกัส 
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: กลับไปบอก รูบี้
+        objective_detail: กลับไปบอก รูบี้
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2386,81,2860 #TODO fix right position
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj17
+
+      obj17:
+        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27 #เปลี่ยนตามทุกตัว
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fฉันทํางานเสร็จแล้วนะ
+          &a
+          &aรูบี้ &f: &fว้าว
+          &a
+          &aรูบี้ &f: &fนายนี้ก็งานไว เหมือนเคย
+          &a
+          &aรูบี้ &f: &fเดี๋ยวฉันจะติดต่อนายไปอีก
+          &a
+          &aรูบี้ &f: &fในวันพรุ่งนี้แล้วเจอกัน
+          &a
+          &a%player_name% &f: &fk
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform #fix here
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 50
+        mi give MATERIAL QUEST_0 %player_name% 1 
+      as_player: false

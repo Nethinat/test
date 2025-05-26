@@ -1,0 +1,296 @@
+# -------------------- Display settings --------------------
+display_name: "&fए &eเควสหลักเมืองโอเรแก๊น ที่ 3"
+description: 
+  - '&fऎ ความยาก : &aง่ายมาก'
+  - '&f เลเวลแนะนำ : &a1+'
+  - '&f &fรายการรางวัล:'
+  - "&f &f &ax3 แต้มเควส"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - '&f' 
+  - '&c** แนะนำให้อ่านเควสดีๆนะครับ **'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: BOOK
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับ เอสคานอร์
+        objective_detail: คุยกับ เอสคานอร์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aเอสคานอร์ &f: &fสวัสดี นักผจญภัย ข้าชื่อ เอสคานอร์
+          &a
+          &aเอสคานอร์ &f: &fและข้ามีงานให้คุณ สัตว์ร้ายที่น่ากลัวกำลังคุกคามหมู่บ้านของเรา
+          &a
+          &aเอสคานอร์ &f: &fและเราต้องการใครสักคนที่กล้าหาญพอที่จะเอาชนะมัน
+          &a
+          &aเอสคานอร์ &f: &fคุณพร้อมสำหรับความท้าทายหรือไม่
+          &a
+          &a%player_name% &f: &fใช่ ฉันพร้อมที่จะช่วยเหลือ ฉันต้องทำอย่างไร
+          &a
+          &aเอสคานอร์ &f: &fสัตว์ประหลาดที่รู้จักกันในชื่อ เห็ดเหลืองบอเรียล และ เห็ดแดงบอเรียล
+          &a
+          &aเอสคานอร์ &f: &fได้สร้างสปอของมันลึกเข้าไปในป่าใกล้ๆ คุณต้องเดินทางไปที่นั่นและเอาชนะมัน
+          &a
+          &aเอสคานอร์ &f: &fถ้าคุณทำสำเร็จ คุณจะได้รับรางวัลอย่างงาม
+          &a
+          &a%player_name% &f: เรากำลังพูดถึงรางวัลประเภทไหน?
+          &a
+          &aเอสคานอร์ &f: &fม่ายยบอก
+          &a
+          &a%player_name% &f: ... โอเค้
+          &a
+          &aเอสคานอร์ &f: &fข้าจะให้เจ้าเลือก ระหว่าง เอาชนะ เห็ดเหลือง/เห็ดแดง
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT pick
+
+      # --- pick ---
+      pick:
+        name_long: >
+          &aตัดสินใจว่าจะฟามตัวไหน
+        objective_detail: |
+          &7ตัดสินใจว่าจะฟามตัวไหน
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: YELLOW_CANDLE
+              name: >
+                &aฉันจะฟาม ตัวสีเหลือง
+            goto: OBJECT pick1
+          - slot: 14
+            item:
+              type: RED_CANDLE
+              name: >
+                &aฉันจะฟาม ตัวสีแดง
+            goto: OBJECT pick2
+        
+      pick1:
+        name_short: กำจัด &fเห็ดเหลืองบอเรียล &a{objective_progression}/&a{objective_goal}
+        objective_detail: กำจัด &fเห็ดเหลืองบอเรียล &a{objective_progression}/&a{objective_goal}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["mmo_mob1_1"]
+            goal: 20
+        goto: OBJECT obj3
+      
+      pick2:
+        name_short: กำจัด &fเห็ดแดงบอเรียล &a{objective_progression}/&a{objective_goal}
+        objective_detail: กำจัด &fเห็ดแดงบอเรียล &a{objective_progression}/&a{objective_goal}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["mmo_mob1_2"]
+            goal: 20
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: กลับคุยกับ เอสคานอร์
+        objective_detail: กลับคุยกับ เอสคานอร์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj4
+      
+      obj4:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aเอสคานอร์ &f: &fโอ้ เสร็จแล้วอย่างงั้นนะหรอ
+          &a
+          &aเอสคานอร์ &f: &fเจ้านี้ไวจริงๆ
+          &a
+          &aเอสคานอร์ &f: &fข้าเห็นว่าฝีมือของเจ้าใช้ได้นะเนี้ย
+          &a
+          &aเอสคานอร์ &f: &fเจ้าพร้อมสำหรับความท้าทายพิเศษหรือไม่
+          &a
+          &a%player_name% &f: &fใช่ ฉันพร้อมมาก ไหนว่ามาสิ
+          &a
+          &aเอสคานอร์ &f: &fสัตว์ประหลาดที่รู้จักกันในชื่อ โกเล็มผู้พิทักษ์ เป็นผู้บงการ พวกเห็ดบอเรียล
+          &a
+          &aเอสคานอร์ &f: &fพวกมันช่อนอยู่ในโชนเห็ดแห่งนี้
+          &a
+          &aเอสคานอร์ &f: &fเจ้าต้องไปจัดการมัน แล้วรับของรางวัลไปได้เลย
+          &a
+          &a%player_name% &f: ได้เลยครับ ท่านเอสคานอร์
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+      
+      obj5:
+        name_short: '&fกำจัด &fโกเล็มผู้พิทักษ์ &a{objective_progression}/&a{objective_goal}'
+        objective_detail: '&fกำจัด &fโกเล็มผู้พิทักษ์ &a{objective_progression}/&a{objective_goal}'
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bmob1"]
+            goal: 1
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์
+        objective_detail: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 27
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10709
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &fอุปกรณ์&และอาหาร &7ไปส่งที่หมูบ้านกิงค์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเอสคานอร์ &f: เก่งมาก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเอสคานอร์ &f: เดี๋ยวข้าจะจัดส่งรางวัลไปให้นะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: UwU'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเอสคานอร์ &f: ขอบคุณเจ้ามากที่มาช่วยข้า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false

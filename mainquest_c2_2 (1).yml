@@ -1,0 +1,323 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fปีศาจตาฟ้าและเมืองที่หายไป"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองทูนาเรีย II'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายเควส : ช่วยเหลือ Gul และค้นหาข้อมูลเกี่ยวกับปีศาจตาฟ้า'
+  - '&7- เดินทางไปยังเมืองที่หายไปเพื่อหาข้อมูลเพิ่มเติม'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
+  - '&f' 
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+
+start_notify:
+  title: "⻨七⻩"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '⻠七⻡'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: สนทนากับ Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fท่าน Gul ครับ ช่วยเล่าเรื่องปีศาจตาฟ้าให้ฟังหน่อยได้ไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fได้สิ แต่ก่อนอื่น ช่วยข้าหาของมาซ่อมบ้านหน่อยได้ไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้าต้องการไม้โอ๊ค 640 ชิ้น และหินก้อน 640 ก้อน'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: หาวัสดุซ่อมบ้าน ไม้โอ๊ค 640 ชิ้น (OAK_LOG)
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: OAK_LOG
+                amount: 640
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj2_1
+
+      obj2_1:
+        name_short: หาวัสดุซ่อมบ้าน หินก้อน 640 ก้อน (STONE)
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: STONE
+                amount: 640
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: กลับไปหา Gul พร้อมวัสดุ -743,79,15  
+        objective_detail: กลับไปหา Gul ที่หมู่บ้านทะเลทรายเล็กม้วกพร้อมวัสดุซ่อมบ้าน -743,79,15
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-743,79,15
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gui
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: กลับไปหา Gul พร้อมวัสดุ
+        type: SERVER_ACTIONS
+        actions: 
+           - 'SEND_MESSAGE &f &a%player_name%: &fนี่ครับ ผมหาวัสดุมาให้แล้ว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fขอบใจมาก เอาล่ะ ข้าจะเล่าเรื่องปีศาจตาฟ้าให้ฟัง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fปีศาจตาฟ้าเป็นสิ่งมีชีวิตที่น่ากลัวมาก มันมีพลังมหาศาล'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fมีตำนานเล่าว่า มันถูกสร้างขึ้นโดยเวทมนตร์โบราณที่สาบสูญไปแล้ว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fแต่ในขณะที่ข้าเล่า ข้าต้องการมรกต 96 บล็อก ช่วยไปหามาให้หน่อยได้ไหม?'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: หารมรกต 96 บล็อก (EMERALD_BLOCK)
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: EMERALD_BLOCK
+                amount: 96
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: กลับไปหา Gul พร้อมวัสดุ -743,79,15  
+        objective_detail: กลับไปหา Gul ที่หมู่บ้านทะเลทรายเล็กม้วกพร้อมวัสดุซ่อมบ้าน -743,79,15
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-743,79,15
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gui
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: ฟังเรื่องราวต่อจาก Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fนี่ครับ มรกต 96 บล็อก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fดีมาก ขอบใจ ตอนนี้ข้าจะเล่าต่อ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fขอบคุณสำหรับของที่ช่วยซ่อมที่พัก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fถ้าเจ้าต้องการเรียนรู้เพิ่มเติมเกี่ยวกับปีศาจตาสีฟ้า ให้ไปหาคนที่เมืองทะเลทราย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fเขาจะบอกเจ้าได้มากกว่านี้ เขาพึ่งจะโดนโจมตีเมื่อไม่นานมานี้น่ะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fก่อนเจ้าไปรบกวนไปกําจัด รุปปันหินหมอผี ทั้ง 5 ตนหน่อยสิ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้ครับ ขอบคุณสำหรับข้อมูล ผมจะไปจัดการให้'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: กำจัดรุปปันหินหมอผี จำนวน 5 ตัว
+        objective_detail: กำจัดรุปปันหินหมอผีจำนวน 5 ตัว
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bmob2"]
+            goal: 5
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: ฟังเรื่องราวต่อจาก Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fเรียบร้อยแล้วครับ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fดีมาก ขอบใจมาก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fตอนนี้ข้าจะบอกเรื่องปีศาจตาฟ้าให้เจ้าฟัง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fมีเมืองหนึ่งชื่อว่า "เมืองที่หายไป" ที่ถูกโจมตีโดยปีศาจตาฟ้าเมื่อไม่นานมานี้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fเจ้าควรไปที่นั่นเพื่อหาข้อมูลเพิ่มเติม พวกเขาน่าจะรู้มากกว่าข้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้ครับ ขอบคุณสำหรับข้อมูล ผมจะจัดการรูปปั้นหินก่อนแล้วค่อยไปที่ลอสสิทตี้ (เมืองที่หายไป)'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เดินทางไปยังเมืองที่หายไป
+        objective_detail: เดินทางไปยังเมืองที่หายไป ที่พิกัด -506,74,-331
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-506,74,-331
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: lost_city
+        goto: OBJECT obj11 
+
+      obj11:
+        name_short: ฟังเรื่องราวต่อจาก Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &c??? : &fช่วยด้วย! ใครก็ได้ช่วยด้วย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเสียงอะไรน่ะ? มีคนต้องการความช่วยเหลือ!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fรีบไปดูเถอะ! อาจจะมีคนกำลังตกอยู่ในอันตราย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &c??? : &fช่วยด้วย! ใครก็ได้ช่วยด้วย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเสียงนั้นดังมาอีกแล้ว! เราต้องรีบไปช่วยพวกเขา!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &7โปรดติดตามตอนต่อไป...'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 200
+      as_player: false

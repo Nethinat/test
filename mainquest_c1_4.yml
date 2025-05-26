@@ -1,0 +1,307 @@
+# -------------------- Display settings --------------------
+display_name: "&fए &eเควสหลักเมืองโอเรแก๊น ที่ 4"
+description: 
+  - '&fऎ ความยาก : &aง่ายมาก'
+  - '&f เลเวลแนะนำ : &a1+'
+  - '&f &fรายการรางวัล:'
+  - "&f &f &ax3 แต้มเควส"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - '&f' 
+  - '&c** แนะนำให้อ่านเควสดีๆนะครับ **'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: BOOK
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: สอบถามดิแอนเน่ บนเรือแมรี่
+        objective_detail: อยู่ตรง spawn /spawn ไปเจอเลย
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 19
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fดิแอนเน่ฉันถามหน่อยได้มั้ย
+          &a
+          &a%player_name% &f: &fว่าก่อนที่จะฉันจะมาอยู่ตรงนี้
+          &a
+          &a%player_name% &f: &fใครช่วยฉันไว้หรอ ฉันอยากรู้ความจริง
+          &a
+          &a%player_name% &f: &fแล้วก็อยากขอบคุณด้วย
+          &a
+          &aดิแอนเน่ &f: &fถ้าฉันจําไม่ผิดอ่ะนะ น่าจะเป็นยาย เมอร์ลินที่ไปเจอนาย
+          &a
+          &aดิแอนเน่ &f: &fนอนอยู่ข้างทะเล
+          &a
+          &aดิแอนเน่ &f: &fถ้าอยากจะคุยกับยายแกอ่ะ เดี๋ยวฉันหาทางให้
+          &a
+          &aดิแอนเน่ &f: &fฉันแนะนําให้นายเอา อาหารไปให้ยายนะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT FINISH_OR_MORE
+
+      # --- finish or do more ---
+      FINISH_OR_MORE:
+        name_long: >
+          &aตัดสินใจว่าจะทำอาหารหรือไม่
+        objective_detail: |
+          &7ตัดสินใจว่าจะทำอาหารหรือไม่
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: green_stained_glass_pane
+              name: >
+                &aได้เลย! ไว้เป็นหน้าที่ของข้าเอง
+            goto: OBJECT loop1
+          - slot: 14
+            item:
+              type: red_stained_glass_pane
+              name: >
+                &cไม่ทําขี้เกียจ
+            goto: OBJECT loop2
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+## บทพูด
+      loop1:
+        name_long: >
+          &aตัดสินใจว่าจะทำอาหารอะไร?
+        objective_detail: |
+          &7ตัดสินใจว่าจะทำอาหารอะไร?
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: bread
+              name: >
+                &aฉันอยากทําขนมปังอบ!
+            goto: OBJECT obj5
+          - slot: 14
+            item:
+              type: cooked_beef
+              name: >
+                &aฉันอยากทําเนื้อวัวย่าง!
+            goto: OBJECT obj5_1
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        
+      loop2:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: เจ้าใจร้ายมากเกินไปนะบางที'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: เริ่มทําเควสใหม่ส่ะ '
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT quest_fail
+        cooldown:
+          duration: 1 HOUR
+
+      obj5:
+        name_short: นำ &fขนมปังอบ 1 ชิ้น  &7มาให้ ยายเมอร์ลิน
+        objective_detail: นำ &fขนมปังอบ 1 ชิ้น  &7มาให้ ยายเมอร์ลิน
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 24
+        items_needed:
+          items:
+            - item:
+                type: bread
+#                custom_model_data: 10792
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &fขนมปังอบ 1 ชิ้น  &7มาให้ ยายเมอร์ลิน'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj6
+
+      obj5_1:
+        name_short: นำ &fเนื้อวัวย่าง 1 ชิ้น  &7มาให้ ยายเมอร์ลิน
+        objective_detail: นำ &fเนื้อวัวย่าง 1 ชิ้น  &7มาให้ ยายเมอร์ลิน
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 24
+        items_needed:
+          items:
+            - item:
+                type: cooked_beef
+#                custom_model_data: 10792
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &fเนื้อวัวย่าง 1 ชิ้น  &7มาให้ ยายเมอร์ลิน'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: สวัสดี ฉันเอาขนมมาให้ยายกิน ฉันหวังว่าคุณจะชอบมันนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเมอร์ลิน &f: โอ้ ขอบคุณ! หลานใจดีมาก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ไม่มีปัญหาเลย ฉันเลยอยากจะถามกับคุณเกี่ยวกับบางอย่าง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ประมาณเมื่อสองสามสัปดาห์ก่อน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: คุณพบผมที่ชายหาด เลยอยากจะถามเดี๋ยวกับผมว่ามันเกิดอะไรขึ้น'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ผมคิดว่าผมความจำเสื่อม ยายพอจะจําได้มั้ยว่าผมเป็นใคร'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเมอร์ลิน &f: (เอื้อมมือไปปลอบพวกเขา) ไม่เป็นไร ไม่ต้องกังวล เดี๋ยวยายช่วยเอง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเมอร์ลิน &f: ถ้ายายจําไม่ผิด ยายว่ายายไม่รู้จักลูกหรอก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเมอร์ลิน &f: ยายจําได้แค่ ยายเดินไปเจอลูกอยู่ริมทะเล'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเมอร์ลิน &f: ยายขอเวลานึกสักพักนะถ้านึกออกจะติดต่อไป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false

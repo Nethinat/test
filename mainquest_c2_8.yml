@@ -1,0 +1,416 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fคําขอสุดท้ายของคุณไวท์" #fix here
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองกิงค์ VIII' #fix here
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : ช่วยเหลือฟามม้าและแก้ไขปัญหาของคุณไวท์' #fix here
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส" #fix here
+  - "&f &f &ax50 &fค่าประสบการณ์" #fix here
+  - "&f &f &ax1 &fม้า" #fix here
+  - "&f &f &ax1 &fxxx" #fix here
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: ไปหา คุณไวท์
+        objective_detail: ไปหา คุณไวท์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2317,45,2693 #TODO fix right position 2317 45 2693
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ วอลเตอร์ ไวท์)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 32
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเฮ้ คุณไวท์
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fฉันต้องการให้นายช่วยฉัน
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fตอนนี้ฉันมี ปัญหากับภรรยาของฉัน
+          &a
+          &a%player_name% &f: &fแล้วฉันต้องช่วยคุณยังไงนิ ;d
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fฉันเตรียมของไว้แล้ว
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fฉันแค่ต้องการให้นายไปส่งมัน
+          &a
+          &a%player_name% &f: &fแล้วทําไมคุณไม่ไปส่งเองล่ะ
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fฉันไม่กล้าจริงๆ
+          &a
+          &aวอลเตอร์ ไวท์ &f: &fนายไปให้ฉันหน่อยนะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: หยิบของจากกระเป๋า
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mi give COOKINGPACK BACON_EGGS %player_name% 2
+        goto: OBJECT obj4
+
+      obj4:
+        # display
+        name_short: ตามหา สการเลอร์ ไวท์
+        objective_detail: ตามหา สการเลอร์ ไวท์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2176,44,2675 #TODO fix right position 2176 44 2675
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: นำ &fBACON EGGS 2 อัน&7ไปส่ง &eสการเลอร์ ไวท์
+        objective_detail: นำ &fBACON EGGS 2 อัน&7ไปส่ง &eสการเลอร์ ไวท์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 35
+        items_needed:
+          items:
+            - item:
+                type: cooked_beef
+                custom_model_data: 26
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &fBACON EGGS 2 อัน&7ไปส่ง &eสการเลอร์ ไวท์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เนื้อเรื่อง (กดที่ สการเลอร์ ไวท์)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 35
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aสการเลอร์ ไวท์ &f: &fนายเป็นใครนิ?
+          &a
+          &a%player_name% &f: &fวอลเตอร์จ้างผมให้มาส่งของให้ครับ
+          &a
+          &aสการเลอร์ ไวท์ &f: &fขอบคุณนะ ที่หลังบอกวอลเตอร์ให้มาส่งเองด้วย
+          &a
+          &aสการเลอร์ ไวท์ &f: &fไหนๆ เธอก็มาแล้ว ฉันให้ BACON EGGS เธอไปกินล่ะกัน
+          &a
+          &aสการเลอร์ ไวท์ &f: &fขอบคุณนายมาก
+          &a
+          &a%player_name% &f: &fไม่เป็นไรครับ สการเลอร์ ไวท์
+          &a
+          &a%player_name% &f: เดี๋ยวฉันจะไปทํางานแล้วนะ มีอะไรคุณเรียกคุณไวท์ได้เลย
+          &a
+          &a%player_name% &f: มีอะไรคุณเรียกคุณไวท์ได้เลย เดี๋ยวเขาติดต่อผมให้
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj7
+
+      obj7:
+        # display
+        name_short: กลับไปบอก คุณไวท์ 
+        objective_detail: กลับไปบอก คุณไวท์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2177,44,2684 #TODO fix right position 2177 44 2684
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a? &f: เฮ้ นายน่ะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a? &f: ช่วยอะไรฉันหน่อยได้มั้ย?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true 
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        # display
+        name_short: เดินตามเสียงชายคนนั้น
+        objective_detail: เดินตามเสียงชายคนนั้น
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2202,42,2679 #TODO fix right position 2202 42 2679
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เนื้อเรื่อง (กดที่ ซอล กู๊ดแมน)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 36
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fคุณต้องการอะไรหรอ
+          &a
+          &aซอล กู๊ดแมน &f: &fอย่างแรกเลย ผมชื่อ ซอล กู๊ดแมน
+          &a
+          &aซอล กู๊ดแมน &f: &fหรือจะเรียกผมว่า ซอล ก็ได้
+          &a
+          &a%player_name% &f: &fอ่าห่ะ ผมชื่อ %player_name%
+          &a
+          &aซอล กู๊ดแมน &f: &fฉันเป็นผู้ดูแล คอกม้าแห่งนี้
+          &a
+          &aซอล กู๊ดแมน &f: &fฉันต้องการนมวัว สดๆ
+          &a
+          &aซอล กู๊ดแมน &f: &fเดี๋ยวฉันจะให้ชุดรีดนมวัวกะนาย
+          &a
+          &aซอล กู๊ดแมน &f: &fและก็ช่วยไปเอานมวัว
+          &a
+          &aซอล กู๊ดแมน &f: &fจากเมืองกิงค์มาให้ฉันหน่อยสิ
+          &a
+          &aซอล กู๊ดแมน &f: &fฉันต้องการ 1 ขวดอ่ะนะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: หยิบ&fอุปกรณ์รีดนมวัว
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mm items give %player_name% cow_reed 1
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: เนื้อเรื่อง (กดที่ ซอล กู๊ดแมน)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 36
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aซอล กู๊ดแมน &f: &fอ่ะนี้ที่รีดนมวัว
+          &a
+          &aซอล กู๊ดแมน &f: &fวิธีการใช้งานมันก็ง่ายมาก
+          &a
+          &aซอล กู๊ดแมน &f: &fนายเดินไปกดที่วัวในฟาม
+          &a
+          &aซอล กู๊ดแมน &f: &fนายก็จะได้นมวัวมาแล้วล่ะ
+          &a
+          &a%player_name% &f: &fk
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj13
+
+      obj13:
+        # display
+        name_short: ไปทีฟามวัว เมืองกิงค์
+        objective_detail: ไปทีฟามวัว เมืองกิงค์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2328,82,2805 #TODO fix right position 2328 82 2805
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: นำ &aนมที่ยังไม่ผ่านการแปรรูป 1 อัน&7ซอล กู๊ดแมน
+        objective_detail: นำ &aนมที่ยังไม่ผ่านการแปรรูป 1 อัน&7ซอล กู๊ดแมน
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 36
+        items_needed:
+          items:
+            - item:
+                type: cooked_beef
+                custom_model_data: 10025
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นำ &aนมที่ยังไม่ผ่านการแปรรูป 1 อัน&7ซอล กู๊ดแมน'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: เนื้อเรื่อง (กดที่ ซอล กู๊ดแมน)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 36
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fมันเป็นนมสดๆ นะ
+          &a
+          &aซอล กู๊ดแมน &f: &fโอ้ ช่ายนี้แหละที่ฉันต้องการ
+          &a
+          &aซอล กู๊ดแมน &f: &fช่วงนี้นายเดินทางเหนิ่อยมั้ยล่ะ
+          &a
+          &a%player_name% &f: &fช่วงนี้ ผมเดินทางไกลมาก
+          &a
+          &a%player_name% &f: &fไปๆ มาๆ สองเมืองนี้
+          &a
+          &aซอล กู๊ดแมน &f: &fนายคงลําบากมากสินะ
+          &a
+          &aซอล กู๊ดแมน &f: &fงั้นฉันมีของให้นาย
+          &a
+          &aซอล กู๊ดแมน &f: &fรอสักครู่
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: กําลังจดทะเบียนม้า
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          lp user %player_name% permission set mcpet.horsefree 
+        goto: OBJECT obj17
+
+      obj17:
+        name_short: เนื้อเรื่อง (กดที่ ซอล กู๊ดแมน)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 36
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &4[!] &f: &fคุณได้รับ ม้าฝึกหัด
+          &a
+          &4[!] &f: &fแนะการใช้งานเบิื้องต้น
+          &a
+          &4[!] &f: &f/mcpets เพื่อนําม้าออกมาใช้งาน
+          &a
+          &aซอล กู๊ดแมน &f: &fเป็นไงม้าตัวนี้สุดยอดมั้ย
+          &a
+          &aซอล กู๊ดแมน &f: &fนายดูแลมันดีๆ ด้วยนะ
+          &a
+          &a%player_name% &f: &fแล้วมันมีชื่อมั้ย
+          &a
+          &aซอล กู๊ดแมน &f: &fยังไม่มีหรอก นายก็ตั้งชื่อให้มันเลยก็ได้
+          &a
+          &a%player_name% &f: &fขอบคุณมากครับ สําหรับม้า
+          &a
+          &aซอล กู๊ดแมน &f: &fไม่เป็นไร 
+          &a
+          &aซอล กู๊ดแมน &f: &fนี้อาจจะไม่ได้ช่วยนายเยอะนะ 
+          &a
+          &a%player_name% &f: &fไม่หรอ ชอล ขอบคุณมากๆนะ มันช่วยฉันได้เยอะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform #fix here
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 50
+      as_player: false

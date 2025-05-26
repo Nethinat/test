@@ -1,0 +1,489 @@
+# -------------------- Display settings --------------------
+display_name: "&eภารกิจ &fอาหารอันโอชะ"
+description: 
+  - '&f'
+  - "&e&l| &eภารกิจเนื้อเรื่อง ฉบับที่ 7"
+  - '&f'
+  - '&7เป้าหมายภารกิจ'
+  - "&e&l| &fซานนาเสนอทำอาหารที่จะช่วยเสริมพลังโจมตีให้แก่คุณ"
+  - '&f'
+  - '&f &fรางวัลเควส &f'
+  - "&e&l| &ax1 &fแต้มเควส"
+  - "&e&l| &ax50 &fเงิน"
+  - "&e&l| &ax100 &fเลเวลเอนชาร์จ"
+  - "&e&l| &ax1 &eการ์ดภารกิจวานิลลา"
+  - "&e&l| &ax1 &eกล่องบรรจุวัสดุฟาร์มนานาชนิด"
+  - "&e&l| &ax1-2 &x&4&1&D&F&4&Dใบไม้สีทองโกลด์ลีฟ"
+
+start_notify:
+  title: "&aดำเนินการเริ่มภารกิจ!!"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 11413
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&f &cภารกิจนี้ถูกล็อค &f'
+    lore: |
+      &c
+      &eภารกิจเนื้อเรื่อง ฉบับที่ 7
+      &c
+      &cหากต้องการปลดล็อคภารกิจนี้ ผู้เล่นต้องสำเร็จภารกิจ
+      &fเบาะแสแรก
+      &cให้สำเร็จเสียก่อน ภารกิจนี้จึงจะปลดล็อค
+  COOLDOWN:
+    type: BARRIER
+    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
+    lore: |
+      &c
+      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจสำเร็จแล้ว'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% คุณตื่นขึ้นมาและไปหา ซานนา \nพร้อมบอกเบาะแสของปีศาจตาฟ้า
+          tppos %player_name% mainmmo -1312 75 -337 0 290
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &f
+        goto: OBJECT obj4
+
+      obj4:
+        # display
+        name_short: ลงไปคุยกับ ซานนา
+        objective_detail: ลงไปคุยกับ ซานนา ที่พิกัด x:-1308 y:67 z:-343 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1308,67,-343 #TODO fix right position 2716,37,2870
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: sana #แก้pointตรงนี้
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &f
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fท่านซานนา ข้ามีเบาะแสของปีศาจตาฟ้า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fนั่นเป็นเรื่องที่ดีเลย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f เสียงท้องร้องของ &a%player_name%'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fขําเล็กๆ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fเจ้านี้ยังคงเหมือนแต่ก่อนเลยนะ ข้ามีข้อเสนอ ดีๆให้กับเจ้าด้วย เป็นอาหารที่จะช่วยเสริมพลังโจมตีให้แก่เจ้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fนั่นคงเป็นอาหารที่ทำยากสินะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fมันก็ไม่ได้ยากขนาดนั้น ลองไปหาไอเทม (วัตถุดิบคราฟอาหาร)'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้เลย เพื่อที่จะทำให้ฉันเก่งขึ้น'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fนั่นเป็นเรื่องที่ดีเลย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj7
+
+      obj7:
+        name_long: >
+          &aตัดสินใจว่าจะรับงานพิเศษมั้ย (กําจัดมอนเพื่อรับของเพิ่มเติม)
+        objective_detail: |
+          &7ตัดสินใจว่าจะรับงานพิเศษมั้ย (กําจัดมอนเพื่อรับของเพิ่มเติม)
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: gold_nugget
+              custom_model_data: 16500
+              name: >
+                &aรับงานเสริม
+            goto: OBJECT obj8
+          - slot: 14
+            item:
+              type: gold_nugget
+              custom_model_data: 15500
+              name: >
+                &aไม่รับงานเสริม
+            goto: OBJECT obj15
+
+      obj8:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f : &fระหว่างหาวัตถุดิบ %player_name% เจอลุงลึกลับที่ขอให้ช่วยหาไอเทม'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f : &fคุณได้รับภารกิจเสริมให้จัดการมอนสเตอร์แถวพื้นที่สไลม์ x:592 y:75 z:6'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: กำจัดสไลม์ภายในพื้นที่ {objective_progression:a}&7/&b{objective_goal:a}
+        objective_detail: กำจัดสไลม์ภายในพื้นที่ {objective_progression:a}&7/&b{objective_goal:a}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bmob1","mmo_mob1_1","mmo_mob1_2"]
+            goal: 64
+        goto: OBJECT obj10
+        
+      obj10:
+        name_short: เมือกสไลม์แข็งตัว 100 ชิ้น {objective_progression:a}&7/&b{objective_goal:a}
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10294
+              check: SameBase
+              goal: 100
+        goto: OBJECT obj11
+      
+      obj11:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% ลุงลึกลับได้ตอบแทนคุณ \n&f :&aลุงลึกลับ&f: "ดีมาก นี่คือรางวัลของเจ้า"
+          mi give MATERIAL FOODMAT_1 %player_name% 2
+          give pumpkin 4 %player_name%
+          give egg 8 %player_name%
+          give bucket 1 %player_name%
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% หลังจากคุณช่วยคุณลุงลึกลับเสร็จ\nคุณได้กลับไปหาชานาเพื่อคุยต่อ"
+        goto: OBJECT obj14
+        
+      obj14:
+        # display
+        name_short: ไปคุยกับ ซานนา
+        objective_detail: ไปคุยกับ ซานนา ที่พิกัด x:-1308 y:67 z:-343 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1308,67,-343 #TODO fix right position 2716,37,2870
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: sana #แก้pointตรงนี้
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fซานนา ว่าแต่คุณต้องการอะไรบ้างนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fโอ้ จริงสิฉันลืมบอกไปเลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fหิๆ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fฉันต้องการ &aจานคุณภาพดี &f4 จาน ฟักทอง 16 ลูก ไข่ไก่ 16 ลูก และนมถัง 1 ถัง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fแน่นอน ข้าจะหามาให้'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fว่าแต่ &aจานคุณภาพดี &fหาจากไหนหรอ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fมาหาได้ที่ฉันได้เลย ฉันมีขาย หรือว่าเธออยากจะคราฟก็ได้นะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fโอ้วว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fหาของเสร็จแล้วมาให้ฉันนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &aจานคุณภาพดี &fสามารถชื้อหรือคราฟได้ที่ \nNPC ชานา พิกัด x:-1308 y:67 z:-343 
+        goto: OBJECT obj17
+
+      obj17:
+        name_short: &aจานคุณภาพดี 4 ชิ้น {objective_progression:a}&7/&b{objective_goal:a} สามารถชื้อ/คราฟได้ที่ พิกัด x:-1308 y:67 z:-343 
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 11126
+              check: SameBase
+              goal: 4
+        goto: OBJECT obj18
+
+      obj18:
+        name_short: ฟักทอง 8 ชิ้น {objective_progression:a}&7/&b{objective_goal:a} สามารถหาได้ตามโลกสร้างบ้าน
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: pumpkin
+#                custom_model_data: 10364
+              check: SameBase
+              goal: 8
+        goto: OBJECT obj19
+
+      obj19:
+        name_short: ไข่ไก่ 16 ฟอง {objective_progression:a}&7/&b{objective_goal:a} สามารถหาได้ตามโลกสร้างบ้าน
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: egg
+#                custom_model_data: 10364
+              check: SameBase
+              goal: 16
+        goto: OBJECT obj20  
+
+      obj20:
+        name_short: นม 1 ถัง {objective_progression:a}&7/&b{objective_goal:a} สามารถหาได้ตามโลกสร้างบ้าน
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: milk_bucket
+#                custom_model_data: 10364
+              check: SameBase
+              goal: 1
+        goto: OBJECT obj21 
+
+      obj21:
+        # display
+        name_short: ไปคุยกับ ซานนา
+        objective_detail: ไปคุยกับ ซานนา ที่พิกัด x:-1308 y:67 z:-343 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1308,67,-343 #TODO fix right position 2716,37,2870
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: sana #แก้pointตรงนี้
+        goto: OBJECT obj22   
+
+      obj22:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fเจ้ากลับมาแล้วหรือ? ได้ไอเทมที่ข้าต้องการหรือยัง?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fนี่คือไอเทมทั้งหมดที่ท่านต้องการ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fใช้ได้เลยนี่ นี่รับไป อาหารที่จะเพิ่มความสามารถของเจ้า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fแค่นี้ข้าก็เก่งขึ้นแล้วใช่ไหม?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fยังหรอก เจ้ายังไม่เก่งถึงขนาดจัดการพวกปีศาจนั้นได้ เพราะอาวุธของเจ้ายังไม่ได้ทำการขัดเกลา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fเจ้าต้องเตรียมตัวให้พร้อมมากกว่านี้ที่จะไปเมืองหิมะ พรุ่งนี้ลองไปหาช่างตีดาบดูซิ เขาน่าจะให้คำแนะนำแก่เจ้าได้'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fขอบคุณท่านซานนา ข้าจะเตรียมตัวให้พร้อม ข้าขอตัวไปพักผ่อนก่อน แล้วพรุ่งนี้ข้าจะไปหาช่างตีดาบตามที่ท่านแนะนำ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aซานนา: &fได้เลย พักผ่อนให้เต็มที่ เจ้าต้องการพลังงานสำหรับภารกิจต่อไป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj23
+
+      obj23:  
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% เตรียมตัวพบกับช่างตีดาบ\nในตอนต่อไป พักผอนได้"
+          mi give CUSTOMFOOD FOOD_01 %player_name% 2
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 150
+        give %player_name% bread 16
+        mi give MATERIAL QUEST_0 %player_name% 1
+      as_player: false

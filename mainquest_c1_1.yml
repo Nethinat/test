@@ -1,0 +1,777 @@
+# -------------------- Display settings --------------------
+display_name: "&fए &eเควสหลักเมืองโอเรแก๊น ที่ 1"
+description: 
+  - '&fऎ ความยาก : &aง่ายมาก'
+  - '&f เลเวลแนะนำ : &a1+'
+  - '&f &fรายการรางวัล:'
+  - "&f &f &ax3 แต้มเควส"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - "&f &f &ax0 ยังไม่ได้คิด"
+  - '&f' 
+  - '&c** แนะนำให้อ่านเควสดีๆนะครับ **'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับดิแอนเน่ บนเรือแมรี่
+        objective_detail: อยู่ตรง spawn /spawn ไปเจอเลย
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 19
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aดิแอนเน่ &f: &fสวีดัส นักเดินทาง
+          &a
+          &aดิแอนเน่ &f: &fได้ยินว่าเจ้าหลงทางมานิ
+          &a
+          &a%player_name% &f: &fใช่ครับว่าแต่ ท่านชื่ออะไรหรอ
+          &a
+          &aดิแอนเน่ &f: &fข้าชื่อ ดิแอนเน่ เป็นผู้นําทางเจ้าในวันนี้ยังไงล่ะ
+          &a
+          &a%player_name% &f: &fยินดีที่ได้รู้จักนะ ดิแอนเน่ ข้าชื่อ %player_name%
+          &a
+          &aดิแอนเน่ &f: &fมาเถอะท่านเอ่ยให้ข้าได้นําทางเจ้าไปดู
+          &a
+          &aดิแอนเน่ &f: &fว่าในเมืองนี้มี อะไรกันบาง
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เดินไปหา น้องโมจิ
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2708,36,2784 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj4
+## บทพูด
+      obj4:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: มาเลยๆ นี้คือ น้องโมจิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองคุยกับน้อนดูสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: โอ้วว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ใช่แล้วล่ะ เธอคนนี้สามารถช่วยนายให้เริ่มต้นได้ง่ายมาก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: มาดูคนทักไปกันเลยดีกว่า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+        
+      obj5:
+        # display
+        name_short: เดินไปที่ Warp Zone
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2705,37,2800 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้ลูกวาป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองเดินเข้าไปจูปมันสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: จูป?!?!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: แล้วเจ้าก็เลือกได้เลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ว่าอยากไปโลกไหน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: แต่เดี๋ยวก่อนนะ อย่าพึ่งไป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: /spawn กลับมาก่อนน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj7 
+      
+      obj7:
+        # display
+        name_short: เดินไปที่ ร้านค้าเชิฟเวอร์ 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,37,2807 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้คือ ร้านค้าเชิฟเวอร์'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองคุยดูสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าว มีแต่ของน่าขาย น่าชื้อทั้งนั้นเลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: แล้วเจ้าก็สามรถเลือกได้ว่าจะชื้ออะไร'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: หรือขายอะไรก็ตามที่เจ้าอยากขาย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        # display
+        name_short: เดินไปที่ ร้านค้าเฟอร์นิเจอร์ 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2715,37,2815 #TODO fix right position 
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้คือ ร้านค้าเฟอร์นิเจอร์'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: มีแต่เฟอร์นิเจอร์น่าสนใจทั้งนั้น'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว่าแต่ราคาเท่าไรหรอ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ก็ถ้าจําไม่ผิดอ่ะนะ เริ่มต้น 200 ไปจนถึง หลัก พัน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองดูๆ ราคาก่อนได้เลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj11
+      
+      obj11:
+        # display
+        name_short: เดินไปที่ ร้านค้าโพรเทค 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2706,37,2821 #TODO fix right position  2706 37 2821
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj12
+      
+      obj12:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้คือ ร้านค้าโพรเทค'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ร้านค้าโพรเทค?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: โพรเทคมีไว้ใช้ในการป้องกันพื้นที่ของเราไง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ทําให้คนเข้ามาขโมยของในบ้านเราไม่ได้'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เดินต่อไปอีกนิดสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj13
+      
+      obj13:
+        # display
+        name_short: เดินไปที่ ซุ้มเควส
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2674,36,2831 #TODO fix right position  2674 36 2831
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้คือซุ้มเควส'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ในซุ้ม ทางด้านขวา คือ กระดานเควส'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: กระดานเควสไว้รับเควส วนิลา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ส่วนด้านช้าย ก็คือท่าน พาลาดิน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: พาลาดิน ไว้รับเควสเนื้อเรื่อง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ตามฉันมาเร็ว ยังมีอีกหลายที่ ที่เรายังไม่ได้ไป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี้มีทุกเมือง ไม่จําเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        # display
+        name_short: เดินไปที่ ลานฝึกฝน
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2647,37,2843 #TODO fix right position  2647 37 2843
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้คือ ลานฝึกฝน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ลานฝึกฝน?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เจ้าสามารถ มาฝึกฝน วิทยายุทธ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ได้ที่นี้เลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ค่าฝึกของที่นี้คิดเป็น รายชั่วโมง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aเสียงในหัว &f: หรือเรียกสั้นๆ ว่าที่นี้ึคือ AFK ฟาม นั่นเอง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เดี๋ยวพวกเราต้องเดินย้อนไปก่อน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี้มีทุกเมือง ไม่จําเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj17
+
+      obj17:
+        # display
+        name_short: เดินไปที่ โชนทําอาหาร
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2708,38,2848 #TODO fix right position  2708 38 2848
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj18
+
+      obj18:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: อันนี้ก็ตามชื่อเลยจร้า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เจ้าสามารถ ทําอาหารได้หลายอย่าง ที่นี้เลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ของที่ใช้ทําก็พวกของวนิลาทั่วไป'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองเดินเข้าไปดูสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: มี หม้อกับเขียง ให้เจ้าใช้งาน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: หม้ออยู่ทางด้านช้ายจร้าา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ส่วน เขียงอยู่ทางขวาจร้าา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ตามฉันมามะๆ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี้มีทุกเมือง ไม่จําเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj19
+
+      obj19:
+        # display
+        name_short: เดินไปที่ โชนตกปลา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2703,38,2860 #TODO fix right position  2703 38 2860
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj20
+
+      obj20:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: โชนตกปลา ของลุงบิว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ถ้าเจ้าอยากหาเงินล่ะก็นะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ฉันก็ขอแนะนําลุงบิว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: คนนี้เลย ลุงแกใจดี ชอบรับชื้อปลา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ก็รับตั้งแต่หลักสิบจนถึงหลักพันเลยหล่ะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เดี๋ยวฉันพาไปรู้จัก กับอีกโชน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: บอกเลยว่าโชนนี้สนุกมาก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: หิหิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj21
+
+      obj21:
+        # display
+        name_short: เดินไปที่ โชนกาชา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2697,40,2866 #TODO fix right position  2697 40 2866
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj22
+
+      obj22:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ถึงแล้วล่ะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: นี้ไง โชนกาชา'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองเดินเข้าไปดูสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj23
+
+      obj23:
+        # display
+        name_short: เดินเข้าไปใน โชนกาชา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2684,43,2865 #TODO fix right position  2684 43 2865
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj24
+
+      obj24:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เป็นไงล่ะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าวววว มีแต่กาชาน่าเปิด'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ไว้มีโอกาศเดี๋ยวฉันจะให้กุญแจ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ไปเปิดเล่นล่ะกันนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เราไปดูร้านถัดไปกันดีกว่า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj25
+
+      obj25:
+        # display
+        name_short: เดินไปที่ ร้านค้า สกิน
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2710,37,2904 #TODO fix right position  2710 37 2904 เชลบี้
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj26
+
+      obj26:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: นี้ร้านค้าสกิน ของคุณเชลบี้'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: แนะนําเลยว่าต้องมีนะน้องๆ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ไม่ต้องห่วงว่าจะต้องเติมชื้ออย่างเดียว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: คุณเชลบี้ก็ขายเป็นเงินในเกมด้วยเช่นกัน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ลองหันหลังไปสิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: เดี๋ยวฉันพาไปดูว่า'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: คราฟของยังไงภายในเมือง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: หิหิ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj27
+
+      obj27:
+        # display
+        name_short: เดินไปที่ ร้านอุปกรณ์
+        objective_detail: เดินไปที่ ร้านอุปกรณ์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,39,2908 #TODO fix right position  2700 39 2908
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj28
+
+      obj26:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: นี้ร้านอุปกรณ์'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ทางด้านช้าย คือ Reforge'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ใช้ในการคราฟ หินตีบวก อุปกรณ์รูน และขัดเกลาไอเทม'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ส่วนทางด้าน ขวา คือ Engineer'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ใช้ในการคราฟอุปกรณ์และวัตถุดิบ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: โอเคร เอาเป็นว่าวันนี้พอแค่นี้ก่อนนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: ไว้วันพรุ่งนี้เรามาเดินเทียวกันอีกนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี้มีทุกเมือง ไม่จําเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &aดิแอนเน่ &f: แล้วเจอกันน้า '
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false

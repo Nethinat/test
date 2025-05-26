@@ -1,0 +1,102 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fx" #fix here
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมือง x' #fix here
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : x' #fix here
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส" #fix here
+  - "&f &f &ax50 &fค่าประสบการณ์" #fix here
+  - "&f &f &ax1 &fxxx" #fix here
+  - "&f &f &ax1 &fxxx" #fix here
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+
+
+        goto: QUEST_SUCCESS
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform #fix here
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 50
+        mi give MATERIAL QUEST_0 %player_name% 1 
+      as_player: false

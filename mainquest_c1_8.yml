@@ -1,29 +1,29 @@
 # -------------------- Display settings --------------------
-display_name: "&eภารกิจ &fเข้านอนที่เตียงและฝันร้าย"
+display_name: "&f &fบาดแผลจากการต่อสู้"
 description: 
   - '&f'
-  - "&e&l| &eภารกิจเนื้อเรื่อง ฉบับที่ 8"
+  - '&f &aเควสหลักเมืองโอเรแก๊น VIII'
+  - '&fऎ ระดับความยาก : &f'
   - '&f'
-  - '&7เป้าหมายภารกิจ'
-  - "&e&l| &fเสริมพลังอาวุธของคุณให้มีประสิทธิภาพมากขึ้น"
+  - '&7เป้าหมายสำเร็จ : ช่วยเหลืออดีตทหารที่ต้องการความช่วยเหลือ'
   - '&f'
-  - '&f &fรางวัลเควส &f'
-  - "&e&l| &ax1 &fแต้มเควส"
-  - "&e&l| &ax50 &fเงิน"
-  - "&e&l| &ax100 &fเลเวลเอนชาร์จ"
-  - "&e&l| &ax1 &eการ์ดภารกิจวานิลลา"
-  - "&e&l| &ax1 &eกล่องบรรจุวัสดุฟาร์มนานาชนิด"
-  - "&e&l| &ax1-2 &x&4&1&D&F&4&Dใบไม้สีทองโกลด์ลีฟ"
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax50 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fxxxx"
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
 
 start_notify:
-  title: "&aดำเนินการเริ่มภารกิจ!!"
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
   sound: ENTITY_PLAYER_LEVELUP
 
 progress_notify_scoreboard: true
 
 all_status_item:
   type: PAPER
-  custom_model_data: 11413
+  custom_model_data: 10752
   name: '&6{quest}'
   lore: |
     &f{description}
@@ -36,21 +36,15 @@ all_status_item:
 
 status_items:
   UNAVAILABLE:
-    type: BARRIER
-    name: '&f &cภารกิจนี้ถูกล็อค &f'
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
     lore: |
-      &c
-      &eภารกิจเนื้อเรื่อง ฉบับที่ 8
-      &c
-      &cหากต้องการปลดล็อคภารกิจนี้ ผู้เล่นต้องสำเร็จภารกิจ
-      &fอาหารอันโอชะ
-      &cให้สำเร็จเสียก่อน ภารกิจนี้จึงจะปลดล็อค
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
   COOLDOWN:
-    type: BARRIER
-    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
-    lore: |
-      &c
-      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
 
 # -------------------- Post-quest settings --------------------
 
@@ -58,7 +52,8 @@ completion:
   max_completions: 1000
   notify:
     SUCCESS:
-      title: '&aภารกิจสำเร็จแล้ว'
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
       sound: ENTITY_PLAYER_LEVELUP
     FAIL:
       title: '&cภารกิจ ล้มเหลว'
@@ -72,7 +67,7 @@ completion:
 cooldown:
   duration: 12000 HOUR
   end_types: [SUCCESS]
-
+  
 # -------------------- Quest content --------------------
 
 branches:
@@ -81,18 +76,30 @@ branches:
     starts_at: obj1
     objects:
       obj1:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% คุณตื่นขึ้นมาและไปหา ช่างตีเหล็ก \nพร้อมกับสอบถามเรื่องอาวุท
-          tppos %player_name% mainmmo -1312 75 -337 0 290
+        # display
+        name_short: คุยกับ เอสคานอร์ 
+        objective_detail: คุยกับ เอสคานอร์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 5.0 #TODO change later
         goto: OBJECT obj2
-
+## บทพูด
       obj2:
-        name_short: เนื้อเรื่อง
-        type: SERVER_ACTIONS
-        actions: 
-          - WAIT_TICKS 50
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fสวัดดีเอสคานอร์
+          &a
+          &aเอสคานอร์ &f: &fพอดีว่ามีคนต้องการจะจ้างนายทําเควสน่ะ
+          &a
+          &a%player_name% &f: &fข้าขอพิกัสของชายท่านนั้นหน่อย
+          &a
+          &aเอสคานอร์ &f: &fได้เลย..
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
@@ -100,33 +107,81 @@ branches:
         goto: OBJECT obj3
 
       obj3:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% &fตามหาช่างตีเหล็ก
-        goto: OBJECT obj4
-
-      obj4:
         # display
-        name_short: ตามหา ช่างตีเหล็ก เบเนท 
-        objective_detail: ตามหา ช่างตีเหล็ก เบเนท  ที่พิกัด x:-1257 y:68 z:-268
+        name_short: เดินตามพิกัดที่เอสคานอร์ให้มา
+        objective_detail: เดินตามพิกัดที่เอสคานอร์ให้มา
         type: PLAYER_POSITION
         display_distance: true
         position:
           type: SPHERE_INSIDE
-          center: mainmmo,-1257,68,-268 #TODO fix right position 2716,37,2870
-          radius: 3.0 #TODO change later
-        gps:
-          enabled: true
-          mode: GPS
-          custom_point: black #แก้pointตรงนี้
+          center: mmo,2555,83,3164 #TODO fix right position 2555 83 3164
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: เนื้อเรื่อง (สอบถาม NPC)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 34
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเฮ้ คุณ คุณคือคนที่ว่าจ้างงานผมใช่หรือไม่?
+          &a
+          &a???? &f: &fอ่อวว เจ้าคือนักเดินทางคนนั้นใช่มั้ย?
+          &a
+          &a%player_name% &f: &fใช่แล้ว ฉันชื่อ %player_name% แล้วท่านล่ะชื่ออะไร?
+          &a
+          &a???? &f: &fฉันชื่อ แฮงก์ ชเรเดอร์
+          &a
+          &aแฮงก์ &f: &fและ ฉันต้องการความช่วยเหลือจากคุณ
+          &a
+          &aแฮงก์ &f: &fคุณรู้ไหมว่าฉันเป็นอดีตทหารและเพิ่งประสบกับช่วงเวลาที่ยากลำบาก
+          &a
+          &aแฮงก์ &f: &fฉันได้รับบาดเจ็บจากการสู้รบและไม่สามารถทำงานได้ตั้งแต่นั้นมา
+          &a
+          &aแฮงก์ &f: &fฉันลำบากมากในการหาเลี้ยงชีพและกลัวว่าฉันจะสูญเสียบ้านในไม่ช้า
+          &a
+          &a%player_name% &f: &fฉันเสียใจที่ได้ยินเช่นนั้น ฉันจะช่วยได้อย่างไร
+          &a
+          &aแฮงก์ &f: &fฉันได้ยินมาว่าคุณเป็นนักผจญภัยที่มีความสามารถ
+          &a
+          &aแฮงก์ &f: &fฉันต้องการขอให้คุณช่วยฉันรวบรวมเสบียง
+          &a
+          &aแฮงก์ &f: &fฉันต้องการอุปกรณ์ทางการแพทย์พื้นฐานเพื่อจัดการกับอาการบาดเจ็บ
+          &a
+          &aแฮงก์ &f: &fรวมถึงอาหารและน้ำเพื่อประคับประคองฉันจนกว่าจะกลับมายืนด้วย พลังของตนเองได้
+          &a
+          &aแฮงก์ &f: &fฉันต้องการความช่วยเหลือในการซ่อมแซมบ้านด้วย
+          &a
+          &a%player_name% &f: &fฉันยินดีที่จะช่วย ฉันจะหาเสบียงเหล่านี้ได้ที่ไหน
+          &a
+          &aแฮงก์ &f: &fมีสถานที่ใกล้ๆเมือง ที่คุณสามารถหาเสบียงทางการแพทย์และอาหารได้
+          &a
+          &aแฮงก์ &f: &fแต่ว่าเจ้าต้องไปหา ทั้งหมด 4 ที่นะ เพราะฉันจําได้ว่าของส่วนใหญ่โดนโจรปล้นไป
+          &a
+          &aแฮงก์ &f: &fแต่ว่าเจ้าต้องไปหา สำหรับการซ่อมแซม ฉันมีเครื่องมือบางอย่างที่คุณสามารถใช้ได้
+          &a
+          &aแฮงก์ &f: &fแต่ว่าเจ้าต้องไปหา แต่คุณอาจต้องรวบรวมวัสดุบางอย่าง ฉันสามารถให้รายการสิ่งที่คุณต้องการได้
+          &a
+          &a%player_name% &f: &fฟังดูดี ฉันจะเริ่มต้นทันที
+          &a
+          &aแฮงก์ &f: &ขอบคุณ นักผจญภัย ความกรุณาของคุณมีความหมายกับฉันมากกว่าที่คุณรู้ ขอพระเจ้าอวยพรในการเดินทางของคุณ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
         goto: OBJECT obj5
 
       obj5:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% &f
+        # display
+        name_short: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        objective_detail: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2798,37,3069 #TODO fix right position 2798 37 3069
+          radius: 5.0 #TODO change later
         goto: OBJECT obj6
 
       obj6:
@@ -134,41 +189,13 @@ branches:
         type: SERVER_ACTIONS
         actions: 
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fท่านเบเนท ข้ามีเรื่องอยากถาม'
+          - 'SEND_MESSAGE &a%player_name% &f: ชิ ฉันมาช้าไปที่นี้โดนปล้นไปหมดแล้ว'
           - 'SEND_MESSAGE &a'
           - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aกาเบรียล: &fอ้าวเจ้าหนูเจ้ามีอะไรอยากสอบถามล่ะ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเนท: &fไหนว่าไง'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fฉันต้องการจะเพิ่มดาเมจของอาวุทของฉันให้มีประสิทธิภาพมากขึ้น'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fพอจะมีวิธีการมั้ย'
+          - 'SEND_MESSAGE &a%player_name% &f: เช็คที่ถัดไปดีกว่า'
           - 'SEND_MESSAGE &a'
           - SEND_SOUND entity_villager_trade
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเนท: &fฉันจะทำให้คุณสมบัติขึ้นมากขึ้นได้ แต่ว่านายต้องหาของมาให้ฉันน่ะ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aกาเบรียล: &fว่าแต่นายชื่ออะไรล่ะ ฉันชื่อกาเบรียล ส่วนอีกคนชื่อเบเน็ต ถ้าพูดเรื่องคุณสมบัติขึ้นมากขึ้น ต้องเบเน็ตเลย'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fได้เลย ฉันชื่อ &a%player_name% &fเพื่อที่จะทำให้ฉันเก่งขึ้น นายว่าไงฉันก็จะหาให้หมดเลย'
-          - 'SEND_MESSAGE &a'
-          - SEND_SOUND entity_villager_trade
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fนั่นเป็นเรื่องที่ดีเลย'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fดูเหมือนว่าฉันต้องการ &fแกนเวทมนต์มอนสเตอร์ ระดับต่ำ สัก 10 ชิ้น'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f : &fแกนเวทมนต์มอนสเตอร์ มีดรอปจากมอนเตอร์ทุกชนิดครับผม โอกาศไม่เท่ากัน'
-          - 'SEND_MESSAGE &a'
           - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
@@ -177,94 +204,91 @@ branches:
         goto: OBJECT obj7
 
       obj7:
-        name_short: แกนเวทมนต์มอนสเตอร์ ระดับต่ำ {objective_progression:a}&7/&b{objective_goal:a}
-        type: PLAYER_ITEMS_REQUIRE
-        items:
-          take: true
-          items:
-            a:
-              item:
-                type: paper
-                custom_model_data: 11133
-              check: SameBase
-              goal: 10
-        goto: OBJECT obj8
-
-      obj8:
         # display
-        name_short: ตามหา ช่างตีเหล็ก เบเน็ต
-        objective_detail: ตามหา ช่างตีเหล็ก เบเน็ต ที่พิกัด x:-1257 y:68 z:-268
+        name_short: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        objective_detail: เดินตามหา &eกล่องอุปกรณ์และอาหาร
         type: PLAYER_POSITION
         display_distance: true
         position:
           type: SPHERE_INSIDE
-          center: mainmmo,-1257,68,-268 #TODO fix right position 2716,37,2870
-          radius: 3.0 #TODO change later
-        gps:
-          enabled: true
-          mode: GPS
-          custom_point: black #แก้pointตรงนี้
-        goto: OBJECT obj9
+          center: mmo,2529,37,2708 #TODO fix right position 2529 37 2708
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj8
 
-      obj9:
+      obj8:
         name_short: เนื้อเรื่อง
         type: SERVER_ACTIONS
         actions: 
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fหืมมมมมมมมม ไหนดูสิ ว่าฉันสามารถทําอะไรกับของพวกนี้ได้บ้าง'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fอ่าห่ะฉันว่าฉันสามารถทํา &fอัญมณีแห่งเปลวไฟ &f- อาวุธ &eI'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fมันทําอะไรได้รึ ?'
+          - 'SEND_MESSAGE &a%player_name% &f: โดนขโมยอีกแล้ว '
           - 'SEND_MESSAGE &a'
           - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fนั่นนายไม่รู้จักเลยหรอ?'
+          - 'SEND_MESSAGE &a%player_name% &f: เช็คที่ถัดไปดีกว่า'
           - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fมันคือ มณี ไว้เพิ่มพลังอาวุทของนายยังไงล่ะ แต่ก็นะมีโอกาศในการตี ด้วยแล้วแต่ขั้น'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fมีตั้งแต่ 1 - 5 และก็มีหลากหลายประเภท อาวุท เกราะ เครื่องประดับ น่ะ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fส่วนวิธีการใส่ ก็ไม่ยากเลย นายสามารถลากทับอาวุทของนายได้เลย'
-          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        # display
+        name_short: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        objective_detail: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2466,123,3147 #TODO fix right position 2466 123 3147
+          radius: 5.0 #TODO change later
         goto: OBJECT obj10
-        
+
       obj10:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% รับ &fอัญมณีแห่งเปลวไฟ &f- อาวุธ &eI &fไปไหน \n&f :&aเบเน็ต&f: "ดีมาก นี่คือรางวัลของเจ้า"
-          mi give GEM_STONE DAMAGE_1 %player_name% 1
-        goto: OBJECT obj11
-      
-      obj11:
         name_short: เนื้อเรื่อง
         type: SERVER_ACTIONS
         actions: 
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aเบเน็ต: &fลองใส่ดูสิ'
+          - 'SEND_MESSAGE &a%player_name% &f: '
           - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 100
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ถัดไปที่สุดท้าย ขอให้มีเถอะนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
+        goto: OBJECT obj11
+
+      obj11:
+        # display
+        name_short: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        objective_detail: เดินตามหา &eกล่องอุปกรณ์และอาหาร
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2721,36,2780 #TODO fix right position 2721 36 2780
+          radius: 2.0 #TODO change later
         goto: OBJECT obj12
 
       obj12:
         name_short: เนื้อเรื่อง
         type: SERVER_ACTIONS
         actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: '
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ในที่สุดก็เจอสักที '
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
@@ -273,33 +297,76 @@ branches:
         goto: OBJECT obj13
 
       obj13:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% หลังจากคุณจัดการเรื่องอาวุทคุณเสร็จ\nคุณได้กลับไปที่บ้านชานาเพื่อนอนต่อ"
+        name_short: นำ &fอุปกรณ์&และอาหาร 3 อัน &7ไปส่ง แฮงก์ ชเรเดอร์
+        objective_detail: นำ &fอุปกรณ์&และอาหาร 3 อัน &7ไปส่ง แฮงก์ ชเรเดอร์
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 34
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10709
+              check: SameBase
+              goal: 3
+          take: true
+          error_message: '&c[!] &7: นำ &fอุปกรณ์&และอาหาร 3 อัน &7ไปส่ง แฮงก์ ชเรเดอร์'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
         goto: OBJECT obj14
-        
+
       obj14:
-        # display
-        name_short: กลับไปที่บ้านชานาเพื่อนอนต่อ
-        objective_detail: กลับไปที่บ้านชานาเพื่อนอนต่อ ที่พิกัด x:-1308 y:67 z:-343
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mainmmo,-1308,67,-343 #TODO fix right position 2716,37,2870
-          radius: 3.0 #TODO change later
-        gps:
-          enabled: true
-          mode: GPS
-          custom_point: sana #แก้pointตรงนี้
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 34
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fอ่ะนี้ไง ของที่ท่านต้องการ
+          &a
+          &a%player_name% &f: &fสิ่งถัดไปที่ท่านอยากให้ผมหาคืออะไรนะ
+          &a
+          &aแฮงก์ &f: &fคุณเอสคานอร์ หาของมาให้ฉันแล้ว
+          &a
+          &a%player_name% &f: &fแปลว่าผมไม่ต้องหาแล้วรึ
+          &a
+          &aแฮงก์ &f: &fใช่แล้วยังไงล่ะ ไปขอบคุณเอสคานอร์ล่ะกัน
+          &a
+          &a%player_name% &f: &fถ้ามีอะไรให้ช่วยก็บอกได้นะครับ
+          &a
+          &aแฮงก์ &f: &fพอแค่นี้ละ เดี๋ยวฉันไปหยิบของพิเศษให้นายก่อนนะ
+          &a
+          &aแฮงก์ &f: &fรอแปป
+          &a
+          &aแฮงก์ &f: &f*เดินเข้าไปหยิบของ*
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
         goto: OBJECT obj15
-  
-      obj15:  
+
+      obj15:
         name_short: เนื้อเรื่อง
         type: SERVER_COMMANDS_PERFORM
         commands: |  # the commands to perform
-          cmi titlemsg %player_name% ได้เข้าสู่บ้านชานาเพื่อนอน \nพักผอนได้ นะเตง แล้วพรุ่งนี้มาลงดันกันดีกว่า"
+          mi give ARMOR SET2_2 %player_name% 1
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 34
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fขอบคุณท่านมากๆ นะ
+          &a
+          &a%player_name% &f: &fสําหรับชุดเกราะ ตัวนี้
+          &a
+          &aแฮงก์ &f: &fขอให้เจ้ามีชีวิตต่อไป สู้ๆ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
         goto: QUEST_SUCCESS
 # -------------------- รางวัลเควส settings --------------------
 
@@ -325,7 +392,6 @@ end_objects:
     - type: SERVER_COMMANDS_PERFORM
       commands: |  # the commands to perform
         qc points %player_name% add 1 global
-        mmocore admin exp give %player_name% main 150
-        give %player_name% bread 16
+        mmocore admin exp give %player_name% main 50
         mi give MATERIAL QUEST_0 %player_name% 1
       as_player: false

@@ -1,0 +1,349 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fแก้คําสาป"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองทูนาเรีย IV'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายเควส : ช่วยเหลือจริ้งเพื่อให้หายจากคําสาป'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
+  - '&f' 
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+
+start_notify:
+  title: "⻨七⻩"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '⻠七⻡'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &eคุณตื่นขึ้นมาที่ห้องเช่าของคุณ \nเตรียมตัวที่จะออกไปดูอาการของจริ้ง
+          tppos %player_name% mainmmo -716 80 -324 0 290
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fตามหาจริ้ง
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: ตามหาจริ้ง
+        objective_detail: ตามหาจริ้ง ที่พิกัด -503,77,-345
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-503,77,-345
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: คุยกับ จริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fจริ้ง อาการของท่านเป็นอย่างไรบ้าง?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fอาการดีขึ้นมากแล้ว แต่ว่า...'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fยังมีเรื่องที่ข้าต้องการความช่วยเหลือจากเจ้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเรื่องอะไรหรือ ข้ายินดีช่วย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fมี &f &cเซราธคำสาปตั้งต้น &fที่ทำให้อาการของข้ายังไม่ดีขึ้นเท่าที่ควร'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fเจ้าช่วยจัดการกับมันให้ข้าได้ไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้แน่นอน ข้าจะจัดการเอง!'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: กำจัดมอนสเตอร์ &f &cเซราธคำสาปตั้งต้น จำนวน 5 ตัว
+        objective_detail: กำจัดมอนสเตอร์ &f &cเซราธคำสาปตั้งต้น จำนวน 5 ตัว
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bmob3"]
+            goal: 5
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fรวม &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: นํา &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น ไปส่งที่ จริ้ง
+        objective_detail: นํา &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น ไปส่งที่ จริ้ง
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: false
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10794  # ปรับ custom_model_data ตามต้องการ
+              check: SameBase
+              goal: 10
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: นํา &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น ไปส่งที่ จริ้ง
+        objective_detail: นํา &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น ไปส่งที่ จริ้ง
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 63  # ปรับ NPC ID ตามต้องการ
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10794 # ต้องตรงกับ obj9
+              check: SameBase
+              goal: 10
+          take: true
+          error_message: '&c[!] &7: นํา &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป  จํานวน 10 ชิ้น ไปส่งที่ จริ้ง'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: jing # ปรับ custom point ตามต้องการ
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: คุยกับจริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fนี่ครับ &x&4&1&D&F&4&Dกระดาษเวทมนต์คำสาป ที่ท่านต้องการ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fขอบใจมาก ข้าจะใช้มันทํายาแก้คําสาป'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fแต่ข้าต้องการเวลาในการทํายาสักพัก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fเจ้ากลับมาใหม่ในภายหลังได้ไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้ครับ ข้าจะกลับมาใหม่'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fผ่านไป 3 ชม.
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: คุยกับจริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fจริ้ง ท่านดูดีขึ้นมากเลยนะครับ สีหน้าท่านสดใสขึ้นมาก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fใช่แล้ว ยาที่เจ้านำมาให้ช่วยได้มากจริงๆ อาการไอและปวดหัวของข้าหายไปเกือบหมดแล้ว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fข้าจะเล่าเรื่องกองทัพปีศาจตาสีฟ้าให้ฟัง ตอนที่พวกมันบุกมาที่นี่'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fพวกมันมาในยามค่ำคืน ทำลายบ้านเรือนและทุกสิ่งที่ขวางหน้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fผู้คนต่างหนีตายกันจ้าละหวั่น บางคนถูกสาปให้กลายเป็นหิน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fหลังจากนั้น พวกมันก็มุ่งหน้าไปทางตะวันออก ข้าได้ยินมาว่าพวกมันกำลังตามหาบางสิ่ง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเรื่องที่ท่านเล่ามาน่ากลัวมากเลยครับ ขอบคุณที่แบ่งปันข้อมูลนี้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจริ้ง: &fแล้วเจ้าจะเอายังไงต่อล่ะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fคงจะต้องกลับไปแจ้งคน คนนึงที่เขาบอกให้ฉันมาที่นี้อ่ะนะ'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: นำข้อมูลที่ได้จากจริ้งกลับไปบอก Gul ที่หมู่บ้านทะเลทรายเล็กม้วก
+        objective_detail: นำข้อมูลที่ได้จากจริ้งกลับไปบอก Gul ที่หมู่บ้านทะเลทรายเล็กม้วก
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-743,79,15
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gui
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: คุยกับจริ้ง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fท่าน Gul ครับ ผมได้ข้อมูลมาจากจริ้งแล้ว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fเล่ามาสิ ว่าเจ้าได้รู้อะไรมาบ้าง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fจริ้งเล่าว่า กองทัพปีศาจตาสีฟ้าได้บุกเข้ามาในยามค่ำคืน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fพวกมันทำลายทุกอย่างที่ขวางหน้า และสาปผู้คนให้กลายเป็นหิน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fหลังจากนั้นพวกมันก็มุ่งหน้าไปทางตะวันออก ดูเหมือนกำลังตามหาบางสิ่ง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้อมูลนี้มีประโยชน์มาก ขอบใจเจ้ามาก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้อมูลนี้มีประโยชน์มาก... แต่ดูเหมือนว่าเรื่องราวจะไม่จบแค่นี้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fเจ้าต้องระวังตัวให้มากขึ้น... ข้าได้ยินมาว่าปีศาจพวกนั้นกำลังเคลื่อนไหวอีกครั้ง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fเอาล่ะ ข้าจะต้องไปจัดการธุระบางอย่างก่อน เราค่อยมาคุยกันใหม่...'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fโปรดติดตามตอนต่อไป
+        goto: QUEST_SUCCESS
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 200
+      as_player: false

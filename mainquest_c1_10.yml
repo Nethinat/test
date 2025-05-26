@@ -1,0 +1,410 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fอะไรอยู่ในถํ่า?"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองเมล์เฟียร์ X'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายเควส : ช่วยเหลือ อลาดา ต่อ'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax150 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
+  - '&f' 
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+
+start_notify:
+  title: "⻨七⻩"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '⻠七⻡'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fทําทุกอย่างที่อลาดาสั่งเสร็จ \nคุณก็ได้กลับมานอนพักบ้านของคุณ
+          tppos %player_name% mainmmo,-1312,75,-337
+        goto: OBJECT obj2_1
+
+      obj2_1:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 100
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj2_2
+
+      obj2_2:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &eเอาล่ะได้เวลาไปคุยกับอลาดาต่อ \n&bเดินทางไปพบอลาดาที่ถ้ำเดิม ที่ถ้ำตามพิกัด x:-985 y:72 z:-248 
+        goto: OBJECT obj2
+
+      obj2:
+        # display
+        name_short: ไปพบ อลาดา ที่ถ้ำ
+        objective_detail: ไปพบ อลาดา ที่ถ้ำตามพิกัด x:-985 y:72 z:-248 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-985,72,-248 
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: dun_1
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fสวัสดี %player_name% ฉันมีภารกิจสำคัญสำหรับเจ้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fมีบอสร้ายกาจปรากฏตัวขึ้นในดันเจี้ยนอีกครั้ง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fเจ้าต้องเข้าไปในดันเจี้ยนและกำจัดมันให้ได้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเข้าใจแล้วครับ ผมจะทำให้ดีที่สุด'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fดีมาก แต่ระวังไว้ บอสตัวนี้มีพลังที่น่ากลัวมาก'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fเจ้าต้องใช้ทักษะและยุทธวิธีทั้งหมดที่มีเพื่อเอาชนะมัน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fอย่าลืมเตรียมอาวุธและอุปกรณ์ให้พร้อมก่อนเข้าไปด้วยนะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้ครับ ผมจะเตรียมตัวให้พร้อมที่สุด'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fดีมาก ขอให้โชคดี %player_name% ฉันเชื่อว่าเจ้าทำได้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj4
+
+      obj6_1:
+        name_short: กำจัด&f &cโกเลมเหมืองแร่ {objective_progression:a}&7/&b{objective_goal:a}
+        objective_detail: กำจัด&f &cโกเลมเหมืองแร่ {objective_progression:a}&7/&b{objective_goal:a}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bdunmob_1"]
+            goal: 1
+        goto: OBJECT obj6_2
+
+      obj4:
+        name_short: กำจัด &f &cโกเลมเหมืองแร่ เพื่อดรอปไอเทม &fเศษแร่ที่แตกร้าว จำนวน 2 ชิ้น
+        objective_detail: กำจัด&f &cโกเลมเหมืองแร่ เพื่อดรอปไอเทม &fเศษแร่ที่แตกร้าว จำนวน 2 ชิ้น
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10357
+              check: SameBase
+              goal: 2
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fเจ้าได้ไอเทมชิ้นนี้มาแล้ว ดีมาก ต่อไปเราต้องเดินทางไปยังเมืองทูนาเรีย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fที่นั่นมีข้อมูลสำคัญเกี่ยวกับที่อยู่ของมอนสเตอร์ตาสีฟ้าที่เราต้องการตามหา'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเข้าใจแล้วครับ เราจะได้รู้ว่ามันซ่อนตัวอยู่ที่ไหน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fใช่แล้ว เจ้าต้องไปพบกับนักสำรวจชื่อ ทาเรียน ที่เมืองทูนาเรีย เขามีแผนที่และข้อมูลเส้นทางที่มอนสเตอร์ตาสีฟ้าปรากฏตัว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fดีเลยครับ ผมจะได้ตามหามันได้ง่ายขึ้น แล้วผมจะไปที่นั่นได้อย่างไร?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aอลาดา: &fเจ้าสามารถใช้ระบบเดินทางด่วนที่ crystal teleport หรือเดินตามทางได้เลย เอาล่ะเตรียมตัวให้พร้อมแล้วเดินทางไปพบทาเรียนที่ทูนาเรียเถอะ'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        # display
+        name_short: เดินทางไปเมืองทูนาเรีย
+        objective_detail: เดินทางไปเมืองทูนาเรีย ตามพิกัด x:-881 y:69 z:-432
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-881,69,-432
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gturnaria
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fแปลกจัง ดูเหมือนว่าผมจะมาผิดทางนะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fต้องหาใครสักคนถามทางหน่อยแล้ว'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aคนงานเหมือง: &fสวัสดีครับ คุณดูเหมือนจะหลงทางมาที่เหมืองของเรานะ มีอะไรให้ช่วยไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fสวัสดีครับ ที่นี่คือที่ไหนเหรอครับ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aคนงานเหมือง: &fนี่คือเหมืองที่&eเราใช้ขุดแร่เพื่อนำไปคราฟไอเทมในเกมครับ &fคุณสามารถหาแร่ต่างๆ ได้ที่นี่'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเข้าใจแล้วครับ ขอบคุณสำหรับข้อมูล ผมจะลองสำรวจดูสักหน่อย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aคนงานเหมือง: &fได้เลยครับ แต่ระวังตัวด้วยนะ ในเหมืองอาจมีอันตรายซ่อนอยู่!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aคนงานเหมือง: &fและก็นะถ้านายจะถามทางฉัน ไม่รู้หรอก ลองถามทางชาวบ้านสักคนดูสิ'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        # display
+        name_short: เดินทางไปเมืองทูนาเรีย
+        objective_detail: เดินทางไปเมืองทูนาเรีย ตามพิกัด x:-869 y:74 z:-348
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-869,74,-348
+          radius: 3.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gturnaria
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &aจีนัส: &fสวัสดีครับ คุณดูเหมือนจะหลงทางนะ มีอะไรให้ช่วยไหม?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fสวัสดีครับ ผมกำลังมองหาเมืองทูนาเรียอยู่ คุณพอจะรู้ทางไหมครับ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจีนัส: &fอ๋อ ทูนาเรียเหรอ ไม่ไกลจากที่นี่เท่าไหร่หรอก เดินตามถนนสายหลักไปทางทิศเหนือประมาณ 500 เมตร เดินต่อไปอีกนิดก็จะถึงแล้วล่ะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fขอบคุณมากครับ ผมจะรีบไปเดี๋ยวนี้เลย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aจีนัส: &fเดินทางปลอดภัยนะครับ ระวังตัวด้วยล่ะ!'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        # แสดงผล
+        name_short: เดินทางไปเมืองทูนาเรีย
+        objective_detail: เดินทางไปเมืองทูนาเรีย ตามพิกัด x:-720 y:73 z:-338
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-720,73,-338
+          radius: 5.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tunaria
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fในที่สุดก็มาถึงเมืองทูนาเรียสักที แต่ว่าฉันต้องไปหาที่พักจากที่ไหนดีนะ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชาวเมือง: &fยินดีต้อนรับสู่เมืองทูนาเรียครับ! คุณกำลังมองหาที่พักอยู่เหรอครับ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fใช่ครับ ผมเพิ่งเดินทางมาถึงและกำลังมองหาที่พักอยู่พอดี'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชาวเมือง: &fโอ้ งั้นคุณสามารถไปที่โรงแรมกลางเมืองได้เลยครับ คุณจะเห็นป้ายร้านโพชั่นขนาดใหญ่เลยครับ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fขอบคุณมากครับสำหรับข้อมูล ผมจะรีบไปดูเดี๋ยวนี้เลย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aชาวเมือง: &fยินดีครับ หวังว่าคุณจะมีความสุขกับการพักผ่อนในเมืองของเรานะครับ!'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        # แสดงผล
+        name_short: เดินทางไปเมืองทูนาเรีย
+        objective_detail: เดินทางไปเมืองทูนาเรีย ตามพิกัด x:-720 y:73 z:-338
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-720,73,-338
+          radius: 5.0 
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tunaria
+        goto: OBJECT obj9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        goto: QUEST_SUCCESS
+
+
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 150
+        give %player_name% bread 16
+        mi give MATERIAL QUEST_0 %player_name% 1
+      as_player: false

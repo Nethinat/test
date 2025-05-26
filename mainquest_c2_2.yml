@@ -1,0 +1,243 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fนักพจญภัยนิรนาม"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองทูนาเรีย I'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายเควส : ตามหาต้นไม้แปรงร่าง'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
+  - '&f' 
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+
+start_notify:
+  title: "⻨七⻩"
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10752
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10753
+    name: '&f &cเควสนี้ถูกล็อค &f'
+    lore: |
+      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10754
+    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '⻠七⻡'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: สนทนากับ Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fฉันอยากจะปรุงยาเก่งๆ ต้องทำยังไงบ้าง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fง่ายนิดเดียว เจ้าต้องหาสมุนไพรกับเห็ดพิษ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fมันก็แค่โพชั่นเท่านั้นเอง เจ้าลองทำได้นะ ไปจัดการมอนเตอร์แถวนี้ดู'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: จัดการมอนเตอร์
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        objective_detail: จัดการมอนสเตอร์จำนวน 10 ตัว
+        goals:
+          a:
+            mobs: ["desert_monster"]
+            goal: 10
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: กลับไปหา Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fข้าได้มาแล้ว แล้วยังไงต่อ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้าจะสอนแบบง่ายๆ เอาสมุนไพรกับเห็ดพิษมาผสมกันในหม้อต้มยา'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fเอ๊ะ มันง่ายขนาดนี้เลยเหรอ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fใช่แล้ว ไม่มีอะไรแล้ว ข้าขอตัวดูแลแม่ก่อนนะ'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: ขอให้ Gul เล่าเรื่องปีศาจตาฟ้า
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fเดี๋ยวก่อนสิ เล่าเรื่องปีศาจตาฟ้ามาหน่อย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fอ๋อ ได้สิ เอาจริงๆ ข้าก็ได้ต่อสู้กับมันมา ข้าออกเดินทางจนไปเจอการต่อสู้ในทะเลทรายใกล้ลาวา'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้าเห็นชายคนหนึ่งต่อสู้กับปีศาจตาฟ้า แต่ข้าไม่รู้ว่าเขาอยู่ไหน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fตอนนี้เจ้ายังไม่เก่งพอ แต่ถ้าเจ้าต้องการ ข้ามีภารกิจให้เจ้าฝึก'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: รับภารกิจจาก Gul
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fให้ข้าได้เป็นศิษย์ท่านด้วย!'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fฮ่าๆ ศิษย์บ้าศิษย์บออะไร แต่ถ้าอยากเรียกก็ไม่ติด'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้าอยากให้เจ้าหาของในป่าลึก และกำจัดมอนสเตอร์ 3 ตัว ตัวที่ 1 ฝึกหลบหลีก ตัวที่ 2 ฝึกกะจังหวะ ตัวที่ 3 ฝึกโจมตี'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: ฝึกฝนกับมอนสเตอร์
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        objective_detail: จัดการมอนสเตอร์ 3 ตัวเพื่อฝึกฝน
+        goals:
+          a:
+            mobs: ["training_monster_1", "training_monster_2", "training_monster_3"]
+            goal: 1
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: ค้นหาคัมภีร์ในป่า
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: true
+          items:
+            a:
+              item:
+                type: PAPER
+                custom_model_data: 11391
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: deep_forest
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: กลับไปหา Gul พร้อมคัมภีร์
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fข้ากลับมาแล้ว ข้าพบคัมภีร์นี้ในถ้ำ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fฮ่าๆ ใช่เลย เจ้าลองอ่านมันสิ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fไม่เห็นมีอะไรเลย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fมันไม่มี เพราะคำตอบอยู่ในการเดินทางของเจ้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fอยากเก่งขึ้นมากกว่านี้ ให้เจ้าไปหาคนที่เมืองทะเลทราย เขาจะฝึกเจ้าให้เก่งขึ้นได้อีก'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 200
+      as_player: false

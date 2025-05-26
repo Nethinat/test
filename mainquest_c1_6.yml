@@ -1,0 +1,429 @@
+# -------------------- Display settings --------------------
+display_name: "&f &fการช่วยเหลือที่ยี่งใหญ่"
+description: 
+  - '&f'
+  - '&f &aเควสหลักเมืองโอเรแก๊น VI'
+  - '&fऎ ระดับความยาก : &f'
+  - '&f'
+  - '&7เป้าหมายสำเร็จ : ช่วยเหลือเด็กน้อยที่ติดอยู่ในชากบ้าน'
+  - '&f'
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax3 &fแต้มเควส"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - '&f' 
+  - '&fऑ คลิ๊กเพื่อรับเควส'
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_PLAYER_LEVELUP
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: PAPER
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1000
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_PLAYER_LEVELUP
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: BLOCK_ANVIL_DESTROY
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: BLOCK_ANVIL_DESTROY
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+  
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        # display
+        name_short: คุยกับ เอสคานอร์
+        objective_detail: คุยกับ เอสคานอร์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเอสคานอร์ เห็นว่ามีอะไรให้ผมช่วย
+          &a
+          &aเอสคานอร์ &f: &fฉันได้ข่าวมาว่ามีเด็กไร้บ้าน
+          &a
+          &aเอสคานอร์ &f: &fเข้าไปติดอยู่ในชากบ้าน
+          &a
+          &aเอสคานอร์ &f: &fฝากนายช่วยไปดูหน่อยได้มั้ย
+          &a
+          &aเอสคานอร์ &f: &fเดี๋ยวฉันส่ง พิกัด ให้ บ้านหลังนั้นน่าจะอยู่แถวๆ นั้น
+          &a
+          &a%player_name% &f: &fได้เลย 
+          &a
+          &aเอสคานอร์ &f: &fฉันว่านายต้องหาอาหารไปให้เด็กคนนั้นด้วยนะ
+          &a
+          &a%player_name% &f: ขอฉันคิดก่อน
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT pick
+
+      pick:
+        name_long: >
+          &aตัดสินใจว่าจะทําอะไรต่อ
+        objective_detail: |
+          &7ตัดสินใจว่าจะทําอะไรต่อ
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: PAPER
+              custom_model_data: 10730
+              name: >
+                &aฉันทําอาหารให้เด็กคนนั้นก่อน
+            goto: OBJECT pick1
+          - slot: 14
+            item:
+              type: PAPER
+              custom_model_data: 10729
+              name: >
+                &aฉันจะช่วยเด็กคนนั้นเลย อาหารไม่จําเป็น
+            goto: OBJECT pick2
+        
+      pick1:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเอสคานอร์ ฉันว่าฉันจะทําอาหารให้เด็กนั้นก่อน
+          &a
+          &aเอสคานอร์ &f: &fโอ้ ไม่เป็นไรๆ ข้าว่าข้ามีอาหาร เหลืออยู่ในกระเป๋าพอดี
+          &a
+          &aเอสคานอร์ &f: &fข้าขอหาแปป
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj3
+      
+      pick2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเอสคานอร์ ฉันว่าฉันจะไม่ทําอาหาร
+          &a
+          &a%player_name% &f: &fฉันจะรีบไปช่่วยเด็กนั้นก่อน
+          &a
+          &aเอสคานอร์ &f: &fได้เรื่องว่าอย่างไรบอกด้วยนะ!!
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5_1
+
+      obj3:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          give %player_name% bread 10
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fขอบคุณเจ้ามากนะ เอสคานอร์ 
+          &a
+          &aเอสคานอร์ &f: &fไม่เป็นไรๆ ฮ่าๆๆๆ ข้าสิต้องขอบคุณเจ้า
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        # display
+        name_short: ตามหาเด็กน้อย
+        objective_detail: ตามหาเด็กน้อย
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2508,79,3034 #TODO fix right position 2508 79 3034
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj6
+
+      obj5_1:
+        # display
+        name_short: ตามหาเด็กน้อย
+        objective_detail: ตามหาเด็กน้อย
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2508,79,3034 #TODO fix right position 2508 79 3034
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj6_1
+
+      obj6:
+        name_short: พังสิ่งที่กีดขวาง &fเพื่อช่วยเด็กน้อย
+        objective_detail: พังสิ่งที่กีดขวาง
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["dungeon_barricade"]
+            goal: 1
+        goto: OBJECT obj7
+
+      obj6_1:
+        name_short: พังสิ่งที่กีดขวาง &fเพื่อช่วยเด็กน้อย
+        objective_detail: พังสิ่งที่กีดขวาง
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["dungeon_barricade"]
+            goal: 1
+        goto: OBJECT obj7_1
+
+      obj7:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 25
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fฉันมาช่วยนายแล้ว เด็กน้อย อูรา
+          &a
+          &aเด็กน้อย &f: &fขอบคุณ ท่านมากๆ ที่มาช่วยผม
+          &a
+          &aเด็กน้อย &f: &fข้าชื่ออูรา ท่านชื่ออะไรหรอ?
+          &a
+          &a%player_name% &f: &fฉันชื่อ %player_name% เอสคานอร์ ฝากฉันมาหาตัวเจ้า
+          &a
+          &aอูรา &f: &fว่าแต่ ท่านมีอะไรให้ข้ากินมั้ย?
+          &a
+          &a%player_name% &f: &fโอ้ ฉันว่าฉันมี ขนมปังอยู่นะ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj7_1:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 25
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fฉันมาช่วยนายแล้ว เด็กน้อย อูรา
+          &a
+          &aเด็กน้อย &f: &fขอบคุณ ท่านมากๆ ที่มาช่วยผม
+          &a
+          &aเด็กน้อย &f: &fข้าชื่ออูรา ท่านชื่ออะไรหรอ?
+          &a
+          &a%player_name% &f: &fฉันชื่อ %player_name% เอสคานอร์ ฝากฉันมาหาตัวเจ้า
+          &a
+          &aอูรา &f: &fว่าแต่ ท่านมีอะไรให้ข้ากินมั้ย?
+          &a
+          &a%player_name% &f: &fโอ้ เดี๋ยวฉันไปหาอะไรมาให้นายกินนะ
+          &a
+          &aอูรา &f: &fขอบคุณมากครับ
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: นำ &fขนมปังอบ 10 ชิ้น  &7มาให้ อูรา
+        objective_detail: นำ &fขนมปังอบ 10 ชิ้น  &7มาให้ อูรา
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 25
+        items_needed:
+          items:
+            - item:
+                type: bread
+#                custom_model_data: 10792
+              check: SameBase
+              goal: 10
+          take: true
+          error_message: '&c[!] &7: นำ &fขนมปังอบ 10 ชิ้น  &7มาให้ อูรา'
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 25
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fนี้เลยขนมปังสุดอร่อย
+          &a
+          &aอูรา &f: &fขอขอบคุณ ท่านอีกรอบนะ
+          &a
+          &aอูรา &f: &fข้ามีของให้ท่านอย่างนึง
+          &a
+          &a%player_name% &f: &f?
+          &a
+          &aอูรา &f: &fนี้ไง!
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mi give MATERIAL QUEST_4 %player_name% 1
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 25
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &aอูรา &f: &fขอให้มีความสุขล่ะ
+          &a
+          &a%player_name% &f: &fโอเครขอบคุณนายมากๆ
+          &a
+          &c[!] &f:ไอเทมที่ได้รับมาแนะนําว่าให้เก็บรักษาให้ดี!!
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj12
+
+      obj12:
+        # display
+        name_short: กลับไปแจ้ง เอสคานอร์
+        objective_detail: กลับไปแจ้ง เอสคานอร์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2596,55,2960 #TODO fix right position 2596 55 2960
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj13
+## บทพูด
+      obj13:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 20
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fฉันช่วยเด็กคนนั้นเรียบร้อยแล้วนะ อูรา อ่ะนะ
+          &a
+          &aเอสคานอร์ &f: &fอูรา สินะ เด็กที่หายไป
+          &a
+          &aเอสคานอร์ &f: &fเก่งมากนายช่วยเมืองนี้ได้เก่งจริงๆ
+          &a
+          &aเอสคานอร์ &f: &fเดี๋ยวมารับรางวัลเลย
+          &a
+          &a%player_name% &f: &f
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: QUEST_SUCCESS
+
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            AQUA
+            BLUE
+          fade_colors: |
+            AQUA
+            BLUE
+          flicker: true
+          trail: true
+      count: 1
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        mmocore admin exp give %player_name% main 150
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+      as_player: false
