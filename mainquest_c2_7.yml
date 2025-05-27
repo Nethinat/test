@@ -1,30 +1,29 @@
 # -------------------- Display settings --------------------
-display_name: "&f &fวิธีกำจัดวัชพืช" #fix here
+display_name: "&fปีศาจโครงกระดูก"
 description: 
   - '&f'
-  - '&f &aเควสหลักเมืองกิงค์ VII' #fix here
-  - '&fऎ ระดับความยาก : &f'
+  - '&f &aเควสหลักเมืองทูนาเรีย VII'
+  - '&fऎ ระดับความยาก : &f'
   - '&f'
-  - '&7เป้าหมายสำเร็จ : ภารกิจของผู้เลี้ยงไก่เพื่อการควบคุมวัชพืชอย่างมีประสิทธิภาพ' #fix here
+  - '&7เป้าหมายเควส :  ทามิต้องการความช่วยเหลือจากคุณ'
   - '&f'
-  - '&f &fรางวัลเควส'
-  - "&f &f &ax1 &fแต้มเควส" #fix here
-  - "&f &f &ax50 &fค่าประสบการณ์" #fix here
-  - "&f &f &ax1 &fxxx" #fix here
-  - "&f &f &ax1 &fxxx" #fix here
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
   - '&f' 
-  - '&fऑ คลิ๊กเพื่อรับเควส'
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
 
 start_notify:
-  title: '&6คุณได้รับเควสใหม่'
-  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  title: "&aดำเนินการเริ่มภารกิจ!!"
   sound: ENTITY_PLAYER_LEVELUP
 
 progress_notify_scoreboard: true
 
 all_status_item:
   type: PAPER
-  custom_model_data: 10752
+  custom_model_data: 11413
   name: '&6{quest}'
   lore: |
     &f{description}
@@ -37,24 +36,29 @@ all_status_item:
 
 status_items:
   UNAVAILABLE:
-    type: PAPER
-    custom_model_data: 10753
-    name: '&f &cเควสนี้ถูกล็อค &f'
+    type: BARRIER
+    name: '&f &cภารกิจนี้ถูกล็อค &f'
     lore: |
-      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+      &c
+      &eภารกิจเนื้อเรื่อง ฉบับที่ 2
+      &c
+      &cหากต้องการปลดล็อคภารกิจนี้ ผู้เล่นต้องสำเร็จภารกิจ
+      &fฝันร้ายที่ไม่อาจลืมเลือน (บทเปิด)
+      &cให้สำเร็จเสียก่อน ภารกิจนี้จึงจะปลดล็อค
   COOLDOWN:
-    type: PAPER
-    custom_model_data: 10754
-    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+    type: BARRIER
+    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
+    lore: |
+      &c
+      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
 
 # -------------------- Post-quest settings --------------------
 
 completion:
-  max_completions: 1000
+  max_completions: 1
   notify:
     SUCCESS:
-      title: '&aภารกิจ เสร็จสิ้น'
-      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      title: '&aภารกิจสำเร็จแล้ว'
       sound: ENTITY_PLAYER_LEVELUP
     FAIL:
       title: '&cภารกิจ ล้มเหลว'
@@ -66,43 +70,28 @@ completion:
       sound: BLOCK_ANVIL_DESTROY
       
 cooldown:
-  duration: 12000 HOUR
+  duration: 10000 HOUR
   end_types: [SUCCESS]
-  
-# -------------------- Quest content --------------------
+
+
 branches:
 
   MAIN:
     starts_at: obj1
     objects:
       obj1:
-        # display
-        name_short: คุยกับรูบี้ ที่หมูบ้านกิงค์
-        objective_detail: คุยกับรูบี้ ที่หมูบ้านกิงค์
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2386,81,2860 #TODO fix right position
-          radius: 5.0 #TODO change later
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &eคุณตื่นขึ้นมาที่ห้องเช่าของคุณ \nเตรียมตัวที่จะออกไปคุยกับทามิต่อ
+          tppos %player_name% mainmmo -716 80 -324 0 290
         goto: OBJECT obj2
-## บทพูด
+
       obj2:
-        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27 #เปลี่ยนตามทุกตัว
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &aรูบี้ &f: &fพอดีว่าอาหารกับยาของเมืองเราใกล้จะหมด
-          &a
-          &aรูบี้ &f: &fฉันอยากให้นายไปรับ อาหารและยา
-          &a
-          &aรูบี้ &f: &fจากคุณเอสคานอร์ให้ฉันหน่อย
-          &a
-          &aรูบี้ &f: &fแล้วเดี๋ยวฉันจะมีงานอีกงานให้นายทํา
-          &a
-          &a%player_name% &f: &fได้เลย
-          &a
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
@@ -110,234 +99,212 @@ branches:
         goto: OBJECT obj3
 
       obj3:
-        # display
-        name_short: ติดต่อคุณเอสคานอร์
-        objective_detail: ติดต่อคุณเอสคานอร์
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &f
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: ไปทามิที่เมืองทูนาเรีย
+        objective_detail: ไปทามิที่เมืองทูนาเรีย -719,72,-381
         type: PLAYER_POSITION
         display_distance: true
         position:
           type: SPHERE_INSIDE
-          center: mmo,2597,55,2961 #TODO fix right position 2597 55 2961
-          radius: 5.0 #TODO change later
-        goto: OBJECT obj4
-
-      obj4:
-        name_short: เนื้อเรื่อง (คุยกับเอสคานอร์) #เปลี่ยนตามชื่อ NPC
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 20 #เปลี่ยนตามทุกตัว
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fเอสคานอร์ ฉันมารับของ
-          &a
-          &aเอสคานอร์ &f: &fของ รูบี้?
-          &a
-          &a%player_name% &f: &fใช่ครับผม
-          &a
-          &aเอสคานอร์ &f: &fเดี๋ยวฉันหยิบให้นะ แปปนึง
-          &a
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
+          center: mainmmo,-719,72,-381
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tami
         goto: OBJECT obj5
 
       obj5:
-        name_short: หยิบของจากกระเป๋า
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform ที่มึงจะใช้ ไม่ต้องใส่ /
-          mi give MATERIAL QUEST_1 %player_name% 10
-        goto: OBJECT obj7
-
-      obj7:
-        name_short: เนื้อเรื่อง (คุยกับเอสคานอร์)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 20
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a
-          &aเอสคานอร์ &f: &fอ่ะ นี้เอาไปเลย หนุ่มน้อย
-          &a
-          &a%player_name% &f: &fขอบคุณมากนะ
-          &a
+        name_short: บทคุย
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fทามิ มีอะไรให้ฉันทําอีกมั้ย'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aทามิ: &fเยี่ยมมาก ตอนนี้เหลืออีกอย่างนึงที่นายต้องช่วยฉัน'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aทามิ: &fฉันได้ข่าวมาว่าเหมืองเก่าของเราโดนยึดโดยพวก undead'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aทามิ: &fหลังจากจัดการพวกอันเดรทแล้ว นําซากมาให้ฉันศึกษาด้วยนะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fได้ ข้าจะรีบไปจัดการเดี๋ยวนี้'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เดินทางไปยัง เหมืองเก่าหุบเขาทองคํา
+        objective_detail: เดินทางไปยัง เหมืองเก่าหุบเขาทองคํา -843,77,60
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-843,77,60
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: dun2
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fหากคุณกําลังสงสัยว่ากุุณแจหุบเขาทองคําหาได้จากไหน? \n &eหาได้จาก NPC Dunfeon Crafter คลีฟ ที่ -1229 69 -270
         goto: OBJECT obj8
 
       obj8:
-        name_short: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่ รูบี้ หมูบ้านกิงค์
-        objective_detail: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่ รูบี้ หมูบ้านกิงค์
+        name_short: กำจัดมอนสเตอร์ &f โครงกระดูกเฝ้าสวน จำนวน &b{objective_progression:a}&7/&b{objective_goal:a} ตัว
+        objective_detail: กำจัดมอนสเตอร์ &f โครงกระดูกเฝ้าสวน จำนวน &b{objective_progression:a}&7/&b{objective_goal:a} ตัว
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["dun_mob2_1"]
+            goal: 128
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: หา &fฟันจากโครงกระดูก  จํานวน &b{objective_progression:a}&7/&b{objective_goal:a} ชิ้น
+        objective_detail: หา  &fฟันจากโครงกระดูก  จํานวน &b{objective_progression:a}&7/&b{objective_goal:a} ชิ้น
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: false
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10026  # ปรับ custom_model_data ตามต้องการ
+              check: SameBase
+              goal: 150
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: กำจัดมอนสเตอร์ &f &cโครงกระดูกต้องสาป จำนวน &b{objective_progression:a}&7/&b{objective_goal:a} ตัว
+        objective_detail: กำจัดมอนสเตอร์ &f &cโครงกระดูกต้องสาป จำนวน &b{objective_progression:a}&7/&b{objective_goal:a} ตัว
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["bdunmob_2"]
+            goal: 1
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: หา &fผลึกแห่งความมืด  จํานวน &b{objective_progression:a}&7/&b{objective_goal:a} ชิ้น
+        objective_detail: หา &fผลึกแห่งความมืด  จํานวน &b{objective_progression:a}&7/&b{objective_goal:a} ชิ้น
+        type: PLAYER_ITEMS_REQUIRE
+        items:
+          take: false
+          items:
+            a:
+              item:
+                type: paper
+                custom_model_data: 10293  # ปรับ custom_model_data ตามต้องการ
+              check: SameBase
+              goal: 1
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: ไปทามิที่เมืองทูนาเรีย
+        objective_detail: ไปทามิที่เมืองทูนาเรีย -719,72,-381
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-719,72,-381
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tami
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: บทคุย
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &a%player_name%: &fเรียบร้อยแล้วครับ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aทามิ: &fแล้วไหนล่ะ หลักฐานซากพวก undead ที่นายจัดการมา'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: นํา &fฟันจากโครงกระดูก 150 อัน มาส่งให้ ทามิ
+        objective_detail: นํา &fฟันจากโครงกระดูก 150 อัน มาส่งให้ ทามิ
         type: PLAYER_CITIZENS_NPC_INTERACT
-        npc: 27
+        npc: 61  # ปรับ NPC ID ตามต้องการ
         items_needed:
           items:
             - item:
                 type: paper
-                custom_model_data: 10709
+                custom_model_data: 10026 # ต้องตรงกับ obj9
               check: SameBase
-              goal: 10
+              goal: 150
           take: true
-          error_message: '&c[!] &7: นำ &fกล่องอุปกรณ์ & อาหาร 10 อัน&7ไปส่งที่รูบี้แห่งหมูบ้านกิงค์'
+          error_message: '&c[!] &7: นํา &fฟันจากโครงกระดูก 150 อัน มาส่งให้ ทามิ'
         complete_notify:
           sound: ENTITY_PLAYER_LEVELUP
-        goto: OBJECT obj9
-
-      obj9:
-        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27 #เปลี่ยนตามทุกตัว
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &aรูบี้ &f: &fเก่งมาก %player_name%
-          &a
-          &aรูบี้ &f: &fหน้าที่ถัดไปที่ฉันจะให้นายทํา
-          &a
-          &aรูบี้ &f: &fก็คือไปช่วยกําจัดวัชพืช
-          &a
-          &aรูบี้ &f: &fคนที่ต้องการให้เราช่วยคือคุณกัส ฟริง
-          &a
-          &a%player_name% &f: &fได้เลย เดี๋ยวฉันจะไปติดต่อคุณกัสให้นะ
-          &a
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: OBJECT obj10
-
-      obj10:
-        # display
-        name_short: ติดต่อ กัส ฟริง เพื่อฟังข้อมูลเพิ่มเติม
-        objective_detail: ติดต่อ กัส ฟริง เพื่อฟังข้อมูลเพิ่มเติม
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2093,102,2907 #TODO fix right position 2093 102 2907
-          radius: 5.0 #TODO change later
-        goto: OBJECT obj11
-
-      obj11:
-        name_short: เนื้อเรื่อง (คุยกับ กัส ฟริง)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 38
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &aกัส ฟริง &f: &fนายอีกแล้วสินะ พ่อคนเก่ง
-          &a
-          &a%player_name% &f: &fใช่แล้วล่ะ รูบี้ส่งฉันมาเอง
-          &a
-          &a%player_name% &f: &fมาๆ เรามาเข้าเรื่อง กันเลยดีกว่า
-          &a
-          &a%player_name% &f: &fฉันขอข้อมูลเพิ่มเติมหน่อยสิ
-          &a
-          &aกัส ฟริง &f: &fก็นะ คืออยู่ดีๆ มันก็มีพวก วัชพืช ออกมาจาก ฟามหลังบ้านฉันน่ะสิ
-          &a
-          &aกัส ฟริง &f: &fเดี๋ยวฉันให้พิกัดนายเพื่อไปเช็คแถวๆ นั้นล่ะกัน
-          &a
-          &aกัส ฟริง &f: &fแล้วก็ฝากกําจัดพวก วัชพืช สัก 40 ตัวด้วย
-          &a
-          &a%player_name% &f: &fได้เลยคุณกัส 
-          &a
-          &c[!] &f: คุณได้รับ พิกัดของฟาม คุณ กัส
-          &a
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: OBJECT obj12
-
-      obj12:
-        # display
-        name_short: ตามทางไปเช็คที่ฟาม
-        objective_detail: ตามทางไปเช็คที่ฟาม
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2086,103,2956 #TODO fix right position 2086 103 2956
-          radius: 5.0 #TODO change later
-        goto: OBJECT obj13
-
-      obj13:
-        name_short: กำจัด &fมอนเตอร์ภายในฟาม &a{objective_progression}/&a{objective_goal}
-        objective_detail: กำจัด &fมอนเตอร์ภายในฟาม &a{objective_progression}/&a{objective_goal}
-        type: PLAYER_MYTHICMOBS_MOBS_KILL
-        goals:
-          a:
-            mobs: ["mmo_dunmob2_1","mmo_dunmob2_2"]
-            goal: 40
-        goto: OBJECT obj14
-
-      obj14:
-        # display
-        name_short: กลับไปแจ้ง คุณกัส
-        objective_detail: กลับไปแจ้ง คุณกัส
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2093,102,2907 #TODO fix right position 2093 102 2907
-          radius: 5.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tami # ปรับ custom point ตามต้องการ
         goto: OBJECT obj15
 
       obj15:
-        name_short: เนื้อเรื่อง (คุยกับ กัส ฟริง)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 38
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fผมจัดการให้แล้วนะครับ
-          &a
-          &aกัส ฟริง &f: &fว้าว ชั่งน่าทึงจริงๆ
-          &a
-          &aกัส ฟริง &f: &fฝากนายไปขอบคุณ คุณรูบี้ด้วยนะ
-          &a
-          &aกัส ฟริง &f: &fที่ส่งนายมาช่วยฉัน
-          &a
-          &a%player_name% &f: &fได้เลยครับ คุณกัส 
-          &a
-        complete_journal_entry_messages: true
+        name_short: นํา &fผลึกแห่งความมืด 1 อัน มาส่งให้ ทามิ
+        objective_detail: นํา &fผลึกแห่งความมืด 1 อัน มาส่งให้ ทามิ
+        type: PLAYER_CITIZENS_NPC_INTERACT
+        npc: 61  # ปรับ NPC ID ตามต้องการ
+        items_needed:
+          items:
+            - item:
+                type: paper
+                custom_model_data: 10293 # ต้องตรงกับ obj9
+              check: SameBase
+              goal: 1
+          take: true
+          error_message: '&c[!] &7: นํา &fผลึกแห่งความมืด 1 อัน มาส่งให้ ทามิ'
         complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
+          sound: ENTITY_PLAYER_LEVELUP
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tami # ปรับ custom point ตามต้องการ
         goto: OBJECT obj16
 
       obj16:
-        name_short: กลับไปบอก รูบี้
-        objective_detail: กลับไปบอก รูบี้
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2386,81,2860 #TODO fix right position
-          radius: 5.0 #TODO change later
-        goto: OBJECT obj17
-
-      obj17:
-        name_short: เนื้อเรื่อง (คุยกับรูบี้)  #เปลี่ยนตามชื่อ NPC
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27 #เปลี่ยนตามทุกตัว
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fฉันทํางานเสร็จแล้วนะ
-          &a
-          &aรูบี้ &f: &fว้าว
-          &a
-          &aรูบี้ &f: &fนายนี้ก็งานไว เหมือนเคย
-          &a
-          &aรูบี้ &f: &fเดี๋ยวฉันจะติดต่อนายไปอีก
-          &a
-          &aรูบี้ &f: &fในวันพรุ่งนี้แล้วเจอกัน
-          &a
-          &a%player_name% &f: &fk
-          &a
+        name_short: บทคุย
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aNethinat: &fโปรดติดตามตอนต่อไป'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
         goto: QUEST_SUCCESS
-# -------------------- รางวัลเควส settings --------------------
 
 end_objects:
   SUCCESS:
@@ -359,8 +326,7 @@ end_objects:
           distance: 3
           vertical_offset: 1
     - type: SERVER_COMMANDS_PERFORM
-      commands: |  # the commands to perform #fix here
+      commands: |
         qc points %player_name% add 1 global
-        mmocore admin exp give %player_name% main 50
-        mi give MATERIAL QUEST_0 %player_name% 1 
+        mmocore admin exp give %player_name% main 200
       as_player: false

@@ -1,29 +1,29 @@
 # -------------------- Display settings --------------------
-display_name: "&f &fนักพจญภัยนิรนาม"
+display_name: "&f &fการช่วยเหลือที่ยี่งใหญ่"
 description: 
   - '&f'
-  - '&f &aเควสหลักเมืองทูนาเรีย I'
-  - '&fऎ ระดับความยาก : &f'
+  - '&f &aเควสหลักเมืองกิงค์ I'
+  - '&fऎ ระดับความยาก : &f'
   - '&f'
-  - '&7เป้าหมายเควส : ตามหาต้นไม้แปรงร่าง'
+  - '&7เป้าหมายสำเร็จ : กำจัดเห็ดบอเรียลและขับไล่โกเล็มหิน'
   - '&f'
-  - '&f &fรางวัลเควส'
-  - "&f &f &ax1 &fแต้มเควส"
-  - "&f &f &ax150 &fค่าประสบการณ์"
-  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
-  - "&f &f &ax16 &fขนมปัง"
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax3 &fแต้มเควส"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - "&f &f &ax0 &fยังไม่ได้คิด"
   - '&f' 
-  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
+  - '&fऑ คลิ๊กเพื่อรับเควส'
 
 start_notify:
-  title: "⻨七⻩"
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
   sound: ENTITY_PLAYER_LEVELUP
 
 progress_notify_scoreboard: true
 
 all_status_item:
   type: PAPER
-  custom_model_data: 10752
+  custom_model_data: 10143
   name: '&6{quest}'
   lore: |
     &f{description}
@@ -37,14 +37,27 @@ all_status_item:
 status_items:
   UNAVAILABLE:
     type: PAPER
-    custom_model_data: 10753
-    name: '&f &cเควสนี้ถูกล็อค &f'
+    custom_model_data: 10734
+    name: '&c{quest}'
     lore: |
-      &cหากต้องการปลดล็อคเควสต้องทำเควสก่อนหน้าให้เสร็จก่อน
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
   COOLDOWN:
     type: PAPER
-    custom_model_data: 10754
-    name: '&f &cท่านได้ทำเควสนี้ไปแล้ว &f'
+    custom_model_data: 10734
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
 
 # -------------------- Post-quest settings --------------------
 
@@ -52,7 +65,8 @@ completion:
   max_completions: 1000
   notify:
     SUCCESS:
-      title: '⻠七⻡'
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
       sound: ENTITY_PLAYER_LEVELUP
     FAIL:
       title: '&cภารกิจ ล้มเหลว'
@@ -66,7 +80,8 @@ completion:
 cooldown:
   duration: 12000 HOUR
   end_types: [SUCCESS]
-
+  
+# -------------------- Quest content --------------------
 
 branches:
 
@@ -74,26 +89,43 @@ branches:
     starts_at: obj1
     objects:
       obj1:
-        name_short: เนื้อเรื่อง
-        type: SERVER_COMMANDS_PERFORM
-        commands: |  # the commands to perform
-          cmi titlemsg %player_name% &fคุณได้กลับมาที่เมืองทูนาเรีย \nและกำลังสอบถามเกี่ยวกับต้นไม้แปรงร่าง
+        # display
+        name_short: คุยกับรูบี้ ที่หมูบ้านกิงค์
+        objective_detail: คุยกับรูบี้ ที่หมูบ้านกิงค์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2386,81,2860 #TODO fix right position
+          radius: 5.0 #TODO change later
         goto: OBJECT obj2
-
+## บทพูด
       obj2:
-        name_short: สอบถามชาวเมือง
-        type: SERVER_ACTIONS
-        actions: 
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fนี่เจ้า เคยได้ยินเกี่ยวกับต้นแปรงร่างมั้ย'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aชาวเมือง: &fอือ... ไม่เคยนะต้นอะไรละนั้น 5555'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aชาวเมือง: &fข้าไปละอย่าพึ่งมายุ่งกับข้า'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fรูบี้ เห็นว่ามีงานให้ผมทํา ผมพร้อมล่ะ
+          &a
+          &aรูบี้ &f: &fมีพื้นที่ใหม่เพิ่งเปิดขึ้น
+          &a
+          &aรูบี้ &f: &fพื้นที่ใหม่มีดอกบัวที่มีขนาดใหญ่เป็นเอกลักษณ์
+          &a
+          &aรูบี้ &f: &fแต่มีรายงานว่ามียักษ์ในพื้นที่ที่อาจก่อให้เกิดความเสี่ยงต่อ นักเดินทาง
+          &a
+          &aรูบี้ &f: &fฉันแนะนำให้ไปกำจัดมอนสเตอร์ 50 ตัวเพื่อให้คนในพื้นที่ปลอดภัย
+          &a
+          &aรูบี้ &f: &fในพื้นที่นั่นอันตรายมากนะระวังด้วย
+          &a
+          &a%player_name% &f: &fได้เลยเดี๋ยวฉันจะไปลงพื่นที่นะ
+          &a
+          &aรูบี้ &f: &fขอให้เดินทางปลอดภัยและโชคดีกับการเคลื่อนไหวของคุณนะคะ
+          &a
+          &a%player_name% &f: เช่นกัน
+          &a
+          &aรูบี้ &f: &fเดี๋ยวฉันให้ โพชั่นไปล่ะกัน
+          &a
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
@@ -101,176 +133,121 @@ branches:
         goto: OBJECT obj3
 
       obj3:
-        name_short: พบกับ Tami
-        type: SERVER_ACTIONS
-        actions: 
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fโหะๆ... เจ้าหาต้นแปรงร่างอยู่หรอ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fใช่เลย ข้ากำลังตามหา'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fเจ้ายังไม่รู้สินะว่ามันมีจริงหรือไม่จริง'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fเจ้าก็คงคิดอยู่สินะว่าข้ารู้ได้อย่างไร'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fงั้นเจ้าก็ควรให้อะไรที่สมน้ำสมเนื้อให้ข้าสิ'
-          - 'SEND_MESSAGE &a'
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
+        name_short: หยิบโพชั่นจากกระเป๋า
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          mi give CONSUMABLE HEAL_1 %player_name% 10
         goto: OBJECT obj4
-
+      
       obj4:
-        name_short: ให้เงินกับ Tami
-        type: PLAYER_MONEY_REMOVE
-        amount: 100
-        goto: OBJECT obj5
-
-      obj5:
-        name_short: รับข้อมูลจาก Tami
-        type: SERVER_ACTIONS
-        actions: 
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fมันไม่มีอะไรมากหรอก ในถ้ำที่.....'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fมันมีต้นไม้แปรงร่างอยู่'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fแค่เจ้าเดินทางไปที่ข้าบอกมันจะเจอเอง'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fขอบคุณด้วยและกันและนี้เจ้า......'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aTami: &fระวังข้างหลัง !!!!!!!'
-          - 'SEND_MESSAGE &a'
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: OBJECT obj6
-
-      obj6:
-        name_short: เดินทางไปยังถ้ำ
-        objective_detail: เดินทางไปยังถ้ำตามที่ Tami บอก
+        # display
+        name_short: ลงเช็คพื้นที่ ดอกบัวที่มีขนาดใหญ่
+        objective_detail: ลงเช็คพื้นที่ ดอกบัวที่มีขนาดใหญ่
         type: PLAYER_POSITION
         display_distance: true
         position:
           type: SPHERE_INSIDE
-          center: mainmmo,-1000,70,-250  # ปรับพิกัดตามต้องการ
-          radius: 5.0 
-        gps:
-          enabled: true
-          mode: GPS
-          custom_point: cave_location
-        goto: OBJECT obj7
+          center: mmo,2301,94,2981 #TODO fix right position 2301 94 2981
+          radius: 5.0 #TODO change later
+        goto: OBJECT pick
 
-      obj7:
-        name_short: กำจัดมอนสเตอร์
-        objective_detail: กำจัดมอนสเตอร์ที่ขวางทางต้นไม้
+      pick:
+        name_long: >
+          &aตัดสินใจว่าจะฟามตัวไหน
+        objective_detail: |
+          &7ตัดสินใจว่าจะฟามตัวไหน
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 12
+            item:
+              type: YELLOW_CANDLE
+              name: >
+                &aฉันจะฟาม โกเลมทราย
+            goto: OBJECT pick1
+          - slot: 14
+            item:
+              type: PURPLE_CANDLE
+              name: >
+                &aฉันจะฟาม ดอกไม้ปีศาจ
+            goto: OBJECT pick2
+        
+      pick1:
+        name_short: กำจัด &fโกเลมทราย &a{objective_progression}/&a{objective_goal}
+        objective_detail: กำจัด &fโกเลมทราย &a{objective_progression}/&a{objective_goal}
         type: PLAYER_MYTHICMOBS_MOBS_KILL
         goals:
           a:
-            mobs: ["cave_monster"]
-            goal: 10
-        goto: OBJECT obj8
+            mobs: ["mmo_mob2_2"]
+            goal: 40
+        goto: OBJECT obj5
+      
+      pick2:
+        name_short: กำจัด &fดอกไม้ปีศาจ &a{objective_progression}/&a{objective_goal}
+        objective_detail: กำจัด &fดอกไม้ปีศาจ &a{objective_progression}/&a{objective_goal}
+        type: PLAYER_MYTHICMOBS_MOBS_KILL
+        goals:
+          a:
+            mobs: ["mmo_mob2_1"]
+            goal: 40
+        goto: OBJECT obj5
 
-      obj8:
-        name_short: พบกับชายนิรนาม
-        type: SERVER_ACTIONS
-        actions: 
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aชายนิรนาม: &fเจ้ามาทำอะไรที่นี้....'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fข้ามาดูให้เห็นกับตาว่าต้นไม้นี้มีจริง'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aชายนิรนาม: &fแล้วเจ้าจะทำไรได้เมื่อเจ้ารู้'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fข้าจะทำลายมันหนะสิ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aชายนิรนาม: &fฮ่าๆ.. ข้าลองแล้วมันไม่ได้ผล'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fแล้วเจ้าเป็นใคร'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fข้ามีนามว่า Gul เป็นนักพจญภัยเหมือนกับเจ้า'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fข้ามาที่นี้เพราะอยากรู้เกี่ยวกับสมุนไพรที่จะรักษาแม่ของข้า'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fข้าได้ยินว่าต้นไม้นี้ ใบของมันสามารถรักษาคนเจ็บได้ ถ้าเอามาทำยา'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &a%player_name%: &fงั้นขอถามเจ้าหน่อย เจ้าเคยเห็นปีศาจตาฟ้า ที่แปรงร่างบ้างไหม'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fเคยสิ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fเจ้าพวกนั้น เคยมาทำลายหมู่บ้านข้ามาแล้ว'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fข้าเลยจำได้ขึ้นใจ'
-          - 'SEND_MESSAGE &a'
-          - WAIT_TICKS 50
-          - 'SEND_MESSAGE &f &aGul: &fพอมีอยู่นะ แต่ข้าอยากให้เจ้าช่วยข้าก่อนละ'
-          - 'SEND_MESSAGE &a'
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: OBJECT obj9
+      obj5:
+        # display
+        name_short: นําหลักฐานไปส่งให้ รูบี้แห่งหมู่บ้านกิงค์ 
+        objective_detail: นําหลักฐานไปส่งให้ รูบี้แห่งหมู่บ้านกิงค์ 
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2386,81,2860 #TODO fix right position 2386 81 2860
+          radius: 5.0 #TODO change later
+        goto: OBJECT obj6
 
-      obj9:
-        name_short: เก็บใบต้นไม้แปรงร่าง
-        objective_detail: เก็บใบของต้นไม้แปรงร่างจำนวน 10 ใบ
-        type: PLAYER_ITEMS_REQUIRE
-        items:
-          take: false
-          items:
-            a:
-              item:
-                type: paper
-                custom_model_data: 11391  # ปรับ custom_model_data ตามต้องการ
-              check: SameBase
-              goal: 10
-        goto: OBJECT obj10
-
-      obj10:
-        name_short: นำใบไปให้ Gul ที่หมู่บ้านทะเลทราย
-        objective_detail: นำใบต้นไม้แปรงร่างไปให้ Gul ที่หมู่บ้านทะเลทราย
+      obj6:
+        name_short: นำ &fเกสรดอกปีศาจ 60 อัน&7ไปส่งที่รูบี้แห่งหมูบ้านกิงค์
+        objective_detail: นำ &fเกสรดอกปีศาจ 60 อัน&7ไปส่งที่รูบี้แห่งหมูบ้านกิงค์
         type: PLAYER_CITIZENS_NPC_INTERACT
-        npc: 55  # ปรับ NPC ID ตามต้องการ
+        npc: 27
         items_needed:
           items:
             - item:
                 type: paper
-                custom_model_data: 11391  # ต้องตรงกับ obj9
+                custom_model_data: 10095
               check: SameBase
-              goal: 10
+              goal: 60
           take: true
-          error_message: '&c[!] &7: นำใบต้นไม้แปรงร่างจำนวน 10 ใบไปให้ Gul'
+          error_message: '&c[!] &7: นำ &fเกสรดอกปีศาจ 60 อัน&7ไปส่งที่รูบี้แห่งหมูบ้านกิงค์'
         complete_notify:
           sound: ENTITY_PLAYER_LEVELUP
-        gps:
-          enabled: true
-          mode: GPS
-          custom_point: desert_village  # ปรับ custom point ตามต้องการ
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 27
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &a%player_name% &f: &fเสร็จแล้ว รูบิ้
+          &a
+          &aรูบี้ &f: &fเก่งมาก ฉันคิดว่าวันนี้นายไปพักได้เลย
+          &a
+          &aรูบี้ &f: &fเดี๋ยวฉันจะส่งคนไปตรวจเพิ่มเติมเกี่ยวกับ
+          &a
+          &aรูบี้ &f: &fดอกบัวที่มีขนาดใหญ่
+          &a
+          &a%player_name% &f: &fได้เลยเดี๋ยวฉันมา ช่วยต่อหลังจากนี้
+          &a
+          &aรูบี้ &f: &fพักผ่อนเยอะๆ นะ 
+          &a
+          &a%player_name% &f: 
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
         goto: QUEST_SUCCESS
-
-
 # -------------------- รางวัลเควส settings --------------------
 
 end_objects:
@@ -294,8 +271,8 @@ end_objects:
           vertical_offset: 1
     - type: SERVER_COMMANDS_PERFORM
       commands: |  # the commands to perform
-        qc points %player_name% add 1 global
+        qc points %player_name% add 5 global
         mmocore admin exp give %player_name% main 150
-        give %player_name% bread 16
-        mi give MATERIAL QUEST_0 %player_name% 1
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
       as_player: false

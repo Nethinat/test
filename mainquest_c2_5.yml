@@ -1,29 +1,29 @@
 # -------------------- Display settings --------------------
-display_name: "&f &fคึกสืบสำนักข้อมูล"
+display_name: "&f &fเรียกตัวจากที่ไกล"
 description: 
   - '&f'
-  - '&f &aเควสหลักเมืองกิงค์ V'
-  - '&fऎ ระดับความยาก : &f'
+  - '&f &aเควสหลักเมืองทูนาเรีย V'
+  - '&fऎ ระดับความยาก : &f'
   - '&f'
-  - '&7เป้าหมายสำเร็จ : เปิดเผยความลับในอดีตเกี่ยวกับเหมืองเก่า พาส 1'
+  - '&7เป้าหมายเควส :  เหมือนว่าคุณจะโดนเรียกตัวจากใครบางคน'
   - '&f'
-  - '&f &fรางวัลเควส'
-  - "&f &f &ax3 &fแต้มเควส"
-  - "&f &f &ax0 &fยังไม่ได้คิด"
-  - "&f &f &ax0 &fยังไม่ได้คิด"
+  - '&f &fรางวัลเควส'
+  - "&f &f &ax1 &fแต้มเควส"
+  - "&f &f &ax200 &fค่าประสบการณ์"
+  - "&f &f &ax1 &fตราสัญลักษณ์รับรองนักเดินทาง"
+  - "&f &f &ax16 &fขนมปัง"
   - '&f' 
-  - '&fऑ คลิ๊กเพื่อรับเควส'
+  - '&fऑ คลิ๊กขวาเพื่อรับเควส'
 
 start_notify:
-  title: '&6คุณได้รับเควสใหม่'
-  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  title: "&aดำเนินการเริ่มภารกิจ!!"
   sound: ENTITY_PLAYER_LEVELUP
 
 progress_notify_scoreboard: true
 
 all_status_item:
   type: PAPER
-  custom_model_data: 10143
+  custom_model_data: 11413
   name: '&6{quest}'
   lore: |
     &f{description}
@@ -36,37 +36,29 @@ all_status_item:
 
 status_items:
   UNAVAILABLE:
-    type: PAPER
-    custom_model_data: 10734
-    name: '&c{quest}'
+    type: BARRIER
+    name: '&f &cภารกิจนี้ถูกล็อค &f'
     lore: |
-      &f{description}
-      {completions}
-      {last_completion}
-      {cooldown}
-      {detailed_progression}
-      {detailed_errors}
+      &c
+      &eภารกิจเนื้อเรื่อง ฉบับที่ 2
+      &c
+      &cหากต้องการปลดล็อคภารกิจนี้ ผู้เล่นต้องสำเร็จภารกิจ
+      &fฝันร้ายที่ไม่อาจลืมเลือน (บทเปิด)
+      &cให้สำเร็จเสียก่อน ภารกิจนี้จึงจะปลดล็อค
   COOLDOWN:
-    type: PAPER
-    custom_model_data: 10734
-    name: '&c{quest}'
+    type: BARRIER
+    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
     lore: |
-      &f{description}
-      {completions}
-      {last_completion}
-      {cooldown}
-      {detailed_progression}
-      {detailed_errors}
-      {controls}
+      &c
+      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
 
 # -------------------- Post-quest settings --------------------
 
 completion:
-  max_completions: 1000
+  max_completions: 1
   notify:
     SUCCESS:
-      title: '&aภารกิจ เสร็จสิ้น'
-      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      title: '&aภารกิจสำเร็จแล้ว'
       sound: ENTITY_PLAYER_LEVELUP
     FAIL:
       title: '&cภารกิจ ล้มเหลว'
@@ -78,10 +70,9 @@ completion:
       sound: BLOCK_ANVIL_DESTROY
       
 cooldown:
-  duration: 12000 HOUR
+  duration: 10000 HOUR
   end_types: [SUCCESS]
-  
-# -------------------- Quest content --------------------
+
 
 branches:
 
@@ -89,349 +80,190 @@ branches:
     starts_at: obj1
     objects:
       obj1:
-        # display
-        name_short: คุยกับรูบี้ ที่หมูบ้านกิงค์
-        objective_detail: คุยกับรูบี้ ที่หมูบ้านกิงค์
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2386,81,2860 #TODO fix right position
-          radius: 5.0 #TODO change later
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &eคุณตื่นขึ้นมาที่ห้องเช่าของคุณ \nเตรียมตัวที่จะออกไปคุยกับ Gul ต่อ
+          tppos %player_name% mainmmo -716 80 -324 0 290
         goto: OBJECT obj2
-## บทพูด
+
       obj2:
-        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &aรูบี้ &f: &fหลังจากฉันสืบข้อมูลและตัวอย่างจากต้นดอกบัวนั้นมา
-          &a
-          &aรูบี้ &f: &fก็ทําให้ฉันได้พบว่ามันมีต้นต่อมาจากในเหมืองเก่าของพวกเรา
-          &a
-          &aรูบี้ &f: &fฉันรบกวนให้นายไปสํารวจให้พวกเราหน่อยได้มั้ย
-          &a
-          &aรูบี้ &f: &fเหมืองเก่านั้นมีชื่ออยู่ เอ่ออออ
-          &a
-          &aรูบี้ &f: &fในพื้นที่นั่นอันตรายมากนะระวังด้วย
-          &a
-          &a%player_name% &f: &fขอพิกัดของเหมืองเก่านั้นด้วย
-          &a
-          &aรูบี้ &f: &fโปรดระวังตัวด้วยนะ
-          &a
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
         goto: OBJECT obj3
-      
+
       obj3:
-        # display
-        name_short: ไปสํารวจเหมืองเก่าแก่
-        objective_detail: ไปสํารวจเหมืองเก่าแก่
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2278,88,3067 #TODO fix right position 2278 88 3067
-          radius: 5.0 #TODO change later
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fกลับไปคุยกับ Gul
         goto: OBJECT obj4
 
       obj4:
+        name_short: กลับไปหา Gul ที่หมู่บ้านทะเลทรายเล็กม้วก
+        objective_detail: กลับไปหา Gul ที่หมู่บ้านทะเลทรายเล็กม้วก
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-743,79,15
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: gui
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: บทคุย
+        type: SERVER_ACTIONS
+        actions: 
+          - 'SEND_MESSAGE &f &aGul: &f%player_name% ข้ามีข่าวจะบอกเจ้า'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fข้าจำได้ว่า...'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aGul: &fลูอิสเรียกให้เจ้ากลับไปที่เมือง 1 เหมือนจะมีเรืองอะไรสักอย่าง'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fขอบคุณสำหรับข่าว ข้าจะรีบไปเดี๋ยวนี้'
+          - 'SEND_MESSAGE &a'
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: กลับไปหา ลูอิส ที่หมู่บ้านเมล์เฟียร์
+        objective_detail: กลับไปหา ลูอิส ที่หมู่บ้านเมล์เฟียร์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1286,69,-358
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: luis
+        goto: OBJECT obj7
+
+      obj7:
         name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fบรรยากาศแปลกๆ เริ่มเข้ามา
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: บทคุย
         type: SERVER_ACTIONS
         actions: 
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &a%player_name% &f: นี้หรอที่ฉันจะต้องลงไป'
+          - 'SEND_MESSAGE &f &aลูอิส: &fเจ้าไม่เคยมาเยี่ยมข้าเลยนะ %player_name%'
           - 'SEND_MESSAGE &a'
-          - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &a%player_name% &f: พึ่งนึงได้ฉันต้องเก็บตัวอย่างไปให้รูบี้มั้ยนะ'
+          - 'SEND_MESSAGE &f &aลูอิส: &fยินดีต้อนรับกลับมาที่จุดเริ่มต้นของเจ้า'
           - 'SEND_MESSAGE &a'
-          - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
-          - 'SEND_MESSAGE &a%player_name% &f: กลับไปถามดีมั้ยนะ'
+          - 'SEND_MESSAGE &f &aลูอิส: &fข้าเรียกเจ้ามาเพื่อการตรวจประจำเดือน'
           - 'SEND_MESSAGE &a'
-          - SEND_SOUND entity_villager_trade
           - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &a%player_name%: &fข้าขอโทษที่หายไปนาน แล้วการตรวจประจำเดือนมันมีอะไรบ้างหรอ?'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aลูอิส: &fก็แค่ตรวจเช็คพวกร่างกายน่ะ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &aลูอิส: &fเอารายการนี้ไปแล้วทําส่ะนะ พอครบแล้วค่อยมาหาฉัน'
+          - 'SEND_MESSAGE &a'
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
-        goto: OBJECT pick
+        goto: OBJECT obj9
 
-      pick:
-        name_long: >
-          &aตัดสินใจว่าจะกลับไปถามรายละเอียดเพิ่มเติมมั้ย
-        objective_detail: |
-          &7ตัดสินใจว่าจะกลับไปถามรายละเอียดเพิ่มเติมมั้ย
-        start_delay: 3 SECOND
-        type: DIVERGE_GUI
-        reopen_delay: 5 SECOND
-        choices:
-          - slot: 12
-            item:
-              type: paper
-              custom_model_data: 10730
-              name: >
-                &aฉันจะกลับไปถาม
-            goto: OBJECT pick1
-          - slot: 14
-            item:
-              type: paper
-              custom_model_data: 10729
-              name: >
-                &aไม่เอาขี้เกียจกลับไปถาม
-            goto: OBJECT pick2
-      
-      pick1:
-        # display
-        name_short: กลับไปถาม รูบี้ ที่หมูบ้านกิงค์
-        objective_detail: กลับไปถาม รูบี้ ที่หมูบ้านกิงค์
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2386,81,2860 #TODO fix right position
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick1_1
-
-      pick1_1:
-        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fว่าแต่รูบี้ จะให้ฉันลงไปหาอะไรหรอ
-          &a
-          &aรูบี้ &f: &fดีเลยที่เธอกลับมาถามฉันนะ
-          &a
-          &aรูบี้ &f: &fฉันต้องให้นาย นําตัวอย่างหินในดันมาให้หน่อย
-          &a
-          &aรูบี้ &f: &fถ้าจําไม่ผิด หินนั้นน่าจะชื่อว่า
-          &a
-          &aรูบี้ &f: &f&bเศษหินตีบวกอ่อนละมุน
-          &a
-          &aรูบี้ &f: &fฉันขอตัวอย่างนี้สัก 10 อัน
-          &a
-          &a%player_name% &f: &fได้เลยท่านรูบี้
-          &a
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: OBJECT pick1_2
-
-      pick1_2:
-        # display
-        name_short: ไปที่ทางเข้าดัน
-        objective_detail: ไปที่ทางเข้าดัน
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2278,88,3063 #TODO fix right position 2278 88 3063
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick1_3
-
-      pick1_3:
-        # display
-        name_short: ตามหาบอส ภายในดัน
-        objective_detail: ตามหาบอส ภายในดัน
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2287,29,3135 #TODO fix right position 2287 29 3135
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick1_4
-
-      pick1_4:
-        name_short: นำ &bเศษหินตีบวกอ่อนละมุน &f10 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        objective_detail: นำ &bเศษหินตีบวกอ่อนละมุน &f10 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        type: PLAYER_CITIZENS_NPC_INTERACT
-        npc: 27
-        items_needed:
-          items:
-            - item:
-                type: paper
-                custom_model_data: 10210
-              check: SameBase
-              goal: 5
-          take: true
-          error_message: '&c[!] &7: นำ &bเศษหินตีบวกอ่อนละมุน &f10 อัน &7ไปส่ง รูบี้แห่งกิงค์'
+      obj9:
+        name_short: วิ่งเป็นระยะทาง &b{objective_progression:a}&7/&b{objective_goal:a}
+        objective_detail: วิ่งเป็นระยะทาง &b{objective_progression:a}&7/&b{objective_goal:a}
+        type: PLAYER_MOVE
+        goal: 2000.0
         complete_notify:
           sound: ENTITY_PLAYER_LEVELUP
-        goto: OBJECT pick1_5
+        goto: OBJECT obj10
 
-      pick1_5:
-        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fนี้ไงหินที่เจ้าอยากได้นั้นนะ
-          &a
-          &aรูบี้ &f: &fเก่งมาก ฉันขอแค่ 5 อันพอล่ะกัน 
-          &a
-          &aรูบี้ &f: &fที่เหลือฉันให้เจ้าเก็บไว้
-          &a
-          &aรูบี้ &f: &fใช้งานเพิ่มเติม
-          &a
-          &aรูบี้ &f: &fวันนี้หมดงานล่ะ นายไปพักได้เลย
-          &a
-          &aรูบี้ &f: &fถ้ามีงานอีกฉันจะติดต่อไป
-          &a
-          &a%player_name% &f: &fโอเครครับ
-          &a
+      obj10:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fคุณดูเหนื่อยมาก ดูเหมือนว่าคุณควรพักหน่อยนะ \n &eจากนั้นก็มองดู list สิ่งที่ต้องทําต่อ
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: กระโดดตบ &b{objective_progression:a}&7/&b{objective_goal:a} ครั้่ง
+        objective_detail: กระโดดตบ &b{objective_progression:a}&7/&b{objective_goal:a} ครั้ง
+        type: PLAYER_JUMP
+        goal: 1000.0
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fคุณดูเหนื่อยมากๆๆๆๆๆๆๆ ดูเหมือนว่าคุณควรจะต้องพักหน่อยนะ \n &eจากนั้นก็มองดู list สิ่งที่ต้องทําต่อ
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: ว่ายนํ้า &b{objective_progression:a}&7/&b{objective_goal:a} บล็อก
+        objective_detail: ว่ายนํ้า &b{objective_progression:a}&7/&b{objective_goal:a} บล็อก
+        type: PLAYER_JUMP
+        goal: 1000.0
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fคุณไม่ไหวแล้ว \n &eจึงได้กลับมานอนที่บ้านของชาน่า ผู้มีพระคุณ
         complete_journal_entry_messages: true
         complete_notify:
           sound: ENTITY_FIREWORK_ROCKET_LAUNCH
         hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: กลับไปที่ห้องนอนของชาน่า
+        objective_detail: กลับไปที่ห้องนอนของชาน่า
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1312,75,-337
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: bedroom
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &fโปรดติดตามตอนต่อไป
         goto: QUEST_SUCCESS
-
-      pick2:
-        # display
-        name_short: ไปที่ทางเข้าดัน
-        objective_detail: ไปที่ทางเข้าดัน
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2278,88,3063 #TODO fix right position 2278 88 3063
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick2_1
-
-      pick2_1:
-        # display
-        name_short: ตามหาบอส ภายในดัน
-        objective_detail: ตามหาบอส ภายในดัน
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2287,29,3135 #TODO fix right position 2287 29 3135
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick2_2
-
-      pick2_2:
-        name_short: กำจัด &fราชาแห่งสไลม์ &a{objective_progression}/&a{objective_goal}
-        objective_detail: กำจัด &fราชาแห่งสไลม์ &a{objective_progression}/&a{objective_goal}
-        type: PLAYER_MYTHICMOBS_MOBS_KILL
-        goals:
-          a:
-            mobs: ["bdun1"]
-            goal: 1
-        goto: OBJECT pick2_3
-
-      pick2_3:
-        name_short: กำจัด &fมอนเตอร์ภายในดัน &a{objective_progression}/&a{objective_goal}
-        objective_detail: กำจัด &fมอนเตอร์ภายในดัน &a{objective_progression}/&a{objective_goal}
-        type: PLAYER_MYTHICMOBS_MOBS_KILL
-        goals:
-          a:
-            mobs: ["mmo_dunmob_1","mmo_dunmob_2"]
-            goal: 15
-        goto: OBJECT pick2_4
-
-      pick2_4:
-        # display
-        name_short: นําหลักฐานไป ส่ง รูบี้ ที่หมูบ้านกิงค์
-        objective_detail: นําหลักฐานไป ส่ง รูบี้ ที่หมูบ้านกิงค์
-        type: PLAYER_POSITION
-        display_distance: true
-        position:
-          type: SPHERE_INSIDE
-          center: mmo,2386,81,2860 #TODO fix right position
-          radius: 5.0 #TODO change later
-        goto: OBJECT pick2_5
-      
-      pick2_5:
-        name_long: >
-          &aตัดสินใจว่าจะส่งอะไรเป็นหลักฐาน
-        objective_detail: |
-          &7ตัดสินใจว่าจะส่งอะไรเป็นหลักฐาน
-        start_delay: 3 SECOND
-        type: DIVERGE_GUI
-        reopen_delay: 5 SECOND
-        choices:
-          - slot: 12
-            item:
-              type: paper
-              custom_model_data: 10155
-              name: >
-                &aฉันจะส่ง &fม้วนกระดาษแปลกๆ
-            goto: OBJECT cho_1
-          - slot: 14
-            item:
-              type: paper
-              custom_model_data: 10210
-              name: >
-                &aฉันจะส่ง &bเศษหินตีบวกอ่อนละมุน
-            goto: OBJECT cho_2 
-
-      cho_1:
-        name_short: นำ &fม้วนกระดาษแปลกๆ &f30 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        objective_detail: นำ &fม้วนกระดาษแปลกๆ &f30 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        type: PLAYER_CITIZENS_NPC_INTERACT
-        npc: 27
-        items_needed:
-          items:
-            - item:
-                type: paper
-                custom_model_data: 10210
-              check: SameBase
-              goal: 30
-          take: true
-          error_message: '&c[!] &7: นำ &bเศษหินตีบวกอ่อนละมุน &f10 อัน &7ไปส่ง รูบี้แห่งกิงค์'
-        complete_notify:
-          sound: ENTITY_PLAYER_LEVELUP
-        goto: OBJECT cho
-
-      cho_2:
-        name_short: นำ &bเศษหินตีบวกอ่อนละมุน &f20 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        objective_detail: นำ &bเศษหินตีบวกอ่อนละมุน &f20 อัน &7ไปส่ง รูบี้แห่งกิงค์
-        type: PLAYER_CITIZENS_NPC_INTERACT
-        npc: 27
-        items_needed:
-          items:
-            - item:
-                type: paper
-                custom_model_data: 10210
-              check: SameBase
-              goal: 20
-          take: true
-          error_message: '&c[!] &7: นำ &bเศษหินตีบวกอ่อนละมุน &f10 อัน &7ไปส่ง รูบี้แห่งกิงค์'
-        complete_notify:
-          sound: ENTITY_PLAYER_LEVELUP
-        goto: OBJECT cho
-
-      cho:
-        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
-        type: PLAYER_CITIZENS_NPC_DIALOG
-        npc: 27
-        click_types: [LEFT_CLICK, RIGHT_CLICK]
-        messages: |
-          &a%player_name% &f: &fนี้ไงของที่เจ้าอยากได้นั้นนะ
-          &a
-          &aรูบี้ &f: &fเก่งมาก
-          &a
-          &aรูบี้ &f: &fเดี๋ยวฉันมีเรื่องให้นายช่วย
-          &a
-          &aรูบี้ &f: &fฉันจะแจ้งไปนะ
-          &a
-          &aรูบี้ &f: &fวันนี้หมดงานล่ะ นายไปพักได้เลย
-          &a
-          &a%player_name% &f: &fโอเครครับ
-          &a
-        complete_journal_entry_messages: true
-        complete_notify:
-          sound: ENTITY_FIREWORK_ROCKET_LAUNCH
-        hide_chat: true
-        goto: QUEST_SUCCESS
-
-# -------------------- รางวัลเควส settings --------------------
 
 end_objects:
   SUCCESS:
@@ -453,9 +285,7 @@ end_objects:
           distance: 3
           vertical_offset: 1
     - type: SERVER_COMMANDS_PERFORM
-      commands: |  # the commands to perform
-        qc points %player_name% add 5 global
-        mmocore admin exp give %player_name% main 150
-        mi give MATERIAL FASION1 %player_name% 1
-        mi give MATERIAL DMMO1 %player_name% 1
+      commands: |
+        qc points %player_name% add 1 global
+        mmocore admin exp give %player_name% main 200
       as_player: false
