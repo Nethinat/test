@@ -1,0 +1,1249 @@
+# -------------------- Display settings --------------------
+display_name: "&eภารกิจ &fทัวร์เมืองกับแมวน้อย"
+description: 
+  - '&f'
+  - "&e&l| &eภารกิจเนื้อเรื่อง เผ่าแมว"
+  - '&f'
+  - '&7เป้าหมายภารกิจ'
+  - "&e&l| &fเรียนรู้เกี่ยวกับเมืองจากมุมมองของเผ่าแคทฟอล์ค"
+  - '&f'
+  - '&f &fรางวัลเควส &f'
+  - "&e&l| &ax5 &fแต้มเควส"
+  - "&e&l| &ax150 &fเงิน"
+  - "&e&l| &ax300 &fค่าประสบการณ์"
+  - "&e&l| &ax1 &eการ์ดภารกิจผจญภัย"
+  - "&e&l| &ax1 &eวัตถุดิบแฟชั่นแมว"
+  - "&e&l| &ax1 &eวัตถุดิบพิเศษ MMO"
+  - "&e&l| &ax2 &x&4&1&D&F&4&Dหญ้าเวทมนต์หยาดฟ้า"
+
+start_notify:
+  title: '&6คุณได้รับเควสใหม่'
+  title_subtitle: '&fขณะนี้เควส {quest} ได้ถูกรับมาแล้ว&f!'
+  sound: ENTITY_CAT_PURR
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_CAT_PURR
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: ENTITY_CAT_HISS
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: ENTITY_CAT_HISS
+      
+cooldown:
+  duration: 24 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj0
+    objects:
+      obj0:
+        name_short: บทที่ 1 – จุดเริ่มต้นของการผจญภัย
+        objective_detail: รับชมเนื้อเรื่องเปิด
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f&lบทที่ 1 – จุดเริ่มต้นของการผจญภัย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_player_levelup
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &fเสียงเพลงพื้นเมืองเบา ๆ ลอยมาในอากาศ แสงแดดอุ่น ๆ สาดส่องมายังทุ่งหญ้าเขียวขจี'
+          - 'SEND_MESSAGE &fเหล่าผู้เล่นมากมายเดินสวนกันไปมา บ้างกำลังเก็บของ บ้างก็ถือจอบปลูกข้าว บ้างกำลังฝึกสกิลฟาดมอนสเตอร์น่ารัก ๆ ข้างทาง'
+          - SEND_SOUND ambient_cave
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &fและที่หน้าประตูเมืองเริ่มต้น...'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &eA &f: สวัสดีนักเดินทาง! ยินดีต้อนรับสู่เมือง...... !'
+          - 'SEND_MESSAGE &eA &f: ฉันชื่อ A เป็นแม่ค้าจากโรงเตี๊ยมแห่งนี้ ยินดีที่ได้พบเธอ!'
+          - 'SEND_MESSAGE &eA &f: ก่อนอื่น อยากให้เธอลองสำรวจเมืองดูก่อนนะ ฉันจะให้คุณ B ช่วยแนะนำเอง'
+          - SEND_SOUND entity_villager_yes
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &bB &f: หวัดดีจ้า %player_name%! ฉันคือ B ไกด์ประจำเมืองนี้เอง จะพาเธอไปรู้จักกับสิ่งพื้นฐานในเกมนี้เอง!'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &7(ระบบแนะนำเมือง: ตลาดกลาง, ฟาร์มทดลอง, ร้านตีบวก, ศูนย์เควสต์, สะพานวาร์ป)'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &bB &f: โอเค! รู้จักคร่าว ๆ แล้วใช่ไหม? งั้นลองเดินเล่นรอบเมืองดูเลย!'
+          - 'SEND_MESSAGE &a%player_name% &f: ขอบคุณครับคุณ B!'
+          - SEND_SOUND entity_player_levelup
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &f(หลังจากนั้น %player_name% สำรวจเมือง พบฟาร์ม ผืนนา คนตั้งร้านขายของ...)'
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &fเมื่อกลับมาที่โรงเตี๊ยม...'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &a%player_name% &f: ผมสำรวจเมืองแล้วครับ แล้วต้องทำอะไรต่อ?'
+          - 'SEND_MESSAGE &eA &f: พอดีมีเรื่องจะรบกวนหน่อยจ้ะ มีมอนสเตอร์ตัวเล็ก ๆ แถวหน้าประตูเมือง มากวนแปลงผักของเมืองอยู่'
+          - 'SEND_MESSAGE &eA &f: ช่วยไปจัดการพวกมันให้หน่อย จะถือว่าเป็นภารกิจเริ่มต้นของเธอเลย!'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &e&lเควสต์เริ่มต้น: "มอนหน้าฟาร์ม" เป้าหมาย: กำจัดมอนสเตอร์ X ตัว'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &f(หลังจากจัดการเรียบร้อย)'
+          - 'SEND_MESSAGE &eA &f: ขอบใจมากเลย! ตอนนี้ก็ลองสำรวจรอบ ๆ เมืองอีก เผื่อจะพบอะไรน่าสนใจนะ'
+          - 'SEND_MESSAGE &a%player_name% &f: โอเคครับ เดี๋ยวผมลองเดินดู!'
+          - SEND_SOUND entity_player_levelup
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &f...'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &fขณะเดินทางลึกออกไปจากเมือง %player_name% สังเกตเห็นบางอย่าง — ถ้ำขนาดใหญ่ที่ถูกปกคลุมด้วยหมอกและออร่าปริศนา'
+          - SEND_SOUND ambient_cave
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &a%player_name% &f: หืม… ถ้ำอะไรเนี่ย ดูน่ากลัวกว่ามอนแถวนี้อีก'
+          - SEND_SOUND entity_player_levelup
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &7[ระบบแจ้งเตือน: "สถานที่นี้ยังไม่สามารถเข้าได้"]'
+          - 'SEND_MESSAGE &7[เงื่อนไขการเข้า: ต้องมีไอเทม ''X'' / เปิดเฉพาะ ครบ30วันในเกม(หรือเร็วกว่านั้น) เวลาเที่ยงตรง]'
+          - SEND_SOUND block_note_block_pling
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &a%player_name% &f: เงื่อนไขแปลกดีแฮะ... งั้นคงต้องรอก่อนสินะ'
+          - WAIT_TICKS 30
+          - 'SEND_MESSAGE &fเขาหันหลังกลับ เดินกลับเข้าเมืองด้วยหัวใจที่เต้นแรง —'
+          - 'SEND_MESSAGE &fนี่คือเพียงแค่จุดเริ่มต้น... แต่เส้นทางของเขาจะพาไปสู่การต่อสู้กับบอสระดับตำนานในทุกภูมิภาค'
+          - SEND_SOUND music_dragon
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &d"รีเจ้นดารี่เอ็กตร้าบอส"... พวกมันคือสัตว์อสูรที่ไม่มีใครเคยโค่นลงได้'
+          - 'SEND_MESSAGE &fการจะสู้กับพวกมันได้ คุณต้องเล่น "เนื้อเรื่อง" ให้ถึงจุดหนึ่ง และครอบครอง ''ไอเทมพิเศษ'' เท่านั้น'
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &fลมเย็นพัดผ่าน เสียงกระดิ่งเบา ๆ ดังขึ้นที่โรงเตี๊ยม'
+          - 'SEND_MESSAGE &f%player_name% ผละออกจากเตียงอย่างมุ่งมั่น เขาไม่รู้ว่ารออยู่ข้างหน้าคืออะไร... แต่รู้แน่นอนว่า นี่คือจุดเริ่มต้นของตำนาน'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: &fเมี้ยววว~ ยินดีต้อนรับสู่การผจญภัยกับเผ่าแคทฟอล์คนะ!'
+          - SEND_SOUND entity_cat_purr
+          - WAIT_TICKS 30
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT obj1
+
+      obj1:
+        # display
+        name_short: คุยกับมิอาว์
+        objective_detail: คุยกับมิอาว์ บนเรือแมรี่
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj2
+## บทพูด
+      obj2:
+        name_short: เนื้อเรื่อง (กดที่ตัว NPC ได้เลยครับ)
+        type: PLAYER_CITIZENS_NPC_DIALOG
+        npc: 19 # แก้เป็น NPC ID ที่ถูกต้อง
+        click_types: [LEFT_CLICK, RIGHT_CLICK]
+        messages: |
+          &d&lมิอาว์ &f: &fเมี้ยววว~ สวัสดีนักเดินทาง เมี้ยว~
+          &a
+          &d&lมิอาว์ &f: &fได้ยินว่าเจ้าหลงทางมาเหรอเมี้ยว?
+          &a
+          &a%player_name% &f: &fใช่ครับ/ค่ะ ว่าแต่ท่านชื่ออะไรเหรอ
+          &a
+          &d&lมิอาว์ &f: &fข้าชื่อ มิอาว์ เป็นผู้นำทางเจ้าในวันนี้เมี้ยว~
+          &a
+          &a%player_name% &f: &fยินดีที่ได้รู้จักนะ มิอาว์ ข้าชื่อ %player_name%
+          &a
+          &d&lมิอาว์ &f: &fมาเถอะเมี้ยว~ ให้ข้าได้นำทางเจ้าไปดู
+          &a
+          &d&lมิอาว์ &f: &fว่าในเมืองนี้มีอะไรกันบ้าง เมี้ยว~
+          &a
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: เดินไปหา น้อนโปโกะ
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2708,36,2784 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj4
+## บทพูด
+      obj4:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มาเลยเมี้ยว~ นี่คือ น้อนโปโกะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองคุยกับน้อนดูสิ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: โอ้วว'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ใช่แล้วล่ะเมี้ยว~ เธอคนนี้สามารถช่วยนายให้เริ่มต้นได้ง่ายขึ้น'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มาดูที่ถัดไปกันเลยดีกว่าเมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj5
+        
+      obj5:
+        # display
+        name_short: เดินไปที่ Warp Zone
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2705,37,2800 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้ลูกวาป เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองเดินเข้าไปจูปมันสิ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: จูป?!?!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: แล้วเจ้าก็เลือกได้เลยเมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ว่าอยากไปโลกไหน เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: แต่เดี๋ยวก่อนนะ อย่าพึ่งไป เมี้ยว!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: /spawn กลับมาก่อนเมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj7 
+      
+      obj7:
+        # display
+        name_short: เดินไปที่ ร้านค้าเชิฟเวอร์ 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,37,2807 #TODO fix right position
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ ร้านค้าเชิฟเวอร์ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองคุยดูสิ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าว มีแต่ของน่าขาย น่าซื้อทั้งนั้นเลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: แล้วเจ้าก็สามารถเลือกได้ว่าจะซื้ออะไร เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หรือขายอะไรก็ตามที่เจ้าอยากขาย เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        # display
+        name_short: เดินไปที่ ร้านค้าเฟอร์นิเจอร์ 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2715,37,2815 #TODO fix right position 
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ ร้านค้าเฟอร์นิเจอร์ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มีแต่เฟอร์นิเจอร์น่าสนใจทั้งนั้น เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว่าแต่ราคาเท่าไรหรอ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ก็ถ้าจำไม่ผิดอ่ะนะ เริ่มต้น 200 ไปจนถึง หลักพัน เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองดูๆ ราคาก่อนได้เลย เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj11
+      
+      obj11:
+        # display
+        name_short: เดินไปที่ ร้านค้าโพรเทค 
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2706,37,2821 #TODO fix right position  2706 37 2821
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj12
+      
+      obj12:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ ร้านค้าโพรเทค เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ร้านค้าโพรเทค?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: โพรเทคมีไว้ใช้ในการป้องกันพื้นที่ของเราไงเมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ทำให้คนเข้ามาขโมยของในบ้านเราไม่ได้ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เดินต่อไปอีกนิดสิ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj13
+      
+      obj13:
+        # display
+        name_short: เดินไปที่ ซุ้มเควส
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2674,36,2831 #TODO fix right position  2674 36 2831
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือซุ้มเควส เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ในซุ้ม ทางด้านขวา คือ กระดานเควส เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: กระดานเควสไว้รับเควสวานิลา เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนด้านซ้าย ก็คือท่านพาลาดิน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: พาลาดินไว้รับเควสเนื้อเรื่อง เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ตามฉันมาเร็ว ยังมีอีกหลายที่ที่เรายังไม่ได้ไป เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี่มีทุกเมือง ไม่จำเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        # display
+        name_short: เดินไปที่ ลานฝึกฝน
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2647,37,2843 #TODO fix right position  2647 37 2843
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ ลานฝึกฝน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ลานฝึกฝน?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เจ้าสามารถมาฝึกฝนวิทยายุทธได้ที่นี่เลย เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เราแมวๆ ชอบมาฝึกลับเล็บที่นี่มาก เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ค่าฝึกของที่นี่คิดเป็นรายชั่วโมง เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lเสียงในหัว &f: หรือเรียกสั้นๆ ว่าที่นี่คือ AFK ฟาม นั่นเอง เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เดี๋ยวพวกเราต้องเดินย้อนไปก่อน เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี่มีทุกเมือง ไม่จำเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj17
+
+      obj17:
+        # display
+        name_short: เดินไปที่ โซนทำอาหาร
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2708,38,2848 #TODO fix right position  2708 38 2848
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj18
+
+      obj18:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้ก็ตามชื่อเลยจ้า เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เจ้าสามารถทำอาหารได้หลายอย่างที่นี่เลย เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ของที่ใช้ทำก็พวกของวานิลาทั่วไป แต่เราชอบทำปลาย่างเป็นพิเศษ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองเดินเข้าไปดูสิ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มีหม้อกับเขียงให้เจ้าใช้งาน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หม้ออยู่ทางด้านซ้ายจ้า เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนเขียงอยู่ทางขวาจ้า เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ตามฉันมามะๆ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี่มีทุกเมือง ไม่จำเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj19
+
+      obj19:
+        # display
+        name_short: เดินไปที่ โซนตกปลา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2703,38,2860 #TODO fix right position  2703 38 2860
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj20
+
+      obj20:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: โซนตกปลาของลุงบิว เมี้ยววว~ น่ากินมากเลย!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ถ้าเจ้าอยากหาเงินล่ะก็นะ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ฉันก็ขอแนะนำลุงบิว เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: คนนี้เลย ลุงแกใจดี ชอบรับซื้อปลา เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ก็รับตั้งแต่หลักสิบจนถึงหลักพันเลยล่ะ เมี้ยววว~ อร่อยด้วย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เดี๋ยวฉันพาไปรู้จักกับอีกโซนหนึ่ง เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: บอกเลยว่าโซนนี้สนุกมาก เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หิหิ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj21
+
+      obj21:
+        # display
+        name_short: เดินไปที่ โซนกาชา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2697,40,2866 #TODO fix right position  2697 40 2866
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj22
+
+      obj22:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ถึงแล้วล่ะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: นี่ไง โซนกาชา เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองเดินเข้าไปดูสิ เมี้ยววว~ ข้าชอบเล่นกับกล่องพวกนี้นัก'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj23
+
+      obj23:
+        # display
+        name_short: เดินเข้าไปใน โซนกาชา
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2684,43,2865 #TODO fix right position  2684 43 2865
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj24
+
+      obj24:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เป็นไงล่ะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าวววว มีแต่กาชาน่าเปิด'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ไว้มีโอกาสเดี๋ยวฉันจะให้กุญแจ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ไปเปิดเล่นล่ะกันนะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เราไปดูร้านถัดไปกันดีกว่า เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: เพิ่มเติม เรื่องระบบ กาชา'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: กาชาภายในเซิร์ฟของเรานั้นมีทั้งหมด 2 แบบ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: 1 กาชาสายฟรี หาได้จากการคราฟจาก NPC &eเดย์ตัน ใช้ของภายในเซิร์ฟ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: 2 กาชาเติม หาได้จากการคราฟจาก NPC &eเดย์ตัน แล้วก็จะใช้ Point'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj25
+
+      obj25:
+        # display
+        name_short: เดินไปที่ ร้านค้า สกิน
+        objective_detail: เดินตาม GPS ที่ให้ไปครับผม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2710,37,2904 #TODO fix right position  2710 37 2904 เชลบี้
+          radius: 3.0 #TODO change later
+        goto: OBJECT obj26
+
+      obj26:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: นี่ร้านค้าสกิน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: แนะนำเลยว่าต้องมีนะเหมียวๆ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ไม่ต้องห่วงว่าจะต้องเติมซื้ออย่างเดียว เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ขายเป็นเงินในเกมด้วยเช่นกัน เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองหันหลังไปสิ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เดี๋ยวฉันพาไปดูว่า เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: คราฟของยังไงภายในเมือง เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หิหิ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj27
+
+      obj27:
+        # display
+        name_short: เดินไปที่ โรงตีเหล็ก
+        objective_detail: เดินไปที่ โรงตีเหล็ก
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1257,68,-268 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: black #แก้pointตรงนี้ 
+        goto: OBJECT obj28
+
+      obj28:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: นี่โรงตีเหล็ก เมี้ยว~ เราแมวๆ ไม่ค่อยถนัด แต่ก็สนุกดี!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ทางด้านซ้าย คือ Jewelry เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ใช้ในการคราฟหินตีบวก อุปกรณ์รูน หินซ่อม และประเมินค่า เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนทางด้านหน้า blacksmith เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ใช้ในการคราฟอุปกรณ์และวัตถุดิบ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &c[!] &f: ที่นี่มีทุกเมือง ไม่จำเป็นต้องมาเมืองแรก'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มาไปต่อกันเลย เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj29     
+
+      obj29:
+        name_short: เดินไป ที่ ห้องแฟชั่น
+        objective_detail: เดินไป ที่ ห้องแฟชั่น
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1283,68,-324 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: suit #แก้pointตรงนี้
+        goto: OBJECT obj30
+
+      obj30:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: และนี่ก็คือห้องแฟชั่น เมี้ยววว~ ที่โปรดของฉันเลย!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ห้องแฟชั่นก็ตามชื่อเลย เราสามารถมาเปลี่ยนชุดได้ที่นี่ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: พอเข้าไปแล้ว เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนด้านในสุดจะเป็นห้องเปลี่ยนชุดได้เลย ถ้ามีใครอยากเป็นแมวเหมือนฉัน เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เราไปที่ถัดไปกันดีกว่า เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj31    
+      
+      obj31:
+        # display
+        name_short: เดินไปที่ ร้านเอนชาร์จ
+        objective_detail: เดินไปที่ ร้านเอนชาร์จ
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1290,67,-261 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: enchanter #แก้pointตรงนี้
+        goto: OBJECT obj32
+
+      obj32:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อ่าห่ะคุณแรนดอล เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ร้านเอนชาร์จ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: เอนชาร์จวานิลาอ่ะหรอ?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เอนชาร์จในที่นี่เป็นเอนชาร์จพิเศษ เมี้ยววว~ ฉันเคยเอนชาร์จกรงเล็บที่นี่!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ถ้าอยากลองใช้ดู เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: นายก็คงต้องไปลองใช้ดูอ่ะนะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: เพิ่มเติมวิธีหา เอนชาร์จพิเศษ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &4[!] &f: เอนชาร์จพิเศษหาได้จาก บอสโลก, โต๊ะเอนชาร์จ, แลกจาก Villager, กิจกรรมต่างๆ'
+          - 'SEND_MESSAGE &a'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj33 
+      
+      obj33:
+        # display
+        name_short: เดินไปที่ โซนฟาร์ม
+        objective_detail: เดินไปที่ โซนฟาร์ม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1332,67,-329 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: farm #แก้pointตรงนี้
+        goto: OBJECT obj34
+
+      obj34:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ โซนฟาร์ม เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ลองคุยดูสิ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าววว มีแต่พืชที่ไม่เคยเห็นเลย'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ใช่แล้วล่ะ พวกนี้คือพืชพิเศษ เมี้ยววว~ รวมถึงหญ้าแมวนิปด้วย!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ถ้าเจ้ามีเวลาก็ลองซื้อไปปลูกดูสิ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ตามฉันมาเร็ว เมี้ยววว~ :3'    
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj35
+
+      obj35:
+        # display
+        name_short: เดินไปที่ ร้านขายสัตว์เลี้ยง
+        objective_detail: เดินไปที่ ร้านขายสัตว์เลี้ยง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1344,67,-326 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: pet #แก้pointตรงนี้
+        goto: OBJECT obj36
+
+      obj36:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ ร้านค้าขายสัตว์เลี้ยงสุดน่ารัก เมี้ยววว~ แต่ไม่น่ารักเท่าพวกเราแมวๆ หรอกนะ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หลักๆ สัตว์เลี้ยงเหล่านี้มีสกิลติดตัวด้วยนะ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: รับรองได้เลยว่ามันจะช่วยเจ้าแน่นอน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: มันซื้อเลยไม่ได้หรอ'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อืม...นายต้องไปเก็บพวกเบอร์รี่และนมวัวพิเศษมาคราฟก่อน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เอากดที่ NPC เช็คไอเทมที่คราฟดูก็ได้นะ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj37
+
+      obj37:
+        # display
+        name_short: เดินไปที่ โรงเตี๊ยมดันเจี้ยน 
+        objective_detail: เดินไปที่ โรงเตี๊ยมดันเจี้ยน
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1229,69,-270 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: dun #แก้pointตรงนี้
+        goto: OBJECT obj38
+
+      obj38:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อันนี้คือ โรงเตี๊ยมดันเจี้ยน เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ทางซ้ายมือนายคือ Dungeon Gate เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หลักๆ ที่นี่จะเป็นที่วาร์ปสำหรับการไปดันเจี้ยนทุกที่ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ซึ่งมันก็จะมีค่าใช้จ่ายนิดหน่อยอ่ะนะ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ว้าว น่าลองจัง'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนทางด้านหน้านาย คือ Dungeon Crafter เป็นคนรับคราฟ/แลกเปลี่ยนไอเทมต่างๆ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เอากดที่ NPC เช็คไอเทมที่คราฟดูก็ได้นะ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ส่วนรายละเอียดอื่นๆ ฉันแนะนำให้ดูจาก hologram ทางด้านข้างเลย เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj39
+
+      obj39:
+        # display
+        name_short: เดินไปที่ โรงเตี๊ยมกิลด์
+        objective_detail: เดินไปที่ โรงเตี๊ยมกิลด์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,-1226,69,-316 #TODO fix right position
+          radius: 3.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: guild #แก้pointตรงนี้
+        goto: OBJECT obj40
+
+      obj40:
+        name_short: เนื้อเรื่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ที่นี่คือ โรงเตี๊ยมกิลด์ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เจ้าสามารถมาสมัครเข้ากิลด์ได้ที่นี่เลย เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: และยังใช้ฟังก์ชันเกี่ยวกับกิลด์ทั้งหมดได้ที่นี่ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: กิลด์มีประโยชน์อะไรบ้างหรือ?'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_villager_trade
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เมี้ยววว~ กิลด์มีประโยชน์เยอะมาก ทั้งการเพิ่มสถานะ การแบ่งปันไอเทม และการรวมตัวกันเพื่อทำภารกิจ!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: มีกิลด์แมวด้วยนะ ถ้าเจ้าสนใจ เมี้ยว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj41
+
+      obj41:
+        name_short: กลับมาที่จุดเริ่มต้น
+        objective_detail: กลับมาที่จุดเริ่มต้น
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785 #TODO fix right position
+          radius: 5.0 #TODO change later
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: spawn #แก้pointตรงนี้
+        goto: OBJECT obj42
+
+      obj42:
+        name_short: บทสรุปการทัวร์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: ถึงเวลาแล้วล่ะนะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เรียกได้ว่านี่คือการทัวร์เมืองแบบฉบับเผ่าแมวเลย เมี้ยว~!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: หวังว่าเจ้าจะชอบการเที่ยวชมในครั้งนี้นะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: ขอบคุณมากสำหรับการแนะนำ!'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_player_levelup
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: เมี้ยว~ นี่เป็นของขวัญเล็กๆ น้อยๆ จากฉัน'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: อย่าลืมมาเยี่ยมพวกเราเผ่าแมวบ่อยๆ นะ เมี้ยววว~'
+          - 'SEND_MESSAGE &a'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj43
+
+      obj43:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |  # the commands to perform
+          cmi titlemsg %player_name% &dเมี้ยววว~ ทัวร์เมืองสำเร็จแล้ว! \n&eขอบคุณที่มาเยี่ยมชมเมืองกับเผ่าแมวนะ
+        goto: QUEST_SUCCESS
+
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: CREEPER
+          colors: |
+            PURPLE
+            PINK
+          fade_colors: |
+            AQUA
+            WHITE
+          flicker: true
+          trail: true
+      count: 3
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        eco give %player_name% 150
+        mmocore admin exp give %player_name% main 300
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+        give %player_name% leather{display:{Name:'{"text":"หูแมวสุดน่ารัก","color":"light_purple","italic":false}'}} 1
+        give %player_name% string{display:{Name:'{"text":"หางแมวเสริมพลัง","color":"light_purple","italic":false}'}} 1
+        give %player_name% wheat{display:{Name:'{"text":"หญ้าเวทมนต์หยาดฟ้า","color":"aqua","italic":false}'}} 2
+      as_player: false

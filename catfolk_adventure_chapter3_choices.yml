@@ -1,0 +1,860 @@
+# -------------------- Display settings --------------------
+display_name: "&e&lบทที่ 3 &f– &6เมืองนี้มีชีวิต"
+description: 
+  - '&fऎ ความยาก : &6ปานกลาง'
+  - '&f เลเวลแนะนำ : &a10+'
+  - '&f'
+  - '&7เป้าหมายภารกิจ'
+  - "&e&l| &fทำภารกิจย่อยในเมืองแมวนครเพื่อปลดล็อกเนื้อเรื่องหลัก"
+  - "&e&l| &fเดินทางไปยังหอคอยแห่งแสงเพื่อเริ่มการผจญภัยครั้งใหม่"
+  - '&f'
+  - '&f &fรางวัลเควส &f'
+  - "&e&l| &ax10 &fแต้มเควส"
+  - "&e&l| &ax300 &fเงิน"
+  - "&e&l| &ax500 &fค่าประสบการณ์"
+  - "&e&l| &fไอเทมพิเศษตามเส้นทางที่เลือก"
+  - '&f' 
+  - '&c** เควสนี้จำเป็นต้องผ่านบทที่ 2 ก่อน **'
+  - '&a** เควสนี้มีระบบทางเลือกที่ส่งผลต่อเนื้อเรื่อง **'
+
+start_notify:
+  title: '&6เมืองนี้มีชีวิต'
+  title_subtitle: '&fเลือกเส้นทางการผจญภัยของคุณเอง'
+  sound: ENTITY_CAT_PURR
+
+progress_notify:
+  bossbar: '{objective}'
+  bossbar_color: PINK
+  bossbar_style: SOLID
+  bossbar_flags: []
+  bossbar_duration: 10 SECOND
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10145
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&f &cภารกิจนี้ถูกล็อค &f'
+    lore: |
+      &c
+      &eภารกิจเนื้อเรื่องบทที่ 3
+      &c
+      &cหากต้องการปลดล็อคภารกิจนี้ คุณต้องสำเร็จภารกิจ
+      &fบทที่ 2 – ตำนานทั้งเจ็ด
+      &cให้สำเร็จเสียก่อน
+  COOLDOWN:
+    type: BARRIER
+    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
+    lore: |
+      &c
+      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_CAT_PURR
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: ENTITY_CAT_HISS
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: ENTITY_CAT_HISS
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เริ่มบทที่ 3
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dบทที่ 3 – เมืองนี้มีชีวิต\n&fชีวิตประจำวันในเมืองแมวนคร
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่องเปิดตัว
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 100
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fแดดอ่อนยามเช้าเริ่มแตะขอบฟ้า เมืองแมวนครเริ่มคึกคัก'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเสียงพ่อค้าแม่ค้าตะโกนเรียกลูกค้า เสียงตีเหล็กจากร้านตีบวก และเสียงหัวเราะจากผู้เล่นที่กำลังแข่งกันเก็บของ'
+          - 'SEND_MESSAGE &f'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f%player_name% ตื่นขึ้นที่ห้องพักในโรงเตี๊ยมของเนียบิว'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fหลังจากภารกิจเมื่อวาน เขาตั้งใจจะไปที่ห้องสมุดโบราณ แต่...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 80
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: ข้อความระบบ
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &c[ข้อความจากระบบ]\n&f"เนื้อเรื่องหลักถูกล็อค! กรุณาเคลียร์ภารกิจย่อยอย่างน้อย 2 เควสต์เพื่อดำเนินต่อ"
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: ตื่นที่โรงเตี๊ยม
+        objective_detail: ตื่นที่โรงเตี๊ยมและพบข้อความระบบ
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2700,36,2785
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tavern
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: พบข้อความระบบ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "...หืม เกมนี้มีระบบบังคับทำเควสต์ย่อยก่อนด้วยแฮะ เข้าใจล่ะ จะลองดูสักหน่อย"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "อ้าว ตื่นแล้วเหรอ เมี้ยววว~? ยังไปห้องสมุดโบราณไม่ได้หรอก เมือง~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "เมืองแมวนครมีประเพณีโบราณ คนแปลกหน้าต้องช่วยเหลือชาวเมืองอย่างน้อย 2 ครั้งก่อน จึงจะได้รับการยอมรับและเข้าถึงสถานที่สำคัญได้ เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "มีเด็กแมวสาวตัวหนึ่งชื่อเมี้ยวมินะ กำลังมีปัญหาแถวๆ ตลาดกลาง ลองไปดูสิว่าเธอต้องการความช่วยเหลืออะไร เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: ภารกิจย่อยที่ 1
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &d[เริ่มภารกิจย่อยที่ 1]\n&6"ข้าวกล่องหาย!"
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: ไปพบเมี้ยวมินะที่ตลาดกลาง
+        objective_detail: เดินทางไปพบเมี้ยวมินะบริเวณตลาดกลาง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2700,37,2807
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: market
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: พูดคุยกับเมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณพบกับลูกแมวตัวเล็กๆ กำลังนั่งร้องไห้อยู่ที่มุมหนึ่งของตลาด'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "พี่คะ! เมี้ยววว~ หนูเผลอทำข้าวกล่องหายระหว่างทางมาเมือง ฮือ..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "เป็นข้าวกล่องพิเศษที่คุณแม่ทำให้หนู มีปลาแซลมอนด้านใน เมี้ยว~ แย่เลย! มันเป็นอาหารมื้อสำคัญสำหรับคุณยายที่กำลังป่วยของหนู"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ใจเย็นๆ นะ พี่จะช่วยหาทางแก้ไขให้เอง"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT minachoice
+
+      # ========== ทางเลือกสำหรับภารกิจของเมี้ยวมินะ ==========
+      minachoice:
+        name_long: >
+          &aจะช่วยเมี้ยวมินะอย่างไรดี?
+        objective_detail: |
+          &7เลือกวิธีที่จะช่วยเมี้ยวมินะ
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 11
+            item:
+              type: BUNDLE
+              name: >
+                &aตามหากล่องข้าวเดิม
+              lore: |
+                &7ช่วยเมี้ยวมินะตามหากล่องข้าวที่หายไป
+                &7อาจใช้เวลานาน แต่จะได้กล่องข้าวคืน
+                &7และคุณยายจะได้รับอาหารที่มีความหมาย
+            goto: OBJECT find_lunchbox
+          - slot: 15
+            item:
+              type: CRAFTING_TABLE
+              name: >
+                &aทำกล่องข้าวใหม่ให้
+              lore: |
+                &7ช่วยเมี้ยวมินะทำกล่องข้าวใหม่ทดแทน
+                &7ต้องหาวัตถุดิบและปรุงอาหารใหม่
+                &7เร็วกว่า และได้ทักษะการทำอาหารเพิ่ม
+            goto: OBJECT make_lunchbox
+      
+      # ========== เส้นทางตามหากล่องข้าว ==========
+      find_lunchbox:
+        name_short: ตามหากล่องข้าวของเมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "พี่จะช่วยตามหากล่องข้าวของหนูเอง! มันหายที่ไหนเป็นครั้งสุดท้ายที่หนูจำได้?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "เมี้ยว~ หนูจำได้ว่าหนูเดินผ่านสวนเล็กๆ ใกล้โรงเตี๊ยมกิลด์ แล้วก็นั่งพักที่น้ำพุ หลังจากนั้นหนูก็เดินมาที่ตลาด..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "อาจจะหายที่ไหนสักแห่งตามเส้นทางนั้น เมี้ยววว~ รีบหน่อยนะพี่ คุณยายรออาหารอยู่!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเวลาจำกัด: 5 นาที!'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT check_fountain
+
+      check_fountain:
+        name_short: มองหาข้าวกล่องที่น้ำพุ
+        objective_detail: ไปตรวจสอบบริเวณน้ำพุใกล้โรงเตี๊ยมกิลด์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1226,69,-316
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: fountain
+        goto: OBJECT no_lunchbox_fountain
+
+      no_lunchbox_fountain:
+        name_short: ค้นหาที่น้ำพุ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณตรวจสอบบริเวณน้ำพุอย่างละเอียด แต่ไม่พบกล่องข้าวของเมี้ยวมินะ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ไม่มีที่นี่... อาจจะอยู่ที่อื่นตามเส้นทาง ลองดูที่สวนข้างโรงเตี๊ยมดีกว่า"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT check_garden
+
+      check_garden:
+        name_short: ค้นหาที่สวนเล็กๆ
+        objective_detail: ไปตรวจสอบสวนเล็กๆ ใกล้โรงเตี๊ยมกิลด์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,-1240,68,-316
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: small_garden
+        goto: OBJECT find_lunchbox_garden
+
+      find_lunchbox_garden:
+        name_short: พบข้าวกล่องของเมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณมองเห็นกล่องข้าวสีชมพูลายแมวน่ารักตกอยู่ใต้ม้านั่งในสวน!'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "นี่น่าจะใช่! กล่องข้าวของเมี้ยวมินะ!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณเก็บกล่องข้าวขึ้นมา และรีบนำกลับไปให้เมี้ยวมินะ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT return_lunchbox
+
+      return_lunchbox:
+        name_short: นำกล่องข้าวกลับไปให้เมี้ยวมินะ
+        objective_detail: นำกล่องข้าวกลับไปให้เมี้ยวมินะที่ตลาดกลาง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2700,37,2807
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: market
+        goto: OBJECT complete_find_lunchbox
+
+      complete_find_lunchbox:
+        name_short: คืนกล่องข้าวให้เมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "เมี้ยวมินะ! พี่เจอกล่องข้าวของหนูแล้ว! มันตกอยู่ใต้ม้านั่งในสวน"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "จริงเหรอคะ?! เมี้ยววว~! ขอบคุณมากเลยค่ะพี่! คุณยายจะดีใจมาก!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_purr
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมี้ยวมินะรับกล่องข้าวด้วยความดีใจ และเปิดออกทันที'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "แซลมอน! ยังอยู่ครบเลย อร่อยจังเลย เมี้ยววว~! พี่เอานี่ไปเป็นของขอบคุณนะคะ!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมี้ยวมินะมอบ "สติ๊กเกอร์เมี้ยวมินะ x5" และ "ข้าวกล่องพลังงาน +10" ให้คุณ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "สติ๊กเกอร์นั่นเป็นคอลเลคชั่นพิเศษมากๆ เมี้ยว~ แล้วข้าวกล่องก็มีพลังงานพิเศษด้วยนะ!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ &a+1 จุดความดี &fเนื่องจากช่วยตามหากล่องข้าวให้คุณยาย'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT mina_quest_complete
+        
+      # ========== เส้นทางทำกล่องข้าวใหม่ ==========
+      make_lunchbox:
+        name_short: ทำกล่องข้าวใหม่ให้เมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "การตามหากล่องข้าวคงใช้เวลานาน พี่มีไอเดียดีกว่า! เรามาทำข้าวกล่องใหม่ให้คุณยายกันเถอะ!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "เมี้ยว~? จริงเหรอคะ? แต่หนูไม่รู้จะหาวัตถุดิบที่ไหน..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ไม่ต้องกังวล! พี่จะจัดการเอง ต้องใช้อะไรบ้างล่ะ?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "ต้องใช้ปลาแซลมอน 2 ตัว ข้าว 1 ถ้วย และสาหร่าย 1 แผ่นค่ะ เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณต้องหาวัตถุดิบเพื่อทำข้าวกล่องใหม่'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT collect_ingredients
+
+      collect_ingredients:
+        name_short: หาวัตถุดิบทำข้าวกล่อง
+        objective_detail: หาปลาแซลมอน ข้าว และสาหร่าย
+        type: PLAYER_ITEMS_GET
+        goals:
+          a:
+            item:
+              type: SALMON
+            check: ExactSame
+            goal: 2.0
+            take: true
+          b:
+            item:
+              type: BREAD
+            check: ExactSame
+            goal: 1.0
+            take: true
+          c:
+            item:
+              type: KELP
+            check: ExactSame  
+            goal: 1.0
+            take: true
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: fishing_spot
+        goto: OBJECT cooking_zone
+
+      cooking_zone:
+        name_short: ไปที่โซนทำอาหาร
+        objective_detail: ไปที่โซนทำอาหารเพื่อปรุงข้าวกล่อง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2708,38,2848
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: cooking_area
+        goto: OBJECT cook_lunchbox
+
+      cook_lunchbox:
+        name_short: ปรุงข้าวกล่อง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณเริ่มปรุงข้าวกล่องด้วยวัตถุดิบที่หามาได้'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ต้องย่างปลาให้หอมก่อน จากนั้นจัดเรียงบนข้าว แล้วห่อด้วยสาหร่าย..."'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f5 นาทีผ่านไป...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณทำข้าวกล่องปลาแซลมอนเสร็จเรียบร้อย! มันดูอร่อยและน่ารับประทาน'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "เสร็จแล้ว! ต้องรีบเอาไปให้เมี้ยวมินะก่อนที่จะเย็น"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT deliver_lunchbox
+
+      deliver_lunchbox:
+        name_short: นำข้าวกล่องไปให้เมี้ยวมินะ
+        objective_detail: นำข้าวกล่องที่ทำเสร็จแล้วไปให้เมี้ยวมินะที่ตลาดกลาง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2700,37,2807
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: market
+        goto: OBJECT complete_make_lunchbox
+
+      complete_make_lunchbox:
+        name_short: ส่งมอบข้าวกล่องให้เมี้ยวมินะ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "เมี้ยวมินะ! พี่ทำข้าวกล่องใหม่มาให้แล้ว ใส่ปลาแซลมอนย่าง พิเศษกว่าเดิมด้วยนะ!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "ว้าว! เมี้ยววว~! สวยมากเลยค่ะ และดูอร่อยด้วย! คุณยายต้องชอบแน่ๆ!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_purr
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมี้ยวมินะรับข้าวกล่องด้วยความดีใจ และดมกลิ่นอย่างเพลิดเพลิน'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "นี่เป็นของขอบคุณจากหนูนะคะ! พี่ช่างมีน้ำใจและมีฝีมือในการทำอาหาร!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมี้ยวมินะมอบ "สติ๊กเกอร์เมี้ยวมินะ x5" และ "ตำรับอาหารพิเศษ" ให้คุณ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a&lเมี้ยวมินะ &f: "ตำรับอาหารนี้เป็นของคุณแม่หนูเอง เมี้ยว~ พี่สามารถใช้มันทำอาหารพิเศษได้!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ &a+1 ทักษะการปรุงอาหาร &fจากการทำข้าวกล่องพิเศษ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT mina_quest_complete
+
+      mina_quest_complete:
+        name_short: ภารกิจย่อยสำเร็จ 1/2
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &a[ภารกิจย่อยสำเร็จ 1/2]\n&6"ข้าวกล่องหาย!"
+        goto: OBJECT witch_quest_intro
+
+      witch_quest_intro:
+        name_short: ข้อความแนะนำ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "เมี้ยววว~! ได้ยินแล้วนะ ดีมากที่ช่วยเมี้ยวมินะ หนูน้อยนั่นดีใจมากเลย!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "เจ้ายังต้องการทำภารกิจอีกหนึ่งอย่างนะ เมี้ยว~ ฉันได้ยินว่าแม่มดเมี้ยวมนต์กำลังต้องการความช่วยเหลือ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "เธออาศัยอยู่ในกระท่อมริมป่าทางทิศตะวันออกของเมือง เมี้ยววว~ ลองไปดูสิว่าเธอต้องการให้ช่วยอะไร"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT witch_quest_start
+
+      witch_quest_start:
+        name_short: ภารกิจย่อยที่ 2
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &d[เริ่มภารกิจย่อยที่ 2]\n&6"แม่มดในเงามืด"
+        goto: OBJECT witch_hut_travel
+
+      witch_hut_travel:
+        name_short: เดินทางไปพบแม่มดเมี้ยวมนต์
+        objective_detail: เดินทางไปพบแม่มดเมี้ยวมนต์ที่กระท่อมริมป่า
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2750,40,2850
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: witch_hut
+        goto: OBJECT meet_witch
+
+      meet_witch:
+        name_short: พบแม่มดเมี้ยวมนต์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณพบกระท่อมเล็กๆ มีควันสีม่วงลอยออกมาจากปล่องไฟ และมีแมวดำหลายตัวนอนอยู่รอบๆ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมื่อคุณเข้าไปใกล้ ประตูกระท่อมก็เปิดออก และแมวแก่สวมชุดคลุมสีม่วงก็เดินออกมา'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... ฉันรู้ว่าเจ้าจะมา นักเดินทางหน้าใหม่"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "ช่วงนี้มอนสเตอร์มารบกวนการร่ายมนต์ของข้าบ่อยเกินไปแล้ว! เมี้ยววว~! ฉันต้องการความช่วยเหลือจากเจ้า"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_hiss
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ข้าจะช่วยท่าน บอกข้ามาเลยว่าต้องทำอย่างไร"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT witch_choice
+
+      # ========== ทางเลือกสำหรับภารกิจของแม่มดเมี้ยวมนต์ ==========
+      witch_choice:
+        name_long: >
+          &aเลือกวิธีจัดการกับมอนสเตอร์
+        objective_detail: |
+          &7เลือกวิธีที่จะช่วยแม่มดเมี้ยวมนต์
+        start_delay: 3 SECOND
+        type: DIVERGE_GUI
+        reopen_delay: 5 SECOND
+        choices:
+          - slot: 11
+            item:
+              type: IRON_SWORD
+              name: >
+                &aกำจัดมอนสเตอร์ด้วยการต่อสู้
+              lore: |
+                &7สู้กับมอนสเตอร์โดยตรง
+                &7ฆ่าซอมบี้และโครงกระดูก 10 ตัว
+                &7ท้าทายและเหมาะสำหรับนักรบ
+            goto: OBJECT direct_combat
+          - slot: 15
+            item:
+              type: POTION
+              name: >
+                &aสร้างกับดักเวทย์มนต์
+              lore: |
+                &7สร้างกับดักเวทย์มนต์เพื่อขับไล่มอนสเตอร์
+                &7ต้องเก็บวัตถุดิบพิเศษและร่ายคาถา
+                &7ใช้ไหวพริบและเหมาะสำหรับนักเวทย์
+            goto: OBJECT magic_trap
+      
+      # ========== เส้นทางกำจัดมอนสเตอร์โดยตรง ==========
+      direct_combat:
+        name_short: เลือกการต่อสู้โดยตรง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "ข้าจะจัดการกับพวกมันด้วยดาบของข้าเอง!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... กล้าหาญจริงๆ พวกมันเป็นซอมบี้และโครงกระดูกที่แข็งแกร่งกว่าปกติ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "พวกมันอยู่ทางเหนือของกระท่อม ราว 10 ตัว จัดการพวกมันให้หมด เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณต้องกำจัดซอมบี้และโครงกระดูกที่รบกวนแม่มดเมี้ยวมนต์'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT kill_monsters
+
+      kill_monsters:
+        name_short: กำจัดมอนสเตอร์
+        objective_detail: กำจัดซอมบี้และโครงกระดูกที่รบกวนแม่มดเมี้ยวมนต์
+        type: PLAYER_MOBS_KILL
+        display_count: true
+        mobs:
+          types:
+            - ZOMBIE
+            - SKELETON
+          required: 10
+          radius: 50
+          center: mainmmo,2750,40,2830
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: training_field
+        goto: OBJECT combat_report
+
+      combat_report:
+        name_short: กลับไปรายงานแม่มดเมี้ยวมนต์
+        objective_detail: กลับไปรายงานผลต่อแม่มดเมี้ยวมนต์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2750,40,2850
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: witch_hut
+        goto: OBJECT combat_success
+
+      combat_success:
+        name_short: รายงานความสำเร็จ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "ข้าได้กำจัดมอนสเตอร์ทั้งหมดแล้ว พวกมันจะไม่มารบกวนการร่ายเวทย์ของท่านอีก"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... ดีมาก ฉันรู้สึกได้ถึงพลังงานสงบในอากาศแล้ว"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "รับไปซิ นี่คือของขวัญขอบคุณจากฉัน เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ "เครื่องรางแห่งจิต" จากแม่มดเมี้ยวมนต์'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เครื่องรางนี้จะช่วยป้องกันจิตใจของเจ้าจากอำนาจมืด เมี้ยว~ และเพิ่มพลังโจมตีอีกด้วย"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ &a+1 พลังโจมตี &fจากการต่อสู้กับมอนสเตอร์แข็งแกร่ง'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT witch_quest_complete
+
+      # ========== เส้นทางสร้างกับดักเวทย์มนต์ ==========
+      magic_trap:
+        name_short: เลือกสร้างกับดักเวทย์มนต์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "จะมีวิธีอื่นไหมที่ไม่ต้องฆ่าพวกมันโดยตรง? อาจจะใช้เวทย์มนต์บางอย่าง?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... ช่างเป็นความคิดที่ชาญฉลาด! เราสามารถสร้างกับดักเวทย์มนต์ได้"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "แต่เจ้าต้องหาวัตถุดิบมาให้ข้า: ดอกไม้แมวมนต์ 3 ดอก, ผงเรืองแสง 2 ถุง, และน้ำค้างจันทรา 1 ขวด เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณต้องหาวัตถุดิบเพื่อสร้างกับดักเวทย์มนต์'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT collect_magic_materials
+
+      collect_magic_materials:
+        name_short: หาวัตถุดิบเวทย์มนต์
+        objective_detail: หาดอกไม้แมวมนต์ ผงเรืองแสง และน้ำค้างจันทรา
+        type: PLAYER_ITEMS_GET
+        goals:
+          a:
+            item:
+              type: LILAC
+              name: >
+                &aดอกไม้แมวมนต์
+            check: NameContains
+            goal: 3.0
+            take: true
+          b:
+            item:
+              type: GLOWSTONE_DUST
+            check: ExactSame
+            goal: 2.0
+            take: true
+          c:
+            item:
+              type: POTION
+              name: >
+                &bน้ำค้างจันทรา
+            check: NameContains  
+            goal: 1.0
+            take: true
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: witch_forest
+        goto: OBJECT return_with_materials
+
+      return_with_materials:
+        name_short: นำวัตถุดิบกลับไปให้แม่มด
+        objective_detail: นำวัตถุดิบกลับไปให้แม่มดเมี้ยวมนต์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mainmmo,2750,40,2850
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: witch_hut
+        goto: OBJECT create_magic_trap
+
+      create_magic_trap:
+        name_short: สร้างกับดักเวทย์มนต์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... ดีมาก! วัตถุดิบครบแล้ว มาช่วยข้าร่ายคาถาเจ้า"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณเริ่มช่วยแม่มดเมี้ยวมนต์สร้างกับดักเวทย์มนต์...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยววว~ แมวไร้เงา จงส่องแสงนำทาง! ส่งพลังแห่งแมวมนต์ปกป้องที่นี่!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: *ร่ายตาม* "...ส่งพลังแห่งแมวมนต์ปกป้องที่นี่!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fแสงสีม่วงอมฟ้าเริ่มลอยขึ้นจากวัตถุดิบและกระจายออกไปรอบๆ กระท่อม'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... สำเร็จแล้ว! พลังเวทย์มนต์นี้จะขับไล่มอนสเตอร์ไปจากที่นี่!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_FIREWORK_ROCKET_TWINKLE
+        hide_chat: true
+        goto: OBJECT magic_success
+
+      magic_success:
+        name_short: กับดักเวทย์มนต์สำเร็จ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เมี้ยว~... เจ้ามีพรสวรรค์ด้านเวทย์มนต์นะ ฉันสัมผัสได้ถึงพลังที่ซ่อนอยู่"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "รับไปซิ นี่คือของขวัญขอบคุณจากฉัน เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ "เครื่องรางแห่งจิต" และ "ตำราเวทย์มนต์แมวโบราณ" จากแม่มดเมี้ยวมนต์'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lแม่มดเมี้ยวมนต์ &f: "เครื่องรางนี้จะช่วยป้องกันจิตใจของเจ้าจากอำนาจมืด และตำรานั้นจะช่วยให้เจ้าเรียนรู้เวทย์มนต์ของแมวโบราณ เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ &a+1 พลังเวทย์มนต์ &fจากการร่ายคาถากับแม่มดเมี้ยวมนต์'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT witch_quest_complete
+
+      witch_quest_complete:
+        name_short: ภารกิจย่อยสำเร็จ 2/2
+        type: SERVER_COMMANDS_PERFORM
+        commands:

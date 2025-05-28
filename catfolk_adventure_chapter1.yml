@@ -1,0 +1,476 @@
+# -------------------- Display settings --------------------
+display_name: "&e&lบทที่ 1 &f– &6จุดเริ่มต้นของการผจญภัย"
+description: 
+  - '&f'
+  - "&d&l| &dเควสเนื้อเรื่องเผ่าแมว บทที่ 1"
+  - '&f'
+  - '&7เป้าหมายภารกิจ'
+  - "&d&l| &fรู้จักกับเมืองและภารกิจแรกของคุณ"
+  - '&f'
+  - '&f &fรางวัลเควส &f'
+  - "&d&l| &ax5 &fแต้มเควส"
+  - "&d&l| &ax150 &fเงิน"
+  - "&d&l| &ax1 &eการ์ดภารกิจผจญภัย"
+  - "&d&l| &ax1 &eวัตถุดิบแฟชั่นแมว"
+  - "&d&l| &ax1 &eวัตถุดิบพิเศษ MMO"
+  - "&d&l| &ax2 &x&4&1&D&F&4&Dหญ้าเวทมนต์หยาดฟ้า"
+
+start_notify:
+  title: '&dเริ่มต้นการผจญภัย!'
+  title_subtitle: '&fการเดินทางของคุณกำลังจะเริ่มต้น!'
+  sound: ENTITY_CAT_PURR
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10143
+  name: '&d{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+  COOLDOWN:
+    type: BARRIER
+    name: '&c{quest}'
+    lore: |
+      &f{description}
+      {completions}
+      {last_completion}
+      {cooldown}
+      {detailed_progression}
+      {detailed_errors}
+      {controls}
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_CAT_PURR
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: ENTITY_CAT_HISS
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: ENTITY_CAT_HISS
+      
+cooldown:
+  duration: 9999 HOUR  # ทำได้ครั้งเดียวเท่านั้น
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เริ่มต้นการผจญภัย
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dบทที่ 1 – จุดเริ่มต้นของการผจญภัย\n&fการเดินทางของคุณกำลังจะเริ่มต้น
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่องเปิดตัว
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 100
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเสียงเพลงพื้นเมืองเบา ๆ ลอยมาในอากาศ แสงแดดอุ่น ๆ สาดส่องมายังทุ่งหญ้าเขียวขจี'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเหล่าผู้เล่นมากมายเดินสวนกันไปมา บ้างกำลังเก็บของ บ้างก็ถือจอบปลูกข้าว บ้างกำลังฝึกสกิลฟาดมอนสเตอร์น่ารัก ๆ ข้างทาง'
+          - 'SEND_MESSAGE &f'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fและที่หน้าประตูเมืองเริ่มต้น...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 80
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: พบกับมิอาว์ที่หน้าประตูเมือง
+        objective_detail: เดินไปยังหน้าประตูเมืองเพื่อพบกับมิอาว์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785  # แก้ไขพิกัดตามแมพของคุณ
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: catfolk_guide
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: พูดคุยกับมิอาว์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "สวัสดีนักเดินทาง! เมี้ยววว~ ยินดีต้อนรับสู่เมืองแมวนคร!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "ฉันชื่อมิอาว์ เป็นแมวค้าจากโรงเตี๊ยมแห่งนี้ ยินดีที่ได้พบเธอเมี้ยว~!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "ก่อนอื่น อยากให้เธอลองสำรวจเมืองดูก่อนนะเมี้ยววว~ ฉันจะให้คุณนีโอว์ช่วยแนะนำเอง"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: พบกับนีโอว์
+        objective_detail: พบกับนีโอว์ ไกด์ประจำเมือง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2708,36,2784  # แก้ไขพิกัดตามแมพของคุณ
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: guide_b
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: การแนะนำเมือง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &b&lนีโอว์ &f: "หวัดดีเมี้ยววว~ %player_name%! ฉันคือนีโอว์ ไกด์ประจำเมืองนี้เอง จะพาเธอไปรู้จักกับสิ่งพื้นฐานในเกมนี้เมี้ยว~!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f(ระบบแนะนำเมือง: ตลาดกลาง, ฟาร์มทดลอง, ร้านตีบวก, ศูนย์เควสต์, สะพานวาร์ป)'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 80
+          - 'SEND_MESSAGE &b&lนีโอว์ &f: "โอเค! รู้จักคร่าว ๆ แล้วใช่ไหมเมี้ยว~? งั้นลองเดินเล่นรอบเมืองดูเลย!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj7
+        
+      obj7:
+        name_short: ตอบนีโอว์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 20
+          - 'SEND_MESSAGE &a%player_name% &f: "ขอบคุณครับ/ค่ะ คุณนีโอว์!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f(หลังจากนั้น %player_name% สำรวจเมือง พบฟาร์ม ผืนนา คนตั้งร้านขายของ...)'
+          - 'SEND_MESSAGE &f'
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: สำรวจเมือง
+        objective_detail: สำรวจจุดสำคัญต่างๆ ในเมือง
+        type: PLAYER_VISIT_LOCATIONS
+        locations:
+          - name: ตลาดกลาง
+            location: mmo,2700,37,2807  # แก้ไขพิกัดตามแมพของคุณ
+            radius: 5.0
+            notify_message: "&aคุณได้มาถึง &6ตลาดกลาง &aแล้ว"
+          - name: ฟาร์มทดลอง
+            location: mmo,2703,38,2860  # แก้ไขพิกัดตามแมพของคุณ
+            radius: 5.0
+            notify_message: "&aคุณได้มาถึง &6ฟาร์มทดลอง &aแล้ว"
+          - name: ร้านตีบวก
+            location: mmo,-1257,68,-268  # แก้ไขพิกัดตามแมพของคุณ
+            radius: 5.0
+            notify_message: "&aคุณได้มาถึง &6ร้านตีบวก &aแล้ว"
+          - name: ศูนย์เควสต์
+            location: mmo,2674,36,2831  # แก้ไขพิกัดตามแมพของคุณ
+            radius: 5.0
+            notify_message: "&aคุณได้มาถึง &6ศูนย์เควสต์ &aแล้ว"
+          - name: สะพานวาร์ป
+            location: mmo,2705,37,2800  # แก้ไขพิกัดตามแมพของคุณ
+            radius: 5.0
+            notify_message: "&aคุณได้มาถึง &6สะพานวาร์ป &aแล้ว"
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: กลับไปที่โรงเตี๊ยม
+        objective_detail: กลับไปพบมิอาว์ที่โรงเตี๊ยม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785  # แก้ไขพิกัดตามแมพของคุณ - โรงเตี๊ยม
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tavern
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: พูดคุยที่โรงเตี๊ยม
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "ผม/ดิฉันสำรวจเมืองแล้วครับ/ค่ะ แล้วต้องทำอะไรต่อ?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "พอดีมีเรื่องจะรบกวนหน่อยจ้ะเมี้ยววว~ มีมอนสเตอร์ตัวเล็ก ๆ แถวหน้าประตูเมือง มากวนแปลงหญ้าแมวของเมืองอยู่"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "ช่วยไปจัดการพวกมันให้หน่อย จะถือว่าเป็นภารกิจเริ่มต้นของเธอเลยเมี้ยว~!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: เนื้อเรื่อง
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dเควสต์เริ่มต้น: &f"มอนหน้าฟาร์ม"\n&fเป้าหมาย: กำจัดมอนสเตอร์หน้าฟาร์ม
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: กำจัดมอนสเตอร์หน้าฟาร์ม
+        objective_detail: กำจัดมอนสเตอร์ที่รบกวนแปลงผัก
+        type: PLAYER_MOBS_KILL
+        display_count: true
+        mobs:
+          types:
+            - ZOMBIE
+            - SKELETON
+          required: 5
+          radius: 50
+          center: mmo,2710,37,2850  # แก้ไขพิกัดตามแมพของคุณ - บริเวณหน้าฟาร์ม
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: farm
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: กลับไปรายงานมิอาว์
+        objective_detail: กลับไปรายงานผลที่มิอาว์
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785  # แก้ไขพิกัดตามแมพของคุณ - โรงเตี๊ยม
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tavern
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: การรายงานผล
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "ขอบใจมากเลย! เมี้ยววว~ ตอนนี้ก็ลองสำรวจรอบ ๆ เมืองอีก เผื่อจะพบอะไรน่าสนใจนะ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "โอเคครับ/ค่ะ เดี๋ยวผม/ดิฉันลองเดินดู!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: เนื้อเรื่องเปิดถ้ำลึกลับ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fขณะเดินทางลึกออกไปจากเมือง'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f%player_name% สังเกตเห็นบางอย่าง — ถ้ำขนาดใหญ่ที่ถูกปกคลุมด้วยหมอกและออร่าปริศนา'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: AMBIENT_CAVE
+        hide_chat: true
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: ค้นพบถ้ำลึกลับ
+        objective_detail: เดินทางไปยังถ้ำลึกลับนอกเมือง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2800,70,2900  # แก้ไขพิกัดตามแมพของคุณ - ถ้ำลึกลับ
+          radius: 8.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: cave
+        goto: OBJECT obj17
+
+      obj17:
+        name_short: ถ้ำปริศนา
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "หืม… ถ้ำอะไรเนี่ย ดูน่ากลัวกว่ามอนแถวนี้อีก"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &c&l[ระบบแจ้งเตือน]: &c"สถานที่นี้ยังไม่สามารถเข้าได้"'
+          - 'SEND_MESSAGE &c&l[เงื่อนไขการเข้า]: &cต้องมีไอเทม ''กรงเล็บเสือเทพ'' / เปิดเฉพาะ ครบ30วันในเกม(หรือเร็วกว่านั้น) เวลาเที่ยงตรง'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "เงื่อนไขแปลกดีแฮะ... งั้นคงต้องรอก่อนสินะ"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: AMBIENT_CAVE
+        hide_chat: true
+        goto: OBJECT obj18
+
+      obj18:
+        name_short: เนื้อเรื่องบอสตำนาน
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเขาหันหลังกลับ เดินกลับเข้าเมืองด้วยหัวใจที่เต้นแรง —'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fนี่คือเพียงแค่จุดเริ่มต้น... แต่เส้นทางของเขาจะพาไปสู่การต่อสู้กับบอสระดับตำนานในทุกภูมิภาค'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f"รีเจ้นดารี่เอ็กตร้าบอส"... พวกมันคือสัตว์อสูรที่ไม่มีใครเคยโค่นลงได้'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fการจะสู้กับพวกมันได้ คุณต้องเล่น "เนื้อเรื่อง" ให้ถึงจุดหนึ่ง และครอบครอง ''ไอเทมพิเศษ'' เท่านั้น'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fลมเย็นพัดผ่าน เสียงกระดิ่งเบา ๆ ดังขึ้นที่โรงเตี๊ยม'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f%player_name% ผละออกจากเตียงอย่างมุ่งมั่น เขาไม่รู้ว่ารออยู่ข้างหน้า'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคืออะไร... แต่รู้แน่นอนว่า นี่คือจุดเริ่มต้นของตำนาน'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_PLAYER_LEVELUP
+        hide_chat: true
+        goto: OBJECT obj19
+
+      obj19:
+        name_short: กลับพบมิอาว์
+        objective_detail: กลับไปพบมิอาว์ที่โรงเตี๊ยม
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785  # แก้ไขพิกัดตามแมพของคุณ - โรงเตี๊ยม
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tavern
+        goto: OBJECT obj20
+
+      obj20:
+        name_short: บทส่งท้ายจากมิอาว์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "เมี้ยววว~ กลับมาแล้วเหรอ? เห็นสีหน้าของเจ้าแล้ว เจ้าต้องพบกับถ้ำนั้นใช่มั้ย?"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ใช่ครับ/ค่ะ มันคือถ้ำอะไรหรอ?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "นั่นเป็นถ้ำของเหล่าเทพสัตว์โบราณ... เมี้ยววว~ มีตำนานเก่าแก่เล่าขานมานานแล้ว"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "เมี้ยว~ ต้องใจเย็นๆ ก่อน เจ้ายังต้องฝึกฝนอีกมาก เพื่อจะได้พบกับความลับในถ้ำนั้น"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &d&lมิอาว์ &f: "พักผ่อนให้ดีนะเมี้ยววว~ เพราะพรุ่งนี้ เราจะมีผจญภัยอีกมากมาย"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fการผจญภัยของคุณเพิ่งเริ่มต้น...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj21
+
+      obj21:
+        name_short: จบบทที่ 1
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dจบบทที่ 1\n&eจุดเริ่มต้นของการผจญภัย
+        goto: QUEST_SUCCESS
+
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: STAR
+          colors: |
+            PURPLE
+            PINK
+          fade_colors: |
+            AQUA
+            WHITE
+          flicker: true
+          trail: true
+      count: 3
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |  # the commands to perform
+        qc points %player_name% add 5 global
+        eco give %player_name% 150
+        mmocore admin exp give %player_name% main 300
+        mi give MATERIAL FASION1 %player_name% 1
+        mi give MATERIAL DMMO1 %player_name% 1
+        give %player_name% leather{display:{Name:'{"text":"หูแมวสุดน่ารัก","color":"light_purple","italic":false}'}} 1
+        give %player_name% string{display:{Name:'{"text":"หางแมวเสริมพลัง","color":"light_purple","italic":false}'}} 1
+        give %player_name% wheat{display:{Name:'{"text":"หญ้าเวทมนต์หยาดฟ้า","color":"aqua","italic":false}'}} 2
+      as_player: false

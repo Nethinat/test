@@ -1,0 +1,715 @@
+# -------------------- Display settings --------------------
+display_name: "&e&lบทที่ 2 &f– &6ตำนานทั้งเจ็ด"
+description: 
+  - '&fऎ ความยาก : &6ปานกลาง'
+  - '&f เลเวลแนะนำ : &a5+'
+  - '&f'
+  - '&7เป้าหมายภารกิจ'
+  - "&e&l| &fสืบหาความจริงเกี่ยวกับรีเจ้นดารี่เอ็กตร้าบอสและถ้ำศักดิ์สิทธิ์"
+  - '&f'
+  - '&f &fรางวัลเควส &f'
+  - "&e&l| &ax7 &fแต้มเควส"
+  - "&e&l| &ax250 &fเงิน"
+  - "&e&l| &ax450 &fค่าประสบการณ์"
+  - "&e&l| &ax1 &eแผนที่ถ้ำศักดิ์สิทธิ์"
+  - "&e&l| &ax1 &eเศษขนมังกรสายหมอก"
+  - "&e&l| &ax3 &x&4&1&D&F&4&Dหญ้าเวทมนต์หยาดฟ้า"
+  - '&f' 
+  - '&c** เควสนี้จำเป็นต้องผ่านบทที่ 1 ก่อน **'
+
+start_notify:
+  title: '&6การผจญภัยดำเนินต่อไป'
+  title_subtitle: '&fคุณได้เริ่มบทที่ 2: ตำนานทั้งเจ็ด!'
+  sound: ENTITY_CAT_PURR
+
+progress_notify_scoreboard: true
+
+all_status_item:
+  type: PAPER
+  custom_model_data: 10144
+  name: '&6{quest}'
+  lore: |
+    &f{description}
+    {completions}
+    {last_completion}
+    {cooldown}
+    {detailed_progression}
+    {detailed_errors}
+    {controls}
+
+status_items:
+  UNAVAILABLE:
+    type: BARRIER
+    name: '&f &cภารกิจนี้ถูกล็อค &f'
+    lore: |
+      &c
+      &eภารกิจเนื้อเรื่องบทที่ 2
+      &c
+      &cหากต้องการปลดล็อคภารกิจนี้ คุณต้องสำเร็จภารกิจ
+      &fบทที่ 1 – จุดเริ่มต้นของการผจญภัย
+      &cให้สำเร็จเสียก่อน
+  COOLDOWN:
+    type: BARRIER
+    name: '&f &cท่านได้ทำภารกิจนี้ไปแล้ว &f'
+    lore: |
+      &c
+      &cท่านได้ทำภารกิจนี้สำเร็จแล้ว จึงไม่สามารถรับภารกิจนี้ซ้ำได้
+
+# -------------------- Post-quest settings --------------------
+
+completion:
+  max_completions: 1
+  notify:
+    SUCCESS:
+      title: '&aภารกิจ เสร็จสิ้น'
+      title_subtitle: '&fคุณได้ทำภารกิจ &a{quest} &fสำเร็จแล้ว!'
+      sound: ENTITY_CAT_PURR
+    FAIL:
+      title: '&cภารกิจ ล้มเหลว'
+      title_subtitle: '&fคุณทำภารกิจ &c{quest} &fล้มเหลว!'
+      sound: ENTITY_CAT_HISS
+    CANCEL:
+      title: '&cยกเลิก ภารกิจ'
+      title_subtitle: '&fคุณได้ยกเลิกทำภารกิจ &c{quest}'
+      sound: ENTITY_CAT_HISS
+      
+cooldown:
+  duration: 12000 HOUR
+  end_types: [SUCCESS]
+
+# -------------------- Quest content --------------------
+
+branches:
+
+  MAIN:
+    starts_at: obj1
+    objects:
+      obj1:
+        name_short: เริ่มบทที่ 2
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dบทที่ 2 – ตำนานทั้งเจ็ด\n&fการผจญภัยดำเนินต่อไป
+        goto: OBJECT obj2
+
+      obj2:
+        name_short: เนื้อเรื่องเปิดตัว
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 100
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fพระอาทิตย์เริ่มคล้อยต่ำ เสียงนกร้องดังแผ่ว ๆ ท่ามกลางบรรยากาศอบอุ่นของเมืองแมวนคร'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f%player_name% กลับมายังโรงเตี๊ยม พร้อมหัวใจที่เต้นแรง หลังพบ "ถ้ำลึกลับ" ที่ไม่สามารถเข้าได้'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 80
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj3
+
+      obj3:
+        name_short: พบกับเนียบิว ที่โรงเตี๊ยม
+        objective_detail: กลับมาที่โรงเตี๊ยมเพื่อพบกับเนียบิว
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2700,36,2785  # แก้ไขพิกัดตามแมพของคุณ - โรงเตี๊ยม
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tavern
+        goto: OBJECT obj4
+
+      obj4:
+        name_short: พูดคุยกับเนียบิว
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "กลับมาแล้วเหรอจ๊ะ เมี้ยววว~ ดูหน้าตื่นเต้นจังเลย?"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ครับ/ค่ะ ผม/ดิฉันเจอถ้ำอะไรบางอย่างข้างนอกเมือง มันมีพลังแปลกๆ เหมือนกับว่าข้างในมีอะไรบางอย่างซ่อนอยู่..."'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเนียบิว เงียบไปครู่หนึ่ง ก่อนจะพูดด้วยน้ำเสียงจริงจัง'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ถ้าอย่างนั้น... เธอคงได้กลิ่นอายของ ''หนึ่งในเจ็ด'' แล้วล่ะนะ เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj5
+
+      obj5:
+        name_short: เรียนรู้เกี่ยวกับตำนาน
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "หนึ่งในเจ็ด?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ใช่เมี้ยววว~... ตำนานเล่าว่า มีสัตว์อสูรโบราณถูกผนึกไว้ในถ้ำศักดิ์สิทธิ์ทั้ง 7 แห่ง ทั่วดินแดน Wipcream Skyland นี้..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "พวกมันคือ ''รีเจ้นดารี่เอ็กตร้าบอส'' มอนสเตอร์ระดับตำนานที่เคยทำลายล้างโลกเมื่อพันปีก่อน เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ทั้ง 7 ตัว ถูกผนึกไว้ใน 7 เมืองใหญ่ โดยมีไอเทมหายากเป็นกุญแจไขถ้ำ เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ไอเทมนั้นจะปรากฏเฉพาะเมื่อผู้เล่นเดินตามเนื้อเรื่องของแต่ละเมืองเท่านั้น เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj6
+
+      obj6:
+        name_short: คำถามเกี่ยวกับถ้ำ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "งั้น...หมายความว่าถ้ำที่ผม/ดิฉันเจอ ก็คือหนึ่งในนั้น?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ถูกต้องเมี้ยววว~ นั่นคือถ้ำของ ''วาร์มิล่า – มังกรสายหมอก'' บอสประจำเมืองแมวนคร"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ไม่มีใครเคยล้มมันได้ เพราะไม่มีใครเคยได้ ''เกล็ดมังกรสายหมอก'' ไอเทมที่จำเป็นสำหรับเข้าสู้บอสตัวนี้ เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "...แล้วจะหาไอเทมนั้นได้ยังไงครับ/คะ?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "เล่นเนื้อเรื่องหลักของเมืองนี้ให้จบ เธอจะได้เงื่อนงำทีละนิด... แล้วสักวันหนึ่ง เธอจะได้มันเอง เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj7
+
+      obj7:
+        name_short: อัพเดทเควส
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &d[อัปเดตเควสต์เนื้อเรื่องหลัก]\n&6"ตำนานแห่งสายหมอก"
+        goto: OBJECT obj8
+
+      obj8:
+        name_short: รับเควสตำนานแห่งสายหมอก
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "ถ้าเธอจริงจังกับการเดินทางสายนี้ อย่าลืมว่า เธอจะต้องเดินทางผ่านทั้ง 7 เมือง เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "และเผชิญหน้ากับรีเจ้นดารี่เอ็กตร้าบอสทั้ง 7 ตัว ที่ถูกผนึกไว้ในเมืองต่างๆ... เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "แต่ตอนนี้... เริ่มจากเมืองนี้ก่อนเถอะ เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &b&lเนียบิว &f: "มีข่าวลือว่ามีลูกแมวในเมืองตัวหนึ่งเคยเห็นแสงประหลาดลอยออกมาจากซากหอคอยโบราณทางตะวันตก ลองไปสำรวจกันดูไหม? เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "ได้ครับ/ค่ะ ผม/ดิฉันจะไปเดี๋ยวนี้เลย!"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+        complete_journal_entry_messages: true
+        complete_notify:
+          sound: ENTITY_CAT_PURR
+        hide_chat: true
+        goto: OBJECT obj9
+
+      obj9:
+        name_short: เริ่มภารกิจแสงจากอดีต
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &d[เริ่มภารกิจเนื้อเรื่อง]\n&6"แสงจากอดีต"
+        goto: OBJECT obj10
+
+      obj10:
+        name_short: เดินทางไปยังหอคอยโบราณ
+        objective_detail: เดินทางไปยังซากหอคอยโบราณทางตะวันตกของเมือง
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2600,45,2750  # แก้ไขพิกัดตามแมพของคุณ - หอคอยโบราณ
+          radius: 10.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: ancient_tower
+        goto: OBJECT obj11
+
+      obj11:
+        name_short: สำรวจหอคอยโบราณ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณเดินทางมาถึงซากหอคอยโบราณ สถานที่นี้ดูเก่าแก่และถูกทิ้งร้างมานาน'
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fแม้จะเป็นเพียงซากปรักหักพัง แต่คุณยังรู้สึกได้ถึงพลังบางอย่างที่ซ่อนอยู่ในที่นี่'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "นี่คือหอคอยโบราณที่เนียบิวพูดถึงสินะ..."'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fขณะที่คุณกำลังสำรวจอยู่นั้น คุณได้ยินเสียงเล็กๆ ดังมาจากมุมหนึ่งของหอคอย'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: AMBIENT_CAVE
+        hide_chat: true
+        goto: OBJECT obj12
+
+      obj12:
+        name_short: พบกับลูกแมวผู้ลึกลับ
+        objective_detail: เข้าไปตรวจสอบเสียงที่ได้ยิน
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2595,45,2745  # แก้ไขพิกัดตามแมพของคุณ - มุมของหอคอย
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: tower_corner
+        goto: OBJECT obj13
+
+      obj13:
+        name_short: พูดคุยกับเมี้ยวมิ้น
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมื่อคุณเดินไปถึงมุมนั้น คุณพบกับลูกแมวตัวเล็กๆ กำลังนั่งอยู่'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "เมี้ยววว~ มีคนมาที่นี่ด้วยเหรอ? ไม่ค่อยมีใครมาที่นี่หรอกนะ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "สวัสดีน้อง ฉันชื่อ %player_name% มาที่นี่เพราะได้ยินว่า มีคนเห็นแสงประหลาดที่หอคอยนี้น่ะ"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "โอ้! เมี้ยว~ นั่นคือฉันเองล่ะ! ฉันชื่อเมี้ยวมิ้น! ฉันเห็นแสงประหลาดที่นี่จริงๆ นะ!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "แสงสีฟ้าอมม่วง ลอยวนอยู่แถวๆ ห้องใต้ดินของหอคอยนี้ เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "แต่ฉันไม่กล้าลงไปคนเดียวหรอก เมี้ยว~ มันน่ากลัว..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj14
+
+      obj14:
+        name_short: เสนอความช่วยเหลือ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &a%player_name% &f: "งั้นเรามาสำรวจด้วยกันไหม? ฉันจะช่วยเธอหาว่าแสงประหลาดนั่นคืออะไร"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "จริงเหรอเมี้ยววว~? ดีจังเลย! เดี๋ยวฉันพาไปที่ทางเข้าห้องใต้ดินเลย!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเมี้ยวมิ้นกระโดดลงจากที่นั่งอย่างตื่นเต้น แล้วเริ่มพาคุณไปยังอีกด้านของหอคอย'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj15
+
+      obj15:
+        name_short: ตามเมี้ยวมิ้นไปยังทางเข้าห้องใต้ดิน
+        objective_detail: ตามเมี้ยวมิ้นไปยังทางเข้าห้องใต้ดิน
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2605,40,2760  # แก้ไขพิกัดตามแมพของคุณ - ทางเข้าห้องใต้ดิน
+          radius: 3.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: basement_entrance
+        goto: OBJECT obj16
+
+      obj16:
+        name_short: พบทางเข้าห้องใต้ดิน
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "นี่ไง เมี้ยววว~! ทางเข้าห้องใต้ดิน! ฉันเคยเห็นแสงประหลาดลอยขึ้นมาจากตรงนี้"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "แต่ประตูมันปิดอยู่ เมี้ยว~ และฉันไม่รู้วิธีเปิดมัน..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณสังเกตเห็นว่ามีช่องเสียบกุญแจรูปแมวอยู่บนประตู และมีสัญลักษณ์โบราณสลักอยู่โดยรอบ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "ดูเหมือนเราจะต้องหากุญแจพิเศษมาเปิดประตูนี้นะ"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "เมี้ยววว~ จริงด้วย! เคยได้ยินคุณตาที่อาศัยแถวนี้พูดถึงเรื่องกุญแจโบราณ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "คุณตาเมี้ยวเฒ่า! เขาอาศัยอยู่ในกระท่อมไม่ไกลจากที่นี่ เมี้ยว~ เขาอาจจะรู้อะไรเกี่ยวกับกุญแจนี้!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj17
+
+      obj17:
+        name_short: เดินทางไปพบคุณตาเมี้ยวเฒ่า
+        objective_detail: เดินทางไปยังกระท่อมของคุณตาเมี้ยวเฒ่า
+        type: PLAYER_POSITION
+        display_distance: true
+        position:
+          type: SPHERE_INSIDE
+          center: mmo,2630,42,2730  # แก้ไขพิกัดตามแมพของคุณ - กระท่อมคุณตา
+          radius: 5.0
+        gps:
+          enabled: true
+          mode: GPS
+          custom_point: elder_hut
+        goto: OBJECT obj18
+
+      obj18:
+        name_short: พบกับคุณตาเมี้ยวเฒ่า
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณมาถึงกระท่อมเล็กๆ ที่ค่อนข้างเก่า แต่ดูอบอุ่นและน่าอยู่'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "คุณตาเมี้ยวเฒ่า! มีคนมาหาค่ะ! เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fไม่นานนัก แมวแก่ร่างใหญ่ก็เดินออกมาจากกระท่อม เขามีขนสีเทาและดวงตาสีฟ้าที่ดูเฉลียวฉลาด'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เมี้ยว~... มีอะไรหรือ น้องเมี้ยวมิ้น? อ้อ มีแขกด้วยหรอกหรือ?"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "คุณตาคะ! พวกเราเจอทางเข้าห้องใต้ดินที่หอคอยโบราณแล้ว เมี้ยววว~ แต่มันต้องใช้กุญแจพิเศษถึงจะเปิดได้!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj19
+
+      obj19:
+        name_short: ฟังเรื่องเล่าจากคุณตาเมี้ยวเฒ่า
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เมี้ยว~... ห้องใต้ดินนั่นงั้นหรือ? พวกเจ้ากำลังเล่นกับสิ่งที่อันตรายนะ..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "คุณตาครับ/คะ พวกเราต้องการเรียนรู้เกี่ยวกับแสงประหลาดที่เมี้ยวมิ้นเห็น มันอาจเชื่อมโยงกับมังกรสายหมอกที่ถูกกล่าวถึงในตำนาน"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fดวงตาของคุณตาเมี้ยวเฒ่าเบิกกว้างขึ้นด้วยความประหลาดใจ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "วาร์มิล่า? มังกรสายหมอก? เมี้ยว~... เจ้ารู้เรื่องนี้ได้อย่างไรกัน?"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "เนียบิวที่โรงเตี๊ยมเล่าให้ฟังครับ/ค่ะ เธอบอกว่ามันเป็นหนึ่งในรีเจ้นดารี่เอ็กตร้าบอสที่ถูกผนึกไว้"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เมี้ยว~... เนียบิวนี่... เธอยังจำเรื่องพวกนั้นได้อยู่สินะ..."'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj20
+
+      obj20:
+        name_short: ตำนานมังกรสายหมอก
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "ฟังให้ดี นักเดินทาง เมี้ยว~... ข้าจะเล่าเรื่องราวที่แท้จริงให้ฟัง"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เมื่อพันปีก่อน วาร์มิล่าเคยเป็นผู้พิทักษ์ของเมืองแมวนคร ไม่ใช่ศัตรู เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "มังกรสายหมอกปกป้องพวกเรามาหลายชั่วอายุคน จนกระทั่งเมื่อภัยใหญ่มาเยือน... เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "มันคือ เทพมืดราชันย์แห่งความว่างเปล่า ผู้ที่พยายามทำลายทุกอาณาจักร เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เพื่อต่อต้านเทพมืด วาร์มิล่าและผู้พิทักษ์ทั้งเจ็ดจึงใช้พลังทั้งหมดของตัวเองผสานเป็นหนึ่ง เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "แต่พลังนั้นมหาศาลเกินกว่าร่างกายพวกเขาจะรับไหว พวกเขาจึงกลายเป็นศิลาผนึก เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เพื่อความปลอดภัย บรรพบุรุษของเราจึงแยกย้ายผู้พิทักษ์ทั้งเจ็ดไปยังเจ็ดเมือง เมี้ยว~ เพื่อไม่ให้อำนาจทั้งหมดรวมกันอีก"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj21
+
+      obj21:
+        name_short: การปลดผนึกผู้พิทักษ์
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "แล้วทำไมถึงมีข่าวลือว่าต้องปลดผนึกและต่อสู้กับพวกเขา?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เพราะมีคำทำนายโบราณ เมี้ยววว~... ว่าวันหนึ่ง เทพมืดราชันย์จะกลับมาอีกครั้ง"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "และเมื่อถึงเวลานั้น จะต้องมีวีรบุรุษผู้กล้าปลดผนึกผู้พิทักษ์ทั้งเจ็ด เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "ไม่ใช่เพื่อทำลายพวกเขา แต่เพื่อฟื้นฟูพวกเขากลับมาอีกครั้ง เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "แสงที่เมี้ยวมิ้นเห็น... นั่นอาจเป็นสัญญาณว่าผนึกของวาร์มิล่ากำลังอ่อนลง เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "นั่นหมายความว่า... เทพมืดกำลังจะกลับมา เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj22
+
+      obj22:
+        name_short: กุญแจแมวโบราณ
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &a%player_name% &f: "แล้วกุญแจที่จะเปิดประตูล่ะครับ/คะ? คุณตารู้อะไรเกี่ยวกับมันไหม?"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "กุญแจนั้น... เมี้ยว~ ฉันเคยเห็นมันมาก่อน ในห้องสมุดโบราณของเมือง"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "มันถูกเรียกว่า 'กุญแจแมวแห่งสายหมอก' เป็นกุญแจที่สร้างขึ้นเพื่อเชื่อมต่อกับพลังของวาร์มิล่า เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "แต่มันถูกแยกออกเป็นสามส่วนและซ่อนไว้ในสถานที่สำคัญสามแห่งของเมือง เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "ส่วนแรกอยู่ในห้องสมุดโบราณ ส่วนที่สองอยู่ในวิหารแมว และส่วนที่สามอยู่ใต้น้ำตกสายหมอก เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "แต่อย่าเพิ่งรีบร้อนไป เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj23
+
+      obj23:
+        name_short: ตำราโบราณของคุณตา
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "ก่อนที่เจ้าจะออกเดินทาง ฉันมีสิ่งหนึ่งที่อาจช่วยเจ้าได้ เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณตาเมี้ยวเฒ่าเดินเข้าไปในกระท่อม และออกมาพร้อมกับหนังสือเล่มเก่าเล่มหนึ่ง'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "นี่คือแผนที่โบราณที่บอกตำแหน่งของถ้ำศักดิ์สิทธิ์ทั้งเจ็ด เมี้ยว~ และมีคำใบ้เกี่ยวกับวิธีการรวบรวมกุญแจทั้งสาม"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "รับไปเถอะ ฉันหวังว่ามันจะช่วยเจ้าได้ในการเดินทางอันยาวไกลนี้ เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ขอบคุณมากครับ/ค่ะ คุณตา ผม/ดิฉันจะใช้มันอย่างระมัดระวัง"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้รับ "แผนที่ถ้ำศักดิ์สิทธิ์"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "ว้าว! เมี้ยววว~ ฉันอยากไปผจญภัยกับคุณด้วย! ขอไปด้วยนะ!"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "เมี้ยวมิ้น ช่างเถอะ เมี้ยว~ นี่เป็นการผจญภัยที่อันตรายเกินไปสำหรับลูกแมวตัวน้อยอย่างเธอ"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj24
+
+      obj24:
+        name_short: ออกเดินทาง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "นักเดินทาง เมี้ยววว~ ขอให้โชคดี จงเริ่มการค้นหากุญแจที่ห้องสมุดโบราณก่อน"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "และจงเดินอย่างระมัดระวัง เจ้าอาจไม่ใช่คนเดียวที่กำลังตามหากุญแจเหล่านั้น เมี้ยว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &5&lเมี้ยวมิ้น &f: "หมายความว่ายังไงคะ คุณตา? เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "มีข่าวลือว่ามีกลุ่มคนที่ต้องการปลุกเทพมืดราชันย์ขึ้นมาอีกครั้ง เมี้ยว~ พวกเขาเรียกตัวเองว่า 'กรงเล็บแห่งความมืด'"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &7&lคุณตาเมี้ยวเฒ่า &f: "พวกเขาอาจกำลังตามหาวิธีทำลายผู้พิทักษ์ทั้งเจ็ด แทนที่จะฟื้นฟูพวกเขา เมี้ยววว~"'
+          - 'SEND_MESSAGE &f'
+          - SEND_SOUND entity_cat_ambient
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &a%player_name% &f: "ผม/ดิฉันจะระวังตัว และจะรีบไปห้องสมุดโบราณเดี๋ยวนี้เลย"'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 50
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj25
+
+      obj25:
+        name_short: อัพเดทภารกิจ
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &d[อัปเดตภารกิจ]\n&6"ชิ้นส่วนกุญแจแห่งสายหมอก"
+        goto: OBJECT obj26
+
+      obj26:
+        name_short: เตรียมออกเดินทาง
+        type: SERVER_ACTIONS
+        actions: 
+          - WAIT_TICKS 50
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fคุณได้เรียนรู้ความจริงที่น่าประหลาดใจเกี่ยวกับมังกรสายหมอกและผู้พิทักษ์ทั้งเจ็ด'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fตอนนี้คุณต้องตามหาชิ้นส่วนกุญแจแมวแห่งสายหมอกทั้งสามชิ้น โดยเริ่มจากห้องสมุดโบราณ'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fแต่โปรดระวัง... "กรงเล็บแห่งความมืด" กำลังเคลื่อนไหวอยู่ในเงามืด'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+          - 'SEND_MESSAGE &f &6[ระบบ]: &f...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 40
+          - 'SEND_MESSAGE &f &6[ระบบ]: &fเรื่องราวการตามหากุญแจทั้งสามจะดำเนินต่อในบทต่อไป...'
+          - 'SEND_MESSAGE &f'
+          - WAIT_TICKS 60
+        complete_notify:
+          sound: ENTITY_CAT_AMBIENT
+        hide_chat: true
+        goto: OBJECT obj27
+
+      obj27:
+        name_short: บทสรุป
+        type: SERVER_COMMANDS_PERFORM
+        commands: |
+          cmi titlemsg %player_name% &dจบบทที่ 2\n&eติดตามการผจญภัยได้ในบทต่อไป
+        goto: QUEST_SUCCESS
+
+# -------------------- รางวัลเควส settings --------------------
+
+end_objects:
+  SUCCESS:
+    - type: SERVER_FIREWORKS_LAUNCH
+      effects:
+        - type: STAR
+          colors: |
+            BLUE
+            PURPLE
+          fade_colors: |
+            AQUA
+            FUCHSIA
+          flicker: true
+          trail: true
+      count: 5
+      position:
+        type: PLAYER_RELATIVE_SINGLE
+        location:
+          distance: 3
+          vertical_offset: 1
+    - type: SERVER_COMMANDS_PERFORM
+      commands: |
+        qc points %player_name% add 7 global
+        eco give %player_name% 250
+        mmocore admin exp give %player_name% main 450
+        give %player_name% map{display:{Name:'{"text":"แผนที่ถ้ำศักดิ์สิทธิ์","color":"aqua","italic":false}'}} 1
+        give %player_name% phantom_membrane{display:{Name:'{"text":"เศษขนมังกรสายหมอก","color":"light_purple","italic":false}'}} 1
+        give %player_name% wheat{display:{Name:'{"text":"หญ้าเวทมนต์หยาดฟ้า","color":"aqua","italic":false}'}} 3
+      as_player: false
